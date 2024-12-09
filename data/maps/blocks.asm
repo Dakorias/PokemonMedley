@@ -159,4 +159,22 @@ MountainGymBreak_Blocks:
 MountainGymArena_Blocks:
 	INCBIN "maps/MountainGymArena.ablk"
 
+TreelinePort_Blocks:
+	INCBIN "maps/TreelinePort.ablk"
+
+TreelinePortInside_Blocks:
+	INCBIN "maps/TreelinePortInside.ablk"
+
+ForestPark_Blocks:
+	INCBIN "maps/ForestPark.ablk"
+
+NorthForestPath_Blocks:
+	INCBIN "maps/NorthForestPath.ablk"
+
+WestForestPath_Blocks:
+	INCBIN "maps/WestForestPath.ablk"
+
+MontaneTown_Blocks:
+	INCBIN "maps/MontaneTown.ablk"
+
 ENDSECTION

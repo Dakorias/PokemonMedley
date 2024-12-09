@@ -19,6 +19,7 @@ MapGroupRoofs:
 	db ROOF_OLIVINE   ;  5 (Herald Cove)
 	db ROOF_OLIVINE   ;  6 (Craggy Coast)
 	db -1 						;  7 (Berry Forest)
+	db -1 						;  8 (Second Island)
 	assert_table_length NUM_MAP_GROUPS + 1
 
 Roofs:

@@ -120,6 +120,15 @@ ENDM
 	map_attributes ScenicBluff, SCENIC_BLUFF, $35, SOUTH
 	connection south, CraggyCoast, CRAGGY_COAST, -5
 
+	map_attributes TreelinePort, TREELINE_PORT, $35, 0
+	map_attributes TreelinePortInside, TREELINE_PORT_INSIDE, $00, 0
+	map_attributes ForestPark, FOREST_PARK, $05, 0
+	map_attributes NorthForestPath, NORTH_FOREST_PATH, $05, 0
+	map_attributes WestForestPath, WEST_FOREST_PATH, $35, 0
+	map_attributes MontaneTown, MONTANE_TOWN, $05, 0
+
+
+
 	map_attributes HeraldLab, HERALD_LAB, $00, 0
 	map_attributes HeraldPokecenter, HERALD_POKECENTER, $00, 0
 	map_attributes HeraldGym, HERALD_GYM, $00, 0

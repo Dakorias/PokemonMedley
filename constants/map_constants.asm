@@ -106,4 +106,13 @@ ENDM
 	map_const HERALD_BAY_GROTTO, 														5,  5 ; 3
 	endgroup
 
-DEF NUM_MAP_GROUPS EQU const_value ; 7
+	newgroup SECOND_ISLAND																				; 8
+	map_const TREELINE_PORT,															 18, 15 ; 1
+	map_const TREELINE_PORT_INSIDE,												  8,  6 ; 2
+	map_const FOREST_PARK,															   20, 20 ; 3
+	map_const NORTH_FOREST_PATH,													 10, 20 ; 1
+	map_const WEST_FOREST_PATH,														 10, 30 ; 1
+	map_const MONTANE_TOWN,													  		 15, 15 ; 1
+	endgroup
+
+DEF NUM_MAP_GROUPS EQU const_value ; 8

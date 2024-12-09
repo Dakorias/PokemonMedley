@@ -65,6 +65,12 @@ INCLUDE "maps/HeraldBayGrotto.asm"
 INCLUDE "maps/RuggedCliffGrotto.asm"
 INCLUDE "maps/MountainGymBreak.asm"
 INCLUDE "maps/MountainGymArena.asm"
+INCLUDE "maps/TreelinePort.asm"
+INCLUDE "maps/TreelinePortInside.asm"
+INCLUDE "maps/ForestPark.asm"
+INCLUDE "maps/NorthForestPath.asm"
+INCLUDE "maps/WestForestPath.asm"
+INCLUDE "maps/MontaneTown.asm"
 
 SECTION "Map Scripts 7", ROMX
 

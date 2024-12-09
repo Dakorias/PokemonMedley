@@ -8,15 +8,20 @@ Landmarks:
 ; entries correspond to constants/landmark_constants.asm
 	table_width 4, Landmarks
 	landmark -8, -16, SpecialMapName
-	landmark 20, 84, HeraldCoveName
-	landmark 8, 84, HeraldRouteName
-	landmark 4, 92, HeraldBayName
-	landmark 12, 73, CraggyBeachName
-	landmark 12, 60, CraggyCoastName
-	landmark 12, 48, ScenicBluffName
-	landmark 12, 36, MtMonegoName
-	landmark 4, 68, BerryForestName
-	landmark 4, 36, RuggedCliffName
+	landmark 28, 84, HeraldCoveName
+	landmark 16, 84, HeraldRouteName
+	landmark 12, 92, HeraldBayName
+	landmark 20, 68, CraggyBeachName
+	landmark 20, 52, CraggyCoastName
+	landmark 20, 44, ScenicBluffName
+	landmark 20, 36, MtMonegoName
+	landmark 12, 68, BerryForestName
+	landmark 12, 36, RuggedCliffName
+	landmark 52, 84, TreelinePortName
+	landmark 64, 80, ForestParkName
+	landmark 60, 64, NorthForestPathName
+	landmark 76, 68, WestForestPathName
+	landmark 76, 52, MontaneTownName
 
 	assert_table_length KANTO_LANDMARK
 	landmark  52, 108, PalletTownName
@@ -80,6 +85,11 @@ ScenicBluffName:     db "SCENIC¯BLUFF@"
 MtMonegoName:        db "MT.¯MONEGO@"
 BerryForestName:     db "BERRY¯FOREST@"
 RuggedCliffName:     db "RUGGED¯CLIFF@"
+TreelinePortName:    db "TREELINE¯PORT@"
+ForestParkName:			 db "FOREST¯PARK@"
+NorthForestPathName: db "NORTH¯FOREST PATH@"
+WestForestPathName:	 db "WEST¯FOREST PATH@"
+MontaneTownName:		 db "MONTANE¯TOWN@"
 NewBarkTownName:     db "NEW BARK¯TOWN@"
 CherrygroveCityName: db "CHERRYGROVE¯CITY@"
 VioletCityName:      db "VIOLET CITY@"

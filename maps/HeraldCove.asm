@@ -501,6 +501,7 @@ WalkBackToBeachScript:
 	end
 
 HeraldCoveSailorScript:
+	giveitem TOWN_MAP
 	jumptextfaceplayer HeraldCoveSailorText
 
 HeraldCoveSignScript:
