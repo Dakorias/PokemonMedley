@@ -8,10 +8,10 @@ INCBIN "gfx/tilesets/forest-tree/4.2bpp"
 
 CelebiShrineEvent:
 	call DelayFrame
-	ld a, [wVramState]
+	ld a, [wStateFlags]
 	push af
 	xor a
-	ld [wVramState], a
+	ld [wStateFlags], a
 	call LoadCelebiGFX
 	depixel 0, 10, 7, 0
 	ld a, SPRITE_ANIM_OBJ_CELEBI
@@ -31,7 +31,7 @@ CelebiShrineEvent:
 	ld d, $0
 .loop
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .done
 	push bc
 	call GetCelebiSpriteTile
@@ -49,7 +49,7 @@ CelebiShrineEvent:
 
 .done
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	call .RestorePlayerSprite_DespawnLeaves
 	call CelebiEvent_SetBattleType
 	ret
@@ -96,7 +96,7 @@ CelebiEvent_CountDown:
 
 .done
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 CelebiEvent_SpawnLeaf: ; unreferenced

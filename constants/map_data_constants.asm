@@ -29,7 +29,7 @@ DEF MAP_LENGTH EQU _RS
 	const DUNGEON
 DEF NUM_ENVIRONMENTS EQU const_value - 1
 
-; map palettes (wEnvironment)
+; map palettes (wMapTimeOfDay)
 	const_def
 	const PALETTE_AUTO
 	const PALETTE_DAY
@@ -59,14 +59,8 @@ DEF IN_DARKNESS EQU 1 << IN_DARKNESS_F ; masked with a PALETTE_* constant
 	const FISHGROUP_QWILFISH_NO_SWARM
 DEF NUM_FISHGROUPS EQU const_value - 1
 
-; connection directions (see data/maps/data.asm)
-	const_def
-	const EAST_F
-	const WEST_F
-	const SOUTH_F
-	const NORTH_F
-
 ; wMapConnections
+; connection directions (see data/maps/data.asm)
 	const_def
 	shift_const EAST
 	shift_const WEST
@@ -75,15 +69,12 @@ DEF NUM_FISHGROUPS EQU const_value - 1
 
 ; SpawnPoints indexes (see data/maps/spawn_points.asm)
 	const_def
-	const SPAWN_HOME
-; kanto
-	const SPAWN_INDIGO
-; johto
-	const SPAWN_NEW_BARK
-	const SPAWN_BATTLE_TOWER
+	const SPAWN_HERALD_PORT
 	const SPAWN_HERALD_COVE
 	const SPAWN_CRAGGY_COAST
 	const SPAWN_RUGGED_CLIFF
+	const SPAWN_TREELINE_PORT
+	const SPAWN_MONTANE_TOWN
 	const SPAWN_NONE
 
 DEF NUM_SPAWNS EQU const_value

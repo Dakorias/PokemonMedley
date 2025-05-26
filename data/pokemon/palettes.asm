@@ -19,12 +19,12 @@ INCLUDE "gfx/pokemon/egg/shiny.pal"
 PokemonPalettes:
 ; entries correspond to Pokémon species, two apiece
 
-; Each front.gbcpal is generated from the corresponding .png, and
+; Each normal.gbcpal is generated from the corresponding .png, and
 ; only the middle two colors are included, not black or white.
 ; Shiny palettes are defined directly, not generated.
 
-	; 2 middle palettes, front and shiny, with 2 colors each
-	table_width PAL_COLOR_SIZE * 2 * 2, PokemonPalettes
+	; 2 middle palettes, normal and shiny, with 2 colors each
+	table_width PAL_COLOR_SIZE * 2 * 2
 
 ; 000
 	RGB 30, 22, 17

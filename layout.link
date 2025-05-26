@@ -71,14 +71,12 @@ ROMX $10
 	"Evolutions and Attacks Pointers"
 	"Evolutions and Attacks 1"
 ROMX $11
-	
 	"Newbox"
 	"Bill's PC Graphics"
 ROMX $12
 	"bank11"
 	"Crystal Features 1"
 	"Egg Moves 2"
-	"Evolutions and Attacks 2"
 ROMX $13
 	"bank13"
 	"Shrink Pics"
@@ -187,9 +185,9 @@ ROMX $41
 ROMX $42
 	"mobile42"
 	"Intro Logo"
-	"Credits"
 ROMX $43
 	"Title"
+	"Credits"
 ROMX $44
 	"Mobile Adapter SDK"
 ROMX $45
@@ -345,7 +343,8 @@ ROMX $87
 	"Pics 29"
 ROMX $88
 	"Pics 30"
-	
+ROMX $89
+	"Evolutions and Attacks 2"
 	
 WRAM0
 	"Stack"

@@ -10,7 +10,7 @@
 	assert_table_length -EGG
 PokemonPicPointers::
 ; entries correspond to Pokémon species, two apiece (first index is 0)
-	table_width 3 * 2, PokemonPicPointers
+	table_width 3 * 2
 
 	dbw -1, -1 ; unused
 	dbw -1, -1 ; unused

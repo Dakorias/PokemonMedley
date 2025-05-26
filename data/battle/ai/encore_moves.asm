@@ -1,27 +1,27 @@
 ; AI_SMART encourages these moves with Encore.
 
 EncoreMoves:
-	db SWORDS_DANCE
-	db WHIRLWIND
-	db LEER
-	db ROAR
-	db DISABLE
-	db MIST
-	db LEECH_SEED
-	db GROWTH
-	db POISONPOWDER
-	db STRING_SHOT
-	db AGILITY
-	db SCREECH
-	db HAZE
-	db FOCUS_ENERGY
-	db DREAM_EATER
-	db POISON_GAS
-	db CONVERSION
-	db SUBSTITUTE
-	db TRIPLE_KICK
-	db HAIL
-	db TRICK_ROOM
-	db HOWL
-	db TAIL_WHIP
-	db -1 ; end
+	dw SWORDS_DANCE
+	dw WHIRLWIND
+	dw LEER
+	dw ROAR
+	dw DISABLE
+	dw MIST
+	dw LEECH_SEED
+	dw GROWTH
+	dw POISONPOWDER
+	dw STRING_SHOT
+	dw AGILITY
+	dw SCREECH
+	dw HAZE
+	dw FOCUS_ENERGY
+	dw DREAM_EATER
+	dw POISON_GAS
+	dw CONVERSION
+	dw SUBSTITUTE
+	dw TRIPLE_KICK
+	dw HAIL
+	dw TRICK_ROOM
+	dw HOWL
+	dw TAIL_WHIP
+	dw -1 ; end

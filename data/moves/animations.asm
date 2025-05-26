@@ -27,7 +27,7 @@
 	assert_table_length NUM_BATTLE_ANIMS
 
 BattleAnimations::
-	table_width 2, BattleAnimations
+	table_width 2
 	dw BattleAnim_0
 	dw BattleAnim_Pound
 	dw BattleAnim_KarateChop
@@ -204,7 +204,6 @@ BattleAnimations::
 	dw BattleAnim_Snore
 	dw BattleAnim_Curse
 	dw BattleAnim_Flail
-	dw BattleAnim_Conversion2
 	dw BattleAnim_Aeroblast
 	dw BattleAnim_CottonSpore
 	dw BattleAnim_Reversal
@@ -243,6 +242,9 @@ BattleAnimations::
 	dw BattleAnim_Attract
 	dw BattleAnim_SleepTalk
 	dw BattleAnim_HealBell
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
 	dw BattleAnim_Return
 	dw BattleAnim_IceFang
 	dw BattleAnim_CrossPoison
@@ -281,6 +283,15 @@ BattleAnimations::
 	dw BattleAnim_RockBlast
 	dw BattleAnim_RockPolish
 	dw BattleAnim_RockTomb
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
 	dw BattleAnim_Tackle
 	dw BattleAnim_Tackle
 	dw BattleAnim_Tackle
@@ -2890,21 +2901,6 @@ BattleAnim_Growth:
 	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $30
 	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $38
 	anim_wait 64
-	anim_ret
-
-BattleAnim_Conversion2:
-	anim_1gfx BATTLE_ANIM_GFX_EXPLOSION
-	anim_sound 63, 3, SFX_SHARPEN
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $0
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $8
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $10
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $18
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $20
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $28
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $30
-	anim_obj BATTLE_ANIM_OBJ_CONVERSION2, 132, 44, $38
-	anim_wait 128
-	anim_wait 48
 	anim_ret
 
 BattleAnim_Smokescreen:

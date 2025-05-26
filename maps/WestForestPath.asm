@@ -1,12 +1,12 @@
 	object_const_def
 
-TreelinePortInside_MapScripts:
+WestForestPath_MapScripts:
 	def_scene_scripts
 
 	def_callbacks
 
 
-TreelinePortInside_MapEvents:
+WestForestPath_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events

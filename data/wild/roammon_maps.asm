@@ -13,7 +13,7 @@ ENDM
 
 RoamMaps:
 ; TODO: Choose maps to use here.
-	list_start RoamMaps
+	list_start
 	; start map, ...other maps
 	roam_map NONE, NONE
 	roam_map NONE, NONE

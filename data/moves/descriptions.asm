@@ -180,7 +180,6 @@ MoveDescriptions1:
 	dw SnoreDescription
 	dw CurseDescription
 	dw FlailDescription
-	dw Conversion2Description
 	dw AeroblastDescription
 	dw CottonSporeDescription
 	dw ReversalDescription
@@ -219,6 +218,9 @@ MoveDescriptions1:
 	dw AttractDescription
 	dw SleepTalkDescription
 	dw HealBellDescription
+	dw BeatUpDescription
+	dw Extra1Description
+	dw Extra1Description
 	dw ReturnDescription
 	dw PresentDescription
 	dw FrustrationDescription
@@ -253,7 +255,16 @@ MoveDescriptions1:
 	dw ShadowBallDescription
 	dw RockSmashDescription
 	dw WhirlpoolDescription
-	dw BeatUpDescription
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
 	dw Extra1Description
 	dw Extra1Description
 	dw Extra1Description
@@ -1034,10 +1045,6 @@ CurseDescription:
 FlailDescription:
 	db   "Stronger if the"
 	next "user's HP is low.@"
-
-Conversion2Description:
-	db   "The user's type is"
-	next "made resistant.@"
 
 AeroblastDescription:
 	db   "Has a high criti-"

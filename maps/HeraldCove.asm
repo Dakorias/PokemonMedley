@@ -43,7 +43,6 @@ HeraldCove_MapScripts:
 		end
 
 	OakEscortScript:
-	playsound SFX_BUMP
 	applymovement PLAYER, PlayerExitDoorMovement
 	turnobject PLAYER, LEFT
 	opentext

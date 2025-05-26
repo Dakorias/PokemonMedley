@@ -181,7 +181,6 @@
 	const HYDRO_CANNON ; ad
 	const CURSE        ; ae
 	const FLAIL        ; af
-	const CONVERSION2  ; b0
 	const LEAF_BLADE   ; b1
 	const LEAF_STORM   ; b2
 	const REVERSAL     ; b3
@@ -220,6 +219,9 @@
 	const ATTRACT      ; d5
 	const SLEEP_TALK   ; d6
 	const HEAL_BELL    ; d7
+	const X_SCISSOR
+	const AIR_CUTTER
+	const DRILL_RUN
 	const RETURN       ; d8
 	const ICE_FANG     ; d9
 	const CROSS_POISON ; da
@@ -258,7 +260,6 @@
 	const ROCK_BLAST   ; fc
 	const ROCK_POLISH  ; fd
 	const ROCK_TOMB    ; fe
-	const X_SCISSOR
 	const SPIDER_WEB
 	const SNARL
 	const FAKE_TEARS
@@ -268,7 +269,6 @@
 	const SUPERPOWER
 	const DRAIN_PUNCH
 	const BOUNCE
-	const AIR_CUTTER
 	const HEX
 	const ROCK_WRECKER
 	const HEAD_SMASH
@@ -280,7 +280,6 @@
 	const DRAIN_KISS
 	const DISARM_VOICE
 	const FAIRY_WIND
-	const DRILL_RUN
 	const BONE_CLUB
 	const BONEMERANG
 	const BONE_RUSH
@@ -315,7 +314,7 @@
 	const MIND_READER
 	const LOCK_ON
 	const SWEET_SCENT
-	const MIRROR_MOVE
+	const FEATHERDANCE
 	const MINIMIZE
 	const FISSURE
 	const CLEAR_SMOG
@@ -328,6 +327,18 @@
 	const WATER_SPOUT
 	const BULLDOZE
 	const FUTURE_SIGHT
+	const COTTON_SPORE
+	const SEED_BOMB
+	const ACID
+	const HORN_ATTACK
+	const DOUBLESLAP
+	const BARRIER
+	const TELEPORT
+	const POWDER_SNOW
+	const FIRE_SPIN
+	const OUTRAGE
+	const DETECT
+	const SHADOW_PUNCH
 	const STRUGGLE     ; end
 DEF NUM_ATTACKS EQU const_value - 1
 

@@ -1,16 +1,16 @@
 ; AI_CAUTIOUS discourages these moves after the first turn.
 
 ResidualMoves:
-	db MIST
-	db LEECH_SEED
-	db POISONPOWDER
-	db STUN_SPORE
-	db THUNDER_WAVE
-	db FOCUS_ENERGY
-	db POISON_GAS
-	db TRANSFORM
-	db CONVERSION
-	db SUBSTITUTE
-	db SPIKES
-	db WILL_O_WISP
-	db -1 ; end
+	dw MIST
+	dw LEECH_SEED
+	dw POISONPOWDER
+	dw STUN_SPORE
+	dw THUNDER_WAVE
+	dw FOCUS_ENERGY
+	dw POISON_GAS
+	dw TRANSFORM
+	dw CONVERSION
+	dw SUBSTITUTE
+	dw SPIKES
+	dw WILL_O_WISP
+	dw -1 ; end

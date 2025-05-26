@@ -17,7 +17,7 @@ MACRO tmhm
 		DEF i = (\1_TMNUM - 1) % 8
 		DEF _tm{d:n} |= 1 << i
 		else
-			fail .asm"\1 is not a TM, HM, or tutor move.asm"
+			fail "\1 is not a TM, HM, or tutor move"
 		endc
 		shift
 	endr

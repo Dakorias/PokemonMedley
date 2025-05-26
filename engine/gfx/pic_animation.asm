@@ -919,6 +919,7 @@ GetMonAnimPointer:
 	ld d, h
 	ld e, l
 .got_pointer
+
 	call PokeAnim_IsUnown
 	ld a, [wPokeAnimSpeciesOrUnown]
 	ld l, a
@@ -975,7 +976,7 @@ GetMonFramesPointer:
 	call PokeAnim_IsUnown
 	ld hl, FramesPointers - 3
 	ld a, BANK(FramesPointers)
-	ld bc, 3
+	ld c, 3
 	jr nz, .got_frames
 	ld a, BANK(UnownsFrames)
 	ld [wPokeAnimFramesBank], a
@@ -983,6 +984,7 @@ GetMonFramesPointer:
 	ld a, BANK(UnownFramesPointers)
 	ld c, 2
 .got_frames
+
 	push af
 	push hl
 	ld a, [wPokeAnimSpeciesOrUnown]
@@ -1024,10 +1026,10 @@ GetMonBitmaskPointer:
 
 	call PokeAnim_IsUnown
 	ld a, BANK(UnownBitmasksPointers)
-	ld hl, UnownBitmasksPointers - 2
+	ld de, UnownBitmasksPointers - 2
 	jr z, .unown
 	ld a, BANK(BitmasksPointers)
-	ld hl, BitmasksPointers - 2
+	ld de, BitmasksPointers - 2
 .unown
 	ld [wPokeAnimBitmaskBank], a
 

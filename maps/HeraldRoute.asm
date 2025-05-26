@@ -153,10 +153,11 @@ HeraldRouteGrottoEntryScript:
 	closetext
 	end
 
-	.HeraldGrottoWarp
+.HeraldGrottoWarp
 	closetext
 	playsound SFX_ENTER_DOOR
 	pause 5
+	special FadeOutPalettes
 	warp HERALD_GROTTO, 2, 13
 	end
 

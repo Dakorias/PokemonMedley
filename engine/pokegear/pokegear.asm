@@ -2289,7 +2289,7 @@ FlyMap:
 ; enters Kanto, fly access is restricted until Indigo Plateau is
 ; visited and its flypoint enabled.
 	push af
-	ld c, SPAWN_INDIGO
+	ld c, SPAWN_HERALD_COVE
 	call HasVisitedSpawn
 	and a
 	jr z, .NoKanto

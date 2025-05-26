@@ -1,16 +1,16 @@
 	object_const_def
 
-MontaneTown_MapScripts:
+TreelinePort_MapScripts:
 	def_scene_scripts
 
 	def_callbacks
-	callback MAPCALLBACK_NEWMAP, MontaneTownFlypointCallback
+	callback MAPCALLBACK_NEWMAP, TreelinePortFlypointCallback
 
-MontaneTownFlypointCallback:
-	setflag ENGINE_FLYPOINT_MONTANE_TOWN
+TreelinePortFlypointCallback:
+	setflag ENGINE_FLYPOINT_TREELINE_PORT
 	endcallback
 
-MontaneTown_MapEvents:
+TreelinePort_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events

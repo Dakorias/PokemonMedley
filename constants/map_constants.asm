@@ -76,15 +76,15 @@ ENDM
 	map_const PLAYERS_HOUSE_2F,                             4,  3 ;  9
 	map_const REGISTRATION_CENTER,							 						5,  5 ; 10
 	map_const HERALD_GROTTO,																4,  8 ; 11
-	map_const HERALD_BAY,																	 17, 20 ; 12
+	map_const HERALD_BAY,																	 29, 20 ; 12
 	map_const HERALD_BAY_HOUSE,														 5,  4  ; 13
-	map_const CRAGGY_BEACH,																 12, 40 ; 14
+	map_const CRAGGY_BEACH,																 14, 40 ; 14
 	map_const RUGGED_CLIFF_GROTTO, 												 12, 11 ; 15
 	endgroup
 
 	newgroup CRAGGY_COAST																					; 6
 	map_const CRAGGY_COAST,																 20, 16 ; 1
-	map_const SCENIC_BLUFF, 													   	 14, 26 ; 2
+	map_const SCENIC_BLUFF, 													   	 18, 26 ; 2
 	map_const MT_MONEGO, 															     14, 16 ; 3
 	map_const MT_MONEGO_B1F,															 12, 12 ; 4
 	map_const CRAGGY_COAST_HOUSE1,													5,  4 ; 5

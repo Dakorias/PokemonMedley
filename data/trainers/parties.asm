@@ -1,4 +1,3 @@
-Trainers:
 ; Trainer data structure:
 ; - db "NAME@", TRAINERTYPE_* constant
 ; - 1 to 6 Pokémon:
@@ -562,9 +561,9 @@ SabrinaGroup:
 BugCatcherGroup:
 	next_list_item ; BUG_CATCHER (1)
 	db "JAMES@", TRAINERTYPE_NORMAL
-	db 7
-	dw METAPOD
-	db 8
+	db 5
+	dw CATERPIE
+	db 6
 	dw SURSKIT
 	db -1 ; end
 

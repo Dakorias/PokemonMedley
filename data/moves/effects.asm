@@ -177,13 +177,6 @@ DreamEater:
 	buildopponentrage
 	endmove
 
-MirrorMove:
-	checkobedience
-	usedmovetext
-	doturn
-	mirrormove
-	endmove
-
 AttackUp:
 	checkobedience
 	usedmovetext
@@ -371,13 +364,6 @@ Flatter:
 	confusetarget
 	endmove
 
-Roost:
-	checkobedience
-	usedmovetext
-	doturn
-	heal
-	endmove
-
 Brine:
 	checkobedience
 	usedmovetext
@@ -489,29 +475,7 @@ CalmMind:
 	checkobedience
 	usedmovetext
 	doturn
-	specialattackup
-	specialdefenseup
-	lowersub
-	statupanim
-	raisesub
-	statupmessage
-	statupfailtext
-	endmove
-
-QuiverDance:
-	checkobedience
-	usedmovetext
-	doturn
-	specialattackup
-	statupmessage
-	specialdefenseup
-	statupmessage
-	speedup
-	lowersub
-	statupanim
-	raisesub
-	statupmessage
-	statupfailtext
+	calmmind
 	endmove
 
 DarkVoid:
@@ -693,39 +657,11 @@ TrickRoom:
 	trickroom
 	endmove
 
-Dive:
-	checkcharge
-	checkobedience
-	doturn
-	charge
-	usedmovetext
-	critical
-	damagestats
-	damagecalc
-	stab
-	damagevariation
-	moveanimnosub
-	raisesub
-	failuretext
-	applydamage
-	criticaltext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	kingsrock
-	endmove
-
 CosmicPower:
 	checkobedience
 	usedmovetext
 	doturn
-	defenseup
-	specialdefenseup
-	lowersub
-	statupanim
-	raisesub
-	statupmessage
-	statupfailtext
+	cosmicpower
 	endmove
 
 AttackDownHit:
@@ -1568,13 +1504,6 @@ Encore:
 	encore
 	endmove
 
-Nightmare:
-	checkobedience
-	usedmovetext
-	doturn
-	nightmare
-	endmove
-
 PainSplit:
 	checkobedience
 	usedmovetext
@@ -1625,14 +1554,6 @@ Frustration:
 	checkfaint
 	buildopponentrage
 	kingsrock
-	endmove
-
-Conversion2:
-	checkobedience
-	usedmovetext
-	doturn
-	checkhit
-	conversion2
 	endmove
 
 LockOn:
@@ -2296,33 +2217,6 @@ Thunder:
 	paralyzetarget
 	endmove
 
-BeatUp:
-	checkobedience
-	usedmovetext
-	movedelay
-	doturn
-	startloop
-	lowersub
-	checkhit
-	critical
-	beatup
-	damagecalc
-	damagevariation
-	clearmissdamage
-	moveanimnosub
-	failuretext
-	applydamage
-	criticaltext
-	cleartext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	endloop
-	beatupfailtext
-	raisesub
-	kingsrock
-	endmove
-
 DefenseCurl:
 	checkobedience
 	usedmovetext
@@ -2334,4 +2228,162 @@ DefenseCurl:
 	raisesub
 	statupmessage
 	statupfailtext
+	endmove
+
+QuiverDance:
+	checkobedience
+	usedmovetext
+	doturn
+	quiverdance
+	endmove
+
+BulkUp:
+	checkobedience
+	usedmovetext
+	doturn
+	bulkup
+	endmove
+
+Coil:
+	checkobedience
+	usedmovetext
+	doturn
+	coil
+	endmove
+
+DragonDance:
+	checkobedience
+	usedmovetext
+	doturn
+	dragondance
+	endmove
+
+SuperPower:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	effectchance
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	superpower
+	endmove
+
+Hex:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	hex
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	kingsrock
+	endmove
+
+Bounce:
+	checkcharge
+	checkobedience
+	doturn
+	charge
+	usedmovetext
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	moveanimnosub
+	raisesub
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	paralyzetarget
+	kingsrock
+	endmove
+
+ClearSmog:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	resetstats
+	buildopponentrage
+	kingsrock
+	endmove
+
+PhantomForce:
+Taunt:
+Tailwind:
+BanefulBunker:
+SpikyShield:
+Yawn:
+AquaRing:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	kingsrock
+	endmove
+
+FutureSight:
+	checkfuturesight
+	checkobedience
+	usedmovetext
+	doturn
+	damagestats
+	damagecalc
+	futuresight
+	damagevariation ; skip here if last turn
+	checkhit
+	moveanimnosub
+	failuretext
+	applydamage
+	checkfaint
+	buildopponentrage
 	endmove

@@ -7,7 +7,7 @@ ENDM
 
 OddEggProbabilities:
 ; entries correspond to OddEggs (below)
-	table_width 2, OddEggProbabilities
+	table_width 2
 DEF prob_total = 0
 ; Pichu
 	prob 8

@@ -78,7 +78,7 @@ DoBattleBGEffectFunction:
 	jp hl
 
 BattleBGEffects:
-; entries correspond to ANIM_BG_* constants
+; entries correspond to BATTLE_ANIM_BG_* constants
 	dw BattleBGEffect_End
 	dw BattleBGEffect_FlashInverted
 	dw BattleBGEffect_FlashWhite
@@ -1526,10 +1526,14 @@ Tackle_ReturnMove:
 Rollout_FillLYOverridesBackup:
 	push af
 	ld a, [wFXAnimID + 1]
-	or a
+	if HIGH(ROLLOUT)
+		cp HIGH(ROLLOUT)
+	else
+		or a
+	endc
 	jr nz, .not_rollout
 	ld a, [wFXAnimID]
-	cp ROLLOUT
+	cp LOW(ROLLOUT)
 	jr z, .rollout
 .not_rollout
 	pop af

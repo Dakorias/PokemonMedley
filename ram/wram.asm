@@ -503,6 +503,9 @@ wLastEnemyCounterMove:: db
 
 wTrickRoom:: db
 
+wPlayerTailwind:: db
+wEnemyTailwind:: db
+
 wEnemyMinimized:: db
 
 wAlreadyFailed:: db

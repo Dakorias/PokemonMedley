@@ -70,7 +70,7 @@ NewGame:
 	ld a, LANDMARK_HERALD_COVE
 	ld [wPrevLandmark], a
 
-	ld a, SPAWN_HOME
+	ld a, SPAWN_HERALD_PORT
 	ld [wDefaultSpawnpoint], a
 
 	ld a, MAPSETUP_WARP

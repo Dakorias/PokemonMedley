@@ -1,6 +1,6 @@
 MoveEffectsPointers:
 ; entries correspond to EFFECT_* constants
-	table_width 2, MoveEffectsPointers
+	table_width 2
 	dw NormalHit
 	dw DoSleep
 	dw PoisonHit
@@ -10,7 +10,6 @@ MoveEffectsPointers:
 	dw ParalyzeHit
 	dw Selfdestruct
 	dw DreamEater
-	dw MirrorMove
 	dw AttackUp
 	dw DefenseUp
 	dw SpeedUp
@@ -88,7 +87,6 @@ MoveEffectsPointers:
 	dw Encore
 	dw PainSplit
 	dw Snore
-	dw Conversion2
 	dw LockOn
 	dw Sketch
 	dw DefrostOpponent
@@ -102,7 +100,6 @@ MoveEffectsPointers:
 	dw TripleKick
 	dw Thief
 	dw MeanLook
-	dw Nightmare
 	dw FlameWheel
 	dw Curse
 	dw Protect
@@ -143,12 +140,10 @@ MoveEffectsPointers:
 	dw Solarbeam
 	dw Thunder
 	dw Teleport
-	dw BeatUp
 	dw Fly
 	dw DefenseCurl
 	dw FreezeHit
 	dw Uturn
-	dw Roost
 	dw Flatter
 	dw CalmMind
 	dw QuiverDance
@@ -160,7 +155,6 @@ MoveEffectsPointers:
 	dw Brine
 	dw KnockOff
 	dw TrickRoom
-	dw Dive
 	dw CosmicPower
 	dw SpecialAttackDown2User
 	dw Avalanche
@@ -168,4 +162,19 @@ MoveEffectsPointers:
 	dw BlastBurn
 	dw HydroCannon
 	dw FrenzyPlant
+	dw Tailwind
+	dw BanefulBunker
+	dw BulkUp
+	dw Taunt
+	dw Coil
+	dw PhantomForce
+	dw DragonDance
+	dw SuperPower
+	dw Bounce
+	dw Hex
+	dw SpikyShield
+	dw ClearSmog
+	dw Yawn
+	dw AquaRing
+	dw FutureSight
 	assert_table_length NUM_MOVE_EFFECTS

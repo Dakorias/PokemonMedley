@@ -1,7 +1,7 @@
 BattleTowerMons:
 ; 10 groups of 21 mons.
 ; Each mon is several bytes too long; the initial species, item and move IDs must be converted to 8-bit when loading.
-	table_width NICKNAMED_MON_STRUCT_LENGTH + 5, BattleTowerMons
+	table_width NICKNAMED_MON_STRUCT_LENGTH + 5
 
 ; BattleTowerMons group 1
 
@@ -1738,7 +1738,7 @@ BattleTowerMons:
 
 	dw PORYGON2
 	db NO_ITEM
-	dw CONVERSION2, CONVERSION, PSYBEAM, THIEF
+	dw POUND, CONVERSION, PSYBEAM, THIEF
 
 	dw 0 ; OT ID
 	dt 64000 ; Exp

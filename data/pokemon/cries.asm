@@ -5,7 +5,7 @@ ENDM
 
 PokemonCries::
 ; entries correspond to constants/pokemon_constants.asm
-	table_width MON_CRY_LENGTH, PokemonCries
+	table_width MON_CRY_LENGTH
 	mon_cry CRY_EKANS,        18,  192 ; EKANS
 	mon_cry CRY_EKANS,       224,  144 ; ARBOK
 	mon_cry CRY_CYNDAQUIL,    57,  320 ; HOUNDOUR

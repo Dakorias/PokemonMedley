@@ -31,7 +31,6 @@ ENDM
 	command freezetarget            ; 18
 	command paralyzetarget          ; 19
 	command selfdestruct            ; 1a
-	command mirrormove              ; 1b
 	command statup                  ; 1c
 	command statdown                ; 1d
 	command conversion              ; 1f
@@ -69,7 +68,6 @@ ENDM
 	command encore                  ; 41
 	command painsplit               ; 42
 	command snore                   ; 43
-	command conversion2             ; 44
 	command lockon                  ; 45
 	command sketch                  ; 46
 	command defrostopponent         ; 47
@@ -157,13 +155,11 @@ ENDM
 	command doubleminimizedamage    ; 9d
 	command skipsuncharge           ; 9e
 	command thunderaccuracy         ; 9f
-	command beatup                  ; a1
 	command ragedamage              ; a2
 	command resettypematchup        ; a3
 	command allstatsup              ; a4
 	command raisesubnoanim          ; a6
 	command lowersubnoanim          ; a7
-	command beatupfailtext          ; a8
 	command clearmissdamage         ; a9
 	command movedelay               ; aa
 	command moveanim                ; ab
@@ -178,10 +174,20 @@ ENDM
 	command ohko               			; b4
 	command mimic               		; b5
 	command splash               		; b6
-	command nightmare               ; b7
 	command frustrationpower        ; b8
 	command teleport               	; b9
 	command payday									; ba
+	command quiverdance
+	command bulkup
+	command coil
+	command dragondance
+	command cosmicpower
+	command calmmind
+	command superpower
+	command hex
+	command tailwind
+	command futuresight
+	command checkfuturesight
 DEF NUM_EFFECT_COMMANDS EQU const_value - 1
 
 	const_def -1, -1

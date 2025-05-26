@@ -10,8 +10,7 @@ ENDM
 
 PhoneContacts:
 ; entries correspond to PHONE_* constants
-	table_width PHONE_CONTACT_SIZE, PhoneContacts
-; TODO: Replace NONE map IDs with the maps that the person is on.
+	table_width PHONE_CONTACT_SIZE
 	phone TRAINER_NONE, PHONE_00,              N_A,                       0,       UnusedPhoneScript,        0,       UnusedPhoneScript
 	phone TRAINER_NONE, PHONECONTACT_MOM,      PLAYERS_HOUSE_1F,          ANYTIME, MomPhoneCalleeScript,     0,       UnusedPhoneScript
 	phone TRAINER_NONE, PHONECONTACT_BIKESHOP, NONE,                      0,       UnusedPhoneScript,        0,       UnusedPhoneScript

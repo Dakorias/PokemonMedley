@@ -3,7 +3,7 @@
 
 OutdoorSprites:
 ; entries correspond to MAPGROUP_* constants
-	table_width 2, OutdoorSprites
+	table_width 2
 	dw CableClubGroupSprites
 	dw BattleTowerGroupSprites
 	dw NewBarkGroupSprites
@@ -11,6 +11,7 @@ OutdoorSprites:
 	dw HeraldCoveGroupSprites
 	dw CraggyCoastGroupSprites
 	dw BerryForestGroupSprites
+	dw SecondIslandGroupSprites
 	assert_table_length NUM_MAP_GROUPS
 
 CableClubGroupSprites:

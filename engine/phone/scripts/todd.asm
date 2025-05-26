@@ -30,7 +30,7 @@ ToddPhoneCallerScript:
 	checkflag ENGINE_TODD_SATURDAY_MORNING
 	iftrue .TryForSale
 ; TODO: Change this flypoint to a midgame one like Goldenrod.
-	checkflag ENGINE_FLYPOINT_NEW_BARK
+	checkflag ENGINE_FLYPOINT_HERALD_COVE
 	iffalse .NoGoldenrod
 	farscall PhoneScript_Random2
 	ifequal 0, ToddWantsBattle

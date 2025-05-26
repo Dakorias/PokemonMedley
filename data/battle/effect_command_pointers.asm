@@ -4,7 +4,7 @@
 
 BattleCommandPointers:
 ; entries correspond to macros/scripts/battle_commands.asm
-	table_width 2, BattleCommandPointers
+	table_width 2
 	dw BattleCommand_CheckTurn
 	dw BattleCommand_CheckObedience
 	dw BattleCommand_UsedMoveText
@@ -31,7 +31,6 @@ BattleCommandPointers:
 	dw BattleCommand_FreezeTarget
 	dw BattleCommand_ParalyzeTarget
 	dw BattleCommand_Selfdestruct
-	dw BattleCommand_MirrorMove
 	dw BattleCommand_StatUp
 	dw BattleCommand_StatDown
 	dw BattleCommand_Conversion
@@ -69,7 +68,6 @@ BattleCommandPointers:
 	dw BattleCommand_Encore
 	dw BattleCommand_PainSplit
 	dw BattleCommand_Snore
-	dw BattleCommand_Conversion2
 	dw BattleCommand_LockOn
 	dw BattleCommand_Sketch
 	dw BattleCommand_DefrostOpponent
@@ -157,13 +155,11 @@ BattleCommandPointers:
 	dw BattleCommand_DoubleMinimizeDamage
 	dw BattleCommand_SkipSunCharge
 	dw BattleCommand_ThunderAccuracy
-	dw BattleCommand_BeatUp
 	dw BattleCommand_RageDamage
 	dw BattleCommand_ResetTypeMatchup
 	dw BattleCommand_AllStatsUp
 	dw BattleCommand_RaiseSubNoAnim
 	dw BattleCommand_LowerSubNoAnim
-	dw BattleCommand_BeatUpFailText
 	dw BattleCommand_ClearMissDamage
 	dw BattleCommand_MoveDelay
 	dw BattleCommand_MoveAnim
@@ -173,13 +169,23 @@ BattleCommandPointers:
 	dw BattleCommand_Curl
 	dw BattleCommand_Hail
 	dw BattleCommand_Uturn
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
+	dw BattleCommand_CheckRampage
+	dw BattleCommand_Rampage
+	dw BattleCommand_OHKO
+	dw BattleCommand_Mimic
+	dw BattleCommand_Splash
+	dw BattleCommand_FrustrationPower
+	dw BattleCommand_Teleport
+	dw BattleCommand_Payday
+	dw BattleCommand_QuiverDance
+	dw BattleCommand_BulkUp
+	dw BattleCommand_Coil
+	dw BattleCommand_DragonDance
+	dw BattleCommand_CosmicPower
+	dw BattleCommand_CalmMind
+	dw BattleCommand_SuperPower
+	dw BattleCommand_Hex
+	dw BattleCommand_Tailwind
+	dw BattleCommand_FutureSight
+	dw BattleCommand_CheckFutureSight
 	assert_table_length NUM_EFFECT_COMMANDS

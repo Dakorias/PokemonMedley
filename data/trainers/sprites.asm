@@ -1,6 +1,6 @@
 BTTrainerClassSprites:
 ; entries correspond to trainer classes
-	table_width 1, BTTrainerClassSprites
+	table_width 1
 	db SPRITE_EDWARD
 	db SPRITE_KENJI
 	db SPRITE_BUGSY
@@ -91,4 +91,4 @@ BTTrainerClassSprites:
 	db SPRITE_YOUNGSTER
 	db SPRITE_YOUNGSTER
 	db SPRITE_YOUNGSTER
-	assert_table_length NUM_TRAINER_CLASSES ; exclude MYSTICALMAN
+	assert_table_length NUM_TRAINER_CLASSES

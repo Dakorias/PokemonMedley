@@ -6,7 +6,7 @@ ENDM
 
 EngineFlags:
 ; entries correspond to ENGINE_* constants
-	table_width 3, EngineFlags
+	table_width 3
 
 	; pokegear
 	engine_flag wPokegearFlags, POKEGEAR_RADIO_CARD_F
@@ -73,13 +73,12 @@ EngineFlags:
 	engine_flag wUnlockedUnowns, 7 ; unused
 
 	; fly
-	engine_flag wVisitedSpawns, SPAWN_HOME
-	engine_flag wVisitedSpawns, SPAWN_INDIGO
-	engine_flag wVisitedSpawns, SPAWN_NEW_BARK
-	engine_flag wVisitedSpawns, SPAWN_BATTLE_TOWER
+	engine_flag wVisitedSpawns, SPAWN_HERALD_PORT
 	engine_flag wVisitedSpawns, SPAWN_HERALD_COVE
 	engine_flag wVisitedSpawns, SPAWN_CRAGGY_COAST
 	engine_flag wVisitedSpawns, SPAWN_RUGGED_CLIFF
+	engine_flag wVisitedSpawns, SPAWN_TREELINE_PORT
+	engine_flag wVisitedSpawns, SPAWN_MONTANE_TOWN
 
 	engine_flag wLuckyNumberShowFlag, LUCKYNUMBERSHOW_GAME_OVER_F
 

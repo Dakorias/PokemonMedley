@@ -2,7 +2,7 @@
 
 BTTrainerClassGenders:
 ; entries correspond to trainer classes
-	table_width 1, BTTrainerClassGenders
+	table_width 1
 	db MALE   ; BASTIAN
 	db FEMALE ; WHITNEY
 	db FEMALE ; BUGSY

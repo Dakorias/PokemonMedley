@@ -99,12 +99,12 @@ ENDM
 	map_attributes NewBarkTown, NEW_BARK_TOWN, $05, 0
 
 	map_attributes HeraldCove, HERALD_COVE, $35, WEST
-	connection west, HeraldRoute, HERALD_ROUTE, 0
+	connection west, HeraldRoute, HERALD_ROUTE, -3
 
 	map_attributes HeraldRoute, HERALD_ROUTE, $35, NORTH | SOUTH | EAST
 	connection north, CraggyBeach, CRAGGY_BEACH, 15
 	connection south, HeraldBay, HERALD_BAY, 0
-	connection east, HeraldCove, HERALD_COVE, 0
+	connection east, HeraldCove, HERALD_COVE, 3
 
 	map_attributes HeraldBay, HERALD_BAY, $35, NORTH
 	connection north, HeraldRoute, HERALD_ROUTE, 0

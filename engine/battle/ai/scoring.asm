@@ -101,8 +101,9 @@ AI_Setup:
 	jr c, .statdown
 
 	cp EFFECT_ATTACK_UP_2
-
 	jr c, .checkmove
+	cp EFFECT_EVASION_UP_2 + 1
+	jr c, .statup
 
 ;	cp EFFECT_ATTACK_DOWN_2 - 1
 	jr z, .checkmove
@@ -310,7 +311,6 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_LEECH_HIT,        AI_Smart_LeechHit
 	dbw EFFECT_SELFDESTRUCT,     AI_Smart_Selfdestruct
 	dbw EFFECT_DREAM_EATER,      AI_Smart_DreamEater
-	dbw EFFECT_MIRROR_MOVE,      AI_Smart_MirrorMove
 	dbw EFFECT_EVASION_UP,       AI_Smart_EvasionUp
 	dbw EFFECT_ALWAYS_HIT,       AI_Smart_AlwaysHit
 	dbw EFFECT_ACCURACY_DOWN,    AI_Smart_AccuracyDown
@@ -334,7 +334,6 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_ENCORE,           AI_Smart_Encore
 	dbw EFFECT_PAIN_SPLIT,       AI_Smart_PainSplit
 	dbw EFFECT_SNORE,            AI_Smart_Snore
-	dbw EFFECT_CONVERSION2,      AI_Smart_Conversion2
 	dbw EFFECT_DEFROST_OPPONENT, AI_Smart_DefrostOpponent
 	dbw EFFECT_SLEEP_TALK,       AI_Smart_SleepTalk
 	dbw EFFECT_DESTINY_BOND,     AI_Smart_DestinyBond
@@ -377,7 +376,6 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_SOLARBEAM,        AI_Smart_Solarbeam
 	dbw EFFECT_THUNDER,          AI_Smart_Thunder
 	dbw EFFECT_FLY,              AI_Smart_Fly
-	dbw EFFECT_DIVE,						 AI_Smart_Fly
 	dbw EFFECT_FLATTER,					 AI_Smart_Flatter
 	dbw EFFECT_UTURN,						 AI_Smart_Uturn
 	dbw EFFECT_DARK_VOID,				 AI_Smart_Sleep
@@ -612,46 +610,6 @@ AI_Smart_AlwaysHit:
 	ret c
 
 	dec [hl]
-	dec [hl]
-	ret
-
-AI_Smart_MirrorMove:
-; If the player did not use any move last turn...
-	ld a, [wLastPlayerCounterMove]
-	and a
-	jr nz, .usedmove
-
-; ...do nothing if enemy is slower than player
-	call AICompareSpeed
-	ret nc
-
-; ...or dismiss this move if enemy is faster than player.
-	jp AIDiscourageMove
-
-; If the player did use a move last turn...
-.usedmove
-	push hl
-	ld hl, UsefulMoves
-	call AI_CheckMoveInList
-	pop hl
-
-; ...do nothing if he didn't use a useful move.
-	ret nc
-
-; If he did, 50% chance to encourage this move...
-	call AI_50_50
-	ret c
-
-	dec [hl]
-
-; ...and 90% chance to encourage this move again if the enemy is faster.
-	call AICompareSpeed
-	ret nc
-
-	call Random
-	cp 10 percent
-	ret c
-
 	dec [hl]
 	ret
 
@@ -1575,43 +1533,6 @@ AI_Smart_Thief:
 	ld a, [hl]
 	add $1e
 	ld [hl], a
-	ret
-
-AI_Smart_Conversion2:
-; BUG: "Smart" AI discourages Conversion2 after the first turn (see docs/bugs_and_glitches.md)
-	ld a, [wLastPlayerMove]
-	and a
-	jr nz, .discourage
-
-	push hl
-	dec a
-	ld l, a
-	ld a, MOVE_TYPE
-	call GetMoveAttribute
-	ld [wPlayerMoveStruct + MOVE_TYPE], a
-
-	xor a
-	ldh [hBattleTurn], a
-
-	callfar BattleCheckTypeMatchup
-
-	ld a, [wTypeMatchup]
-	cp EFFECTIVE
-	pop hl
-	jr c, .discourage
-	ret z
-
-	call AI_50_50
-	ret c
-
-	dec [hl]
-	ret
-
-.discourage
-	call Random
-	cp 10 percent
-	ret c
-	inc [hl]
 	ret
 
 AI_Smart_Disable:

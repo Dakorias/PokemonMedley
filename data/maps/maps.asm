@@ -16,7 +16,7 @@ ENDM
 
 MapGroupPointers::
 ; pointers to the first map of each map group
-	table_width 2, MapGroupPointers
+	table_width 2
 	dw MapGroup_CableClub     ;  1
 	dw MapGroup_BattleTower   ;  2
 	dw MapGroup_NewBark       ;  3
@@ -113,4 +113,4 @@ MapGroup_SecondIsland:
 	map NorthForestPath, TILESET_JOHTO, ROUTE, LANDMARK_NORTH_FOREST_PATH, MUSIC_ROUTE_30, FALSE, PALETTE_AUTO, FISHGROUP_OCEAN
 	map WestForestPath, TILESET_JOHTO, ROUTE, LANDMARK_WEST_FOREST_PATH, MUSIC_ROUTE_30, FALSE, PALETTE_AUTO, FISHGROUP_OCEAN
 	map MontaneTown, TILESET_JOHTO, TOWN, LANDMARK_MONTANE_TOWN, MUSIC_CHERRYGROVE_CITY, FALSE, PALETTE_AUTO, FISHGROUP_OCEAN
-	assert_table_length NUM_BERRY_FOREST_MAPS
+	assert_table_length NUM_SECOND_ISLAND_MAPS

@@ -1,4 +1,4 @@
-BattleCommand_PayDay:
+BattleCommand_Payday:
 	xor a
 	ld hl, wStringBuffer1
 	ld [hli], a

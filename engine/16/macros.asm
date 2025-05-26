@@ -109,7 +109,7 @@ MACRO ___conversion_table_store
 	if \2_ENTRIES % ___unroll
 		; Duff's device, gbz80 edition
 		; note that the block inside the rept is 8 bytes long
-		db $18, 8 * (___unroll - (\2_ENTRIES % ___unroll)) ;jr <number of bytes skipped>
+		jr @ + 2 + 8 * (___unroll - \2_ENTRIES % ___unroll)
 	endc
 .search_loop
 	rept ___unroll
@@ -311,7 +311,7 @@ MACRO ___conversion_bitmap_check_structs
 		ld [hl], ((\3) + ___unroll - 1) / ___unroll
 		if (\3) % ___unroll
 			; again, Duff's device - the body of the rept is 10 bytes long
-			db $18, 10 * (___unroll - ((\3) % ___unroll))
+			jr @ + 2 + 10 * (___unroll - (\3) % ___unroll)
 		endc
 	.check_loop\@
 		rept ___unroll
@@ -378,13 +378,15 @@ MACRO ___conversion_bitmap_free_unused
 			; same loop as above
 			srl e
 			ld a, [hli]
-			db $30, 3 ;jr nc, <skip 3 bytes>
+			jr nc, :+
 			or [hl]
-			db $20, 4 ;jr nz, <skip 4 bytes>
+			jr nz, :++
+		:
 			xor a
 			ld [hld], a
 			ld [hl], a
 			dec b
+		:
 			if (___iteration + 1) < (\2_ENTRIES & 7)
 				; no point incrementing the pointer if it is the last iteration
 				set 0, l
