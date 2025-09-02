@@ -375,6 +375,7 @@ LoadStatsScreenPals:
 	ret z
 	ld hl, StatsScreenPals
 	ld b, 0
+	dec c
 	add hl, bc
 	add hl, bc
 	ldh a, [rSVBK]
@@ -894,7 +895,7 @@ InitCGBPals::
 	ldh [rVBK], a
 	ld a, 1 << rBGPI_AUTO_INCREMENT
 	ldh [rBGPI], a
-	ld c, 4 * 8
+	ld c, 4 * TILE_WIDTH
 .bgpals_loop
 	ld a, LOW(PALRGB_WHITE)
 	ldh [rBGPD], a
@@ -904,7 +905,7 @@ InitCGBPals::
 	jr nz, .bgpals_loop
 	ld a, 1 << rOBPI_AUTO_INCREMENT
 	ldh [rOBPI], a
-	ld c, 4 * 8
+	ld c, 4 * TILE_WIDTH
 .obpals_loop
 	ld a, LOW(PALRGB_WHITE)
 	ldh [rOBPD], a
@@ -1183,7 +1184,7 @@ INCLUDE "gfx/sgb/pal_packets.asm"
 INCLUDE "data/sgb_ctrl_packets.asm"
 
 PredefPals:
-	table_width PALETTE_SIZE, PredefPals
+	table_width PALETTE_SIZE
 INCLUDE "gfx/sgb/predef.pal"
 	assert_table_length NUM_PREDEF_PALS
 
@@ -1277,6 +1278,8 @@ LoadMapPals:
 	ld a, BANK(wOBPals1)
 	call FarCopyWRAM
 
+	farcall LoadSpecialNPCPalette
+
 	ld a, [wEnvironment]
 	cp TOWN
 	jr z, .outside
@@ -1284,12 +1287,13 @@ LoadMapPals:
 	ret nz
 .outside
 	ld a, [wMapGroup]
-	ld l, a
-	ld h, 0
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	ld de, RoofPals
+	add a
+	add a
+	ld e, a
+	ld d, 0
+	ld hl, RoofPals
+	add hl, de
+	add hl, de
 	add hl, de
 	ld a, [wTimeOfDayPal]
 	maskbits NUM_DAYTIMES
@@ -1297,9 +1301,8 @@ LoadMapPals:
 	ld de, 4
 	jr z, .nite
 	jr c, .morn_day
-; eve
+	; eve
 	add hl, de
-
 .nite
 	add hl, de
 .morn_day

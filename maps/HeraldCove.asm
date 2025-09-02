@@ -131,7 +131,7 @@ Sailor1ScriptGym:
 	setevent EVENT_BEAT_SAILOR_RONALD
 	setevent EVENT_GYM_TRAINERS_IN_HERALD_COVE
 	giveitem EDWARD_COIN
-	special FadeBlackQuickly
+	special FadeOutToBlack
 	special ReloadSpritesNoPalettes
 	disappear HERALD_COVE_SAILOR1
 	disappear HERALD_COVE_SAILOR2
@@ -141,7 +141,7 @@ Sailor1ScriptGym:
 	disappear HERALD_COVE_LASS1
 	setscene SCENE_HERALD_COVE_NOOP1
 	pause 25
-	special FadeInQuickly
+	special FadeInFromBlack
 	end
 
 Sailor2and3ScriptGym:
@@ -183,7 +183,7 @@ SailorEndChallengeEarly:
 	waitbutton
 	closetext
 	setevent EVENT_GYM_TRAINERS_IN_HERALD_COVE
-	special FadeBlackQuickly
+	special FadeOutToBlack
 	special ReloadSpritesNoPalettes
 	disappear HERALD_COVE_SAILOR1
 	disappear HERALD_COVE_SAILOR2
@@ -195,7 +195,7 @@ SailorEndChallengeEarly:
 	clearevent EVENT_BEAT_LASS_CANDICE
 	setscene SCENE_HERALD_COVE_NOOP1
 	pause 25
-	special FadeInQuickly
+	special FadeInFromBlack
 	end
 
 

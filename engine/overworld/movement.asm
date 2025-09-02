@@ -1,6 +1,6 @@
 MovementPointers:
 ; entries correspond to movement_* constants (see macros/scripts/movement.asm)
-	table_width 2, MovementPointers
+	table_width 2
 	dw Movement_turn_head_down        ; 00
 	dw Movement_turn_head_up          ; 01
 	dw Movement_turn_head_left        ; 02
@@ -91,10 +91,6 @@ MovementPointers:
 	dw Movement_rock_smash            ; 57
 	dw Movement_return_dig            ; 58
 	dw Movement_skyfall_top           ; 59
-	dw Movement_bike_step_down        ; 5a
-	dw Movement_bike_step_up          ; 5b
-	dw Movement_bike_step_left        ; 5c
-	dw Movement_bike_step_right       ; 5d
 	assert_table_length NUM_MOVEMENT_CMDS
 
 Movement_teleport_from:
@@ -209,7 +205,7 @@ Movement_step_end:
 	add hl, bc
 	ld [hl], $0
 
-	ld hl, wVramState
+	ld hl, wStateFlags
 	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 
 	ld hl, OBJECT_STEP_TYPE
@@ -236,7 +232,7 @@ Movement_step_wait_end:
 	add hl, bc
 	ld [hl], STEP_TYPE_SLEEP
 
-	ld hl, wVramState
+	ld hl, wStateFlags
 	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret
 
@@ -249,7 +245,7 @@ Movement_remove_object:
 	ld [hl], -1
 
 .not_leading
-	ld hl, wVramState
+	ld hl, wStateFlags
 	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret
 
@@ -262,7 +258,7 @@ Movement_stop:
 	add hl, bc
 	ld [hl], STEP_TYPE_STANDING
 
-	ld hl, wVramState
+	ld hl, wStateFlags
 	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret
 
@@ -445,72 +441,51 @@ TurnHead:
 
 Movement_slow_step_down:
 	ld a, STEP_SLOW << 2 | DOWN
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_slow_step_up:
 	ld a, STEP_SLOW << 2 | UP
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_slow_step_left:
 	ld a, STEP_SLOW << 2 | LEFT
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_slow_step_right:
 	ld a, STEP_SLOW << 2 | RIGHT
-	jr Movement_do_step
-
-Movement_bike_step_down:
-	ld a, STEP_BIKE << 2 | DOWN
-	jr Movement_do_step
-
-Movement_bike_step_up:
-	ld a, STEP_BIKE << 2 | UP
-	jr Movement_do_step
-
-Movement_bike_step_left:
-	ld a, STEP_BIKE << 2 | LEFT
-	jr Movement_do_step
-
-Movement_bike_step_right:
-	ld a, STEP_BIKE << 2 | RIGHT
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_step_down:
 	ld a, STEP_WALK << 2 | DOWN
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_step_up:
 	ld a, STEP_WALK << 2 | UP
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_step_left:
 	ld a, STEP_WALK << 2 | LEFT
-	jr Movement_do_step
+	jp NormalStep
 
 Movement_step_right:
 	ld a, STEP_WALK << 2 | RIGHT
-Movement_do_step:
-	ld d, OBJECT_ACTION_STEP
-Movement_normal_step:
 	jp NormalStep
 
 Movement_big_step_down:
-	ld a, STEP_RUN << 2 | DOWN
-	jp Movement_do_run
+	ld a, STEP_BIKE << 2 | DOWN
+	jp NormalStep
 
 Movement_big_step_up:
-	ld a, STEP_RUN << 2 | UP
-	jp Movement_do_run
+	ld a, STEP_BIKE << 2 | UP
+	jp NormalStep
 
 Movement_big_step_left:
-	ld a, STEP_RUN << 2 | LEFT
-	jp Movement_do_run
+	ld a, STEP_BIKE << 2 | LEFT
+	jp NormalStep
 
 Movement_big_step_right:
-	ld a, STEP_RUN << 2 | RIGHT
-Movement_do_run:
-	ld d, OBJECT_ACTION_RUN
-	jr Movement_normal_step
+	ld a, STEP_BIKE << 2 | RIGHT
+	jp NormalStep
 
 Movement_turn_away_down:
 	ld a, STEP_SLOW << 2 | DOWN
@@ -545,19 +520,19 @@ Movement_turn_in_right:
 	jp TurningStep
 
 Movement_turn_waterfall_down:
-	ld a, STEP_RUN << 2 | DOWN
+	ld a, STEP_BIKE << 2 | DOWN
 	jp TurningStep
 
 Movement_turn_waterfall_up:
-	ld a, STEP_RUN << 2 | UP
+	ld a, STEP_BIKE << 2 | UP
 	jp TurningStep
 
 Movement_turn_waterfall_left:
-	ld a, STEP_RUN << 2 | LEFT
+	ld a, STEP_BIKE << 2 | LEFT
 	jp TurningStep
 
 Movement_turn_waterfall_right:
-	ld a, STEP_RUN << 2 | RIGHT
+	ld a, STEP_BIKE << 2 | RIGHT
 	jp TurningStep
 
 Movement_slow_slide_step_down:
@@ -593,19 +568,19 @@ Movement_slide_step_right:
 	jp SlideStep
 
 Movement_fast_slide_step_down:
-	ld a, STEP_RUN << 2 | DOWN
+	ld a, STEP_BIKE << 2 | DOWN
 	jp SlideStep
 
 Movement_fast_slide_step_up:
-	ld a, STEP_RUN << 2 | UP
+	ld a, STEP_BIKE << 2 | UP
 	jp SlideStep
 
 Movement_fast_slide_step_left:
-	ld a, STEP_RUN << 2 | LEFT
+	ld a, STEP_BIKE << 2 | LEFT
 	jp SlideStep
 
 Movement_fast_slide_step_right:
-	ld a, STEP_RUN << 2 | RIGHT
+	ld a, STEP_BIKE << 2 | RIGHT
 	jp SlideStep
 
 Movement_slow_jump_step_down:
@@ -641,19 +616,19 @@ Movement_jump_step_right:
 	jp JumpStep
 
 Movement_fast_jump_step_down:
-	ld a, STEP_RUN << 2 | DOWN
+	ld a, STEP_BIKE << 2 | DOWN
 	jp JumpStep
 
 Movement_fast_jump_step_up:
-	ld a, STEP_RUN << 2 | UP
+	ld a, STEP_BIKE << 2 | UP
 	jp JumpStep
 
 Movement_fast_jump_step_left:
-	ld a, STEP_RUN << 2 | LEFT
+	ld a, STEP_BIKE << 2 | LEFT
 	jp JumpStep
 
 Movement_fast_jump_step_right:
-	ld a, STEP_RUN << 2 | RIGHT
+	ld a, STEP_BIKE << 2 | RIGHT
 	jp JumpStep
 
 Movement_turn_step_down:
@@ -687,13 +662,11 @@ TurnStep:
 	ret
 
 NormalStep:
-	push de
 	call InitStep
 	call UpdateTallGrassFlags
 	ld hl, OBJECT_ACTION
 	add hl, bc
-	pop de
-	ld [hl], d
+	ld [hl], OBJECT_ACTION_STEP
 
 	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc

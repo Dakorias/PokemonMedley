@@ -27,7 +27,6 @@ DEF JUMPTABLE_INDEX_MASK EQU %01111111
 	const_def 7
 	shift_const JUMPTABLE_EXIT
 
-
 ; wGameTimerPaused::
 DEF GAME_TIMER_COUNTING_F EQU 0
 DEF GAME_TIMER_MOBILE_F   EQU 7
@@ -35,6 +34,9 @@ DEF GAME_TIMER_MOBILE_F   EQU 7
 ; wJoypadDisable::
 DEF JOYPAD_DISABLE_MON_FAINT_F    EQU 6
 DEF JOYPAD_DISABLE_SGB_TRANSFER_F EQU 7
+
+; wInBattleTowerBattle::
+DEF IN_BATTLE_TOWER_BATTLE_F EQU 0
 
 ; wOptions1::
 DEF TEXT_DELAY_MASK EQU %111
@@ -44,7 +46,6 @@ DEF TEXT_DELAY_MASK EQU %111
 	const BATTLE_SHIFT   ; 6
 	const BATTLE_SCENE   ; 7
 
-DEF TEXT_DELAY_NONE EQU %000 ; 0
 DEF TEXT_DELAY_FAST EQU %001 ; 1
 DEF TEXT_DELAY_MED  EQU %011 ; 3
 DEF TEXT_DELAY_SLOW EQU %101 ; 5
@@ -64,7 +65,7 @@ DEF NUM_FRAMES EQU const_value
 ; wTextboxFlags::
 	const_def
 	const FAST_TEXT_DELAY_F ; 0
-	const NO_TEXT_DELAY_F   ; 1
+	const TEXT_DELAY_F      ; 1
 
 ; wGBPrinterBrightness::
 DEF GBPRINTER_LIGHTEST EQU $00
@@ -79,7 +80,6 @@ DEF GBPRINTER_DARKEST  EQU $7f
 
 ; wDST::
 DEF DST_F EQU 7
-
 
 ; wWalkingDirection::
 	const_def -1
@@ -145,7 +145,7 @@ DEF INIT_MON_LIST        EQU 5
 	shift_const MORN     ; 0
 	shift_const DAY      ; 1
 	shift_const NITE     ; 2
-	shift_const EVE   ; 3
+	shift_const EVE   	 ; 3
 DEF NUM_DAYTIMES EQU const_value
 
 DEF ANYTIME EQU MORN | DAY | EVE | NITE
@@ -154,6 +154,7 @@ DEF ANYTIME EQU MORN | DAY | EVE | NITE
 DEF FORCED_PALSET_F EQU 7
 
 ; wTimeOfDayPalset::
+; Must be different from any in ReplaceTimeOfDayPals.BrightnessLevels
 DEF DARKNESS_PALSET EQU (MORN_F << 6) | (DAY_F << 4) | (EVE_F << 2) | NITE_F
 
 ; wBattleAnimFlags::
@@ -219,7 +220,6 @@ DEF SPAWN_RED   EQU 2
 ; wGameTimeCap::
 DEF GAME_TIME_CAPPED EQU 0
 
-
 ; wCurDay::
 	const_def
 	const SUNDAY    ; 0
@@ -263,7 +263,7 @@ DEF MOM_SAVING_MONEY_MASK EQU (1 << MOM_SAVING_SOME_MONEY_F) | (1 << MOM_SAVING_
 ; wJohtoBadges::
 	const_def
 	const ANCHORBADGE
-	const HIVEBADGE
+	const CRUSHBADGE
 	const PLAINBADGE
 	const FOGBADGE
 	const MINERALBADGE
@@ -304,7 +304,6 @@ DEF PLAYER_BIKE      EQU 1
 DEF PLAYER_SKATE     EQU 2
 DEF PLAYER_SURF      EQU 4
 DEF PLAYER_SURF_PIKA EQU 8
-DEF PLAYER_RUN       EQU 16
 
 ; wCelebiEvent::
 DEF CELEBIEVENT_FOREST_IS_RESTLESS_F EQU 2
@@ -371,7 +370,6 @@ DEF NUM_UNLOCKED_UNOWN_SETS EQU const_value
 	shift_const RTC_DAYS_EXCEED_139 ; 5
 	shift_const RTC_DAYS_EXCEED_255 ; 6
 	shift_const RTC_RESET           ; 7
-
 
 ; hVBlank::
 ; VBlankHandlers indexes (see home/vblank.asm)

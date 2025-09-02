@@ -117,7 +117,6 @@ DEF NUM_DECOS EQU const_value
 
 ; decorations:
 ; - DecorationAttributes (see data/decorations/attributes.asm)
-
 	const_def 1
 ; FindOwnedBeds.beds values (see engine/overworld/decorations.asm)
 	const BEDS
@@ -178,6 +177,4 @@ DEF NUM_DECOS EQU const_value
 	const DECO_TENTACOOL_DOLL
 	const DECO_GOLD_TROPHY_DOLL
 	const DECO_SILVER_TROPHY_DOLL
-
-
 DEF NUM_DECO_CATEGORIES EQU const_value - 1 - NUM_DECOS

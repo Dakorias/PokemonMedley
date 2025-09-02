@@ -33,17 +33,17 @@ PokeGear:
 	push af
 	ld a, $1
 	ldh [hInMenu], a
-	ld a, [wVramState]
+	ld a, [wStateFlags]
 	push af
 	xor a
-	ld [wVramState], a
+	ld [wStateFlags], a
 	call .InitTilemap
 	call DelayFrame
 .loop
 	call UpdateTime
 	call JoyTextDelay
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .done
 	call PokegearJumptable
 	farcall PlaySpriteAnimations
@@ -55,7 +55,7 @@ PokeGear:
 	call PlaySFX
 	call WaitSFX
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	pop af
 	ldh [hInMenu], a
 	pop af
@@ -116,6 +116,10 @@ Pokegear_LoadGFX:
 	ld hl, TownMapGFX
 	ld de, vTiles2
 	ld a, BANK(TownMapGFX)
+	call FarDecompress
+	ld hl, PokegearGFX
+	ld de, vTiles2 tile $30
+	ld a, BANK(PokegearGFX)
 	call FarDecompress
 	ld hl, PokegearSpritesGFX
 	ld de, vTiles0
@@ -491,7 +495,7 @@ PokegearClock_Joypad:
 
 .quit
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .UpdateClock:
@@ -561,9 +565,8 @@ PokegearMap_KantoMap:
 	jr PokegearMap_ContinueMap
 
 PokegearMap_JohtoMap:
-; TODO: Change these to the last and first landmarks of the Johto region.
-	ld d, LANDMARK_HERALD_COVE
-	ld e, LANDMARK_MT_MONEGO
+	ld d, LANDMARK_SPECIAL
+	ld e, LANDMARK_HERALD_COVE
 PokegearMap_ContinueMap:
 	ld hl, hJoyLast
 	ld a, [hl]
@@ -603,7 +606,7 @@ PokegearMap_ContinueMap:
 
 .cancel
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .DPad:
@@ -722,7 +725,6 @@ PokegearMap_UpdateCursorPosition:
 	ret
 
 TownMap_GetKantoLandmarkLimits:
-; TODO: Change these to the last and first landmarks of the Kanto region, depending on postgame.
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_HALL_OF_FAME_F, a
 	jr z, .not_hof
@@ -791,7 +793,7 @@ PokegearRadio_Joypad:
 
 .cancel
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 PokegearPhone_Init:
@@ -850,7 +852,7 @@ PokegearPhone_Joypad:
 
 .b
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .a
@@ -1361,7 +1363,7 @@ INCBIN "gfx/pokegear/clock.tilemap.rle"
 _UpdateRadioStation:
 	jr UpdateRadioStation
 
-; called from engine/gfx/sprite_anims.asm
+; called from engine/sprite_anims/functions.asm
 
 AnimateTuningKnob:
 	push bc
@@ -1762,10 +1764,10 @@ _TownMap:
 	ld a, $1
 	ldh [hInMenu], a
 
-	ld a, [wVramState]
+	ld a, [wStateFlags]
 	push af
 	xor a
-	ld [wVramState], a
+	ld [wStateFlags], a
 
 	call ClearBGPalettes
 	call ClearTilemap
@@ -1817,7 +1819,7 @@ _TownMap:
 
 .resume
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	pop af
 	ldh [hInMenu], a
 	pop af
@@ -1982,7 +1984,7 @@ PlayRadio:
 
 PlayRadioStationPointers:
 ; entries correspond to MAPRADIO_* constants
-	table_width 2, PlayRadioStationPointers
+	table_width 2
 	dw LoadStation_PokemonChannel
 	dw LoadStation_OaksPokemonTalk
 	dw LoadStation_PokedexShow
@@ -2031,7 +2033,7 @@ _FlyMap:
 	xor a
 	ldh [hBGMapMode], a
 	farcall ClearSpriteAnims
-	call LoadTownMapGFX2
+	call LoadTownMapGFX
 	ld de, FlyMapLabelBorderGFX
 	ld hl, vTiles2 tile $30
 	lb bc, BANK(FlyMapLabelBorderGFX), 6
@@ -2289,7 +2291,7 @@ FlyMap:
 ; enters Kanto, fly access is restricted until Indigo Plateau is
 ; visited and its flypoint enabled.
 	push af
-	ld c, SPAWN_HERALD_COVE
+	ld c, SPAWN_NONE
 	call HasVisitedSpawn
 	and a
 	jr z, .NoKanto
@@ -2348,7 +2350,7 @@ Pokedex_GetArea:
 	ld hl, vTiles0 tile $78
 	ld c, 4
 	call Request2bpp
-	call LoadTownMapGFX2
+	call LoadTownMapGFX
 	call FillKantoMap
 	call .PlaceString_MonsNest
 	call TownMapPals
@@ -2533,11 +2535,12 @@ Pokedex_GetArea:
 	ld [hli], a ; tile id
 	inc de
 	push bc
-	ld c, PAL_OW_BLUE
+	ld c, PAL_OW_RED
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .male
-	inc c ; PAL_OW_RED
+	assert PAL_OW_RED + 1 == PAL_OW_BLUE
+	inc c
 .male
 	ld a, c
 	ld [hli], a ; attributes
@@ -2553,10 +2556,10 @@ Pokedex_GetArea:
 
 .PlayerOAM:
 	; y pxl, x pxl, tile offset
-	db -1 * 8, -1 * 8, 0 ; top left
-	db -1 * 8,  0 * 8, 1 ; top right
-	db  0 * 8, -1 * 8, 2 ; bottom left
-	db  0 * 8,  0 * 8, 3 ; bottom right
+	db -1 * TILE_WIDTH, -1 * TILE_WIDTH, 0 ; top left
+	db -1 * TILE_WIDTH,  0 * TILE_WIDTH, 1 ; top right
+	db  0 * TILE_WIDTH, -1 * TILE_WIDTH, 2 ; bottom left
+	db  0 * TILE_WIDTH,  0 * TILE_WIDTH, 3 ; bottom right
 	db $80 ; terminator
 
 .CheckPlayerLocation:
@@ -2656,8 +2659,8 @@ TownMapPals:
 ; Current tile
 	ld a, [hli]
 	push hl
-; The palette map covers tiles $00 to $7e; $7f and above use palette 0
-	cp $7f
+; The palette map covers tiles $00 to $5f; $60 and above use palette 0
+	cp $60
 	jr nc, .pal0
 
 ; The palette data is condensed to nybbles, least-significant first.
@@ -2746,11 +2749,11 @@ TownMapPlayerIcon:
 	call Request2bpp
 ; Animation/palette
 	depixel 0, 0
-	ld b, SPRITE_ANIM_OBJ_BLUE_WALK ; Male
+	ld b, SPRITE_ANIM_OBJ_RED_WALK ; Male
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .got_gender
-	ld b, SPRITE_ANIM_OBJ_RED_WALK ; Female
+	ld b, SPRITE_ANIM_OBJ_BLUE_WALK ; Female
 .got_gender
 	ld a, b
 	call InitSpriteAnimStruct
@@ -2773,16 +2776,9 @@ TownMapPlayerIcon:
 LoadTownMapGFX:
 	ld hl, TownMapGFX
 	ld de, vTiles2
-	lb bc, BANK(TownMapGFX), 50
+	lb bc, BANK(TownMapGFX), 48
 	call DecompressRequest2bpp
 	ret
-
-LoadTownMapGFX2:
- 	ld hl, TownMapGFX
- 	ld de, vTiles2
-	lb bc, BANK(TownMapGFX), 96
- 	call DecompressRequest2bpp
- 	ret
 
 JohtoMap:
 INCBIN "gfx/pokegear/johto.bin"

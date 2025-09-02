@@ -67,7 +67,6 @@ SpecialAerodactylChamber:
 	push de
 	push bc
 
-; TODO: Replace NewBarkTown_MapAttributes with the appropriate label for the Aerodactyl chamber.
 	call GetMapAttributesPointer
 	ld a, h
 	cp HIGH(NewBarkTown_MapAttributes)
@@ -95,7 +94,6 @@ SpecialKabutoChamber:
 	push hl
 	push de
 
-; TODO: Replace NewBarkTown_MapAttributes with the appropriate label for the Kabuto chamber.
 	call GetMapAttributesPointer
 	ld a, h
 	cp HIGH(NewBarkTown_MapAttributes)
@@ -119,8 +117,8 @@ DisplayUnownWords:
 	and a
 	jr z, .load
 
-	ld d, $0
-	ld e, $5
+	ld d, 0
+	ld e, UNOWN_WALL_MENU_HEADER_SIZE
 .loop
 	add hl, de
 	dec a
@@ -162,17 +160,18 @@ DisplayUnownWords:
 	call CloseWindow
 	ret
 
+pushc unown
+
 INCLUDE "data/events/unown_walls.asm"
 
 _DisplayUnownWords_FillAttr:
 	ld a, [de]
-	cp $ff
+	cp "@"
 	ret z
-	cp $60
+	cp "Y"
 	ld a, VRAM_BANK_1 | PAL_BG_BROWN
 	jr c, .got_pal
 	ld a, PAL_BG_BROWN
-
 .got_pal
 	call .PlaceSquare
 	inc hl
@@ -197,7 +196,7 @@ _DisplayUnownWords_CopyWord:
 	push de
 .word_loop
 	ld a, [de]
-	cp $ff
+	cp "@"
 	jr z, .word_done
 	ld c, a
 	call .ConvertChar
@@ -214,12 +213,12 @@ _DisplayUnownWords_CopyWord:
 .ConvertChar:
 	push hl
 	ld a, c
-	cp $60
-	jr z, .Tile60
-	cp $62
-	jr z, .Tile62
-	cp $64
-	jr z, .Tile64
+	cp "Y"
+	jr z, .YChar
+	cp "Z"
+	jr z, .ZChar
+	cp "-"
+	jr z, .DashChar
 	ld [hli], a
 	inc a
 	ld [hld], a
@@ -235,7 +234,7 @@ _DisplayUnownWords_CopyWord:
 	pop hl
 	ret
 
-.Tile60:
+.YChar:
 	ld [hl], $5b
 	inc hl
 	ld [hl], $5c
@@ -247,7 +246,7 @@ _DisplayUnownWords_CopyWord:
 	pop hl
 	ret
 
-.Tile62:
+.ZChar:
 	ld [hl], $4e
 	inc hl
 	ld [hl], $4f
@@ -259,7 +258,7 @@ _DisplayUnownWords_CopyWord:
 	pop hl
 	ret
 
-.Tile64:
+.DashChar:
 	ld [hl], $2
 	inc hl
 	ld [hl], $3
@@ -270,3 +269,5 @@ _DisplayUnownWords_CopyWord:
 	ld [hl], $2
 	pop hl
 	ret
+
+popc

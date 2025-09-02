@@ -284,7 +284,6 @@ InitBattleAnimBuffer:
 	dw SOFTBOILED
 	dw -1
 
-
 GetBattleAnimTileOffset:
 	push hl
 	push bc

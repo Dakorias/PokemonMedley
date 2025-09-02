@@ -45,7 +45,7 @@ EngineFlags:
 	engine_flag wBikeFlags, BIKEFLAGS_DOWNHILL_F
 
 	engine_flag wJohtoBadges, ANCHORBADGE
-	engine_flag wJohtoBadges, HIVEBADGE
+	engine_flag wJohtoBadges, CRUSHBADGE
 	engine_flag wJohtoBadges, PLAINBADGE
 	engine_flag wJohtoBadges, FOGBADGE
 	engine_flag wJohtoBadges, MINERALBADGE

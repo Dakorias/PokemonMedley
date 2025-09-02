@@ -15,20 +15,12 @@ PrintLetterDelay::
 
 ; non-scrolling text?
 	ld a, [wTextboxFlags]
-	bit NO_TEXT_DELAY_F, a
+	bit TEXT_DELAY_F, a
 	ret z
 
 	push hl
 	push de
 	push bc
-
-	ld hl, hOAMUpdate
-	ld a, [hl]
-	push af
-
-; orginally turned oam update off...
-;	ld a, 1
-	ld [hl], a
 
 ; force fast scroll?
 	ld a, [wTextboxFlags]
@@ -38,7 +30,6 @@ PrintLetterDelay::
 ; text speed
 	ld a, [wOptions]
 	and %111
-	jr z, .end
 	jr .updatedelay
 
 .fast
@@ -74,8 +65,6 @@ PrintLetterDelay::
 	jr nz, .checkjoypad
 
 .end
-	pop af
-	ldh [hOAMUpdate], a
 	pop bc
 	pop de
 	pop hl

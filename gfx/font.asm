@@ -5,7 +5,7 @@ FontBattleExtra:
 INCBIN "gfx/font/font_battle_extra.2bpp"
 
 Frames:
-	table_width TEXTBOX_FRAME_TILES * LEN_1BPP_TILE, Frames
+	table_width TEXTBOX_FRAME_TILES * LEN_1BPP_TILE
 INCBIN "gfx/frames/1.1bpp"
 INCBIN "gfx/frames/2.1bpp"
 INCBIN "gfx/frames/3.1bpp"
@@ -15,6 +15,7 @@ INCBIN "gfx/frames/6.1bpp"
 INCBIN "gfx/frames/7.1bpp"
 INCBIN "gfx/frames/8.1bpp"
 	assert_table_length NUM_FRAMES
+INCBIN "gfx/frames/9.1bpp" ; unused
 
 StatsScreenPageTilesGFX:
 INCBIN "gfx/stats/stats_tiles.2bpp"
@@ -35,13 +36,7 @@ TextboxSpaceGFX:
 ; StatsScreen_LoadTextboxSpaceGFX reads 2bpp; LoadFrame reads first half as 1bpp
 INCBIN "gfx/font/space.2bpp"
 
-UnusedUpArrowGFX: ; unreferenced
-INCBIN "gfx/font/unused_up_arrow.1bpp"
-
 MobilePhoneTilesGFX:
 INCBIN "gfx/mobile/phone_tiles.2bpp"
-
-MapEntryFrameGFX:
-INCBIN "gfx/frames/map_entry_sign.2bpp"
 
 INCLUDE "gfx/footprints.asm"

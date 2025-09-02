@@ -44,7 +44,7 @@ WaitScript:
 WaitScriptMovement:
 	call StopScript
 
-	ld hl, wVramState
+	ld hl, wStateFlags
 	bit SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret nz
 
@@ -63,7 +63,7 @@ RunScriptCommand:
 
 ScriptCommandTable:
 ; entries correspond to *_command constants (see macros/scripts/events.asm)
-	table_width 2, ScriptCommandTable
+	table_width 2
 	dw Script_scall                      ; 00
 	dw Script_farscall                   ; 01
 	dw Script_memcall                    ; 02
@@ -916,7 +916,7 @@ ApplyObjectFacing:
 	pop de
 	ld a, e
 	call SetSpriteDirection
-	ld hl, wVramState
+	ld hl, wStateFlags
 	bit TEXT_STATE_F, [hl]
 	jr nz, .text_state
 	call .DisableTextTiles
@@ -930,7 +930,7 @@ ApplyObjectFacing:
 	ret
 
 .DisableTextTiles:
-	call LoadMapPart
+	call LoadOverworldTilemap
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 .loop
@@ -1176,7 +1176,7 @@ Script_reloadmapafterbattle:
 	jp ScriptJump
 
 .notblackedout
-	bit 0, d
+	bit BATTLESCRIPT_WILD_F, d
 	jr z, .was_wild
 	farcall MomTriesToBuySomething
 	jr .done
@@ -1385,7 +1385,7 @@ Script_sdefer:
 	call GetScriptByte
 	ld [wDeferredScriptAddr + 1], a
 	ld hl, wScriptFlags
-	set 3, [hl]
+	set RUN_DEFERRED_SCRIPT, [hl]
 	ret
 
 Script_checkscene:
@@ -2148,9 +2148,9 @@ Script_changeblock:
 Script_refreshmap::
 	xor a
 	ldh [hBGMapMode], a
-	call OverworldTextModeSwitch
+	call LoadOverworldTilemapAndAttrmapPals
 	call GetMovementPermissions
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call UpdateSprites
 	ret
 
@@ -2181,7 +2181,7 @@ Script_opentext:
 	ret
 
 Script_reanchormap:
-	call RefreshScreen
+	call ReanchorMap
 	call GetScriptByte
 	ret
 
@@ -2194,7 +2194,7 @@ UnusedClosetextScript: ; unreferenced
 	closetext
 
 Script_closetext:
-	call HDMATransferTilemapAndAttrmap
+	call HDMATransferTilemapAndAttrmap_Menu
 	call CloseText
 	ret
 
@@ -2248,7 +2248,7 @@ Script_end:
 	ld a, SCRIPT_OFF
 	ld [wScriptMode], a
 	ld hl, wScriptFlags
-	res 0, [hl]
+	res UNUSED_SCRIPT_FLAG_0, [hl]
 	call StopScript
 	ret
 
@@ -2257,7 +2257,7 @@ Script_endcallback:
 	jr c, .dummy
 .dummy
 	ld hl, wScriptFlags
-	res 0, [hl]
+	res UNUSED_SCRIPT_FLAG_0, [hl]
 	call StopScript
 	ret
 
@@ -2298,7 +2298,7 @@ Script_endall:
 	ld a, SCRIPT_OFF
 	ld [wScriptMode], a
 	ld hl, wScriptFlags
-	res 0, [hl]
+	res UNUSED_SCRIPT_FLAG_0, [hl]
 	call StopScript
 	ret
 

@@ -70,7 +70,7 @@ _GetVarAction::
 .CountCaughtMons:
 ; Caught mons. Saturate at 255.
 	ld hl, wPokedexCaught
-	.count_caught_or_seen_mons
+.count_caught_or_seen_mons
 	ld bc, wEndPokedexCaught - wPokedexCaught
 	call CountSetBits16
 	ld a, b
@@ -83,7 +83,7 @@ _GetVarAction::
 .CountSeenMons:
 ; Seen mons. Saturate at 255.
 	ld hl, wPokedexSeen
-  jr .count_caught_or_seen_mons
+	jr .count_caught_or_seen_mons
 
 .CountUncaughtMons:
 ; Mons left to catch. Saturate at 255.
@@ -138,7 +138,7 @@ _GetVarAction::
 	ret
 
 .BoxFreeSpace:
-; Remaining slots in the current box.
+; Remaining database entries
 	newfarcall CheckFreeDatabaseEntries
 	jp .loadstringbuffer2
 

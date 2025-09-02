@@ -1,7 +1,7 @@
 ; Multiplier ratios for all stats from modifier -6 to +6
 ; (except accuracy, see data/battle/accuracy_multipliers.asm).
 
-; This table is INCLUDED twice in different ROM banks:
+; This table is INCLUDEd twice in different ROM banks:
 ; once for CalcBattleStats (see engine/battle/effect_commands.asm),
 ; and once for ApplyStatLevelMultiplier (see engine/battle/core.asm).
 

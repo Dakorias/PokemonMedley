@@ -76,7 +76,7 @@ rsreset
 DEF MON_SPECIES            rb
 DEF MON_ITEM               rb
 DEF MON_MOVES              rb NUM_MOVES
-DEF MON_ID                 rw
+DEF MON_OT_ID              rw
 DEF MON_EXP                rb 3
 DEF MON_EVS                rb NUM_STATS
 rsset MON_EVS
@@ -284,5 +284,5 @@ DEF PP_UP_ONE  EQU %01000000
 DEF PP_MASK    EQU %00111111
 
 ; significant EV values
-DEF MAX_EV EQU 192
+DEF MAX_EV EQU 180
 DEF MAX_TOTAL_EV EQU 600

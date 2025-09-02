@@ -1,11 +1,14 @@
-	const_def
-	const PINK_PAGE  ; 0
-	const GREEN_PAGE ; 1
-	const BLUE_PAGE  ; 2
-	const ORANGE_PAGE ; 3
-DEF NUM_STAT_PAGES EQU const_value
+	const_def 1
+	const PINK_PAGE  ; 1
+	const GREEN_PAGE ; 2
+	const BLUE_PAGE  ; 3
+DEF NUM_STAT_PAGES EQU const_value - 1
 
 DEF STAT_PAGE_MASK EQU %00000011
+	const_def 4
+	const STATS_SCREEN_PLACE_FRONTPIC ; 4
+	const STATS_SCREEN_ANIMATE_MON    ; 5
+	const STATS_SCREEN_ANIMATE_EGG    ; 6
 
 BattleStatsScreenInit:
 	ld a, [wLinkMode]
@@ -63,7 +66,13 @@ StatsScreenInit_gotaddress:
 StatsScreenMain:
 	xor a
 	ld [wJumptableIndex], a
-	ld [wStatsScreenFlags], a ; PINK_PAGE
+	ld [wStatsScreenFlags], a
+
+	ld a, [wStatsScreenFlags]
+	and ~STAT_PAGE_MASK
+	or PINK_PAGE ; first_page
+	ld [wStatsScreenFlags], a
+
 .loop
 	ld a, [wJumptableIndex]
 	and ~(1 << 7)
@@ -71,25 +80,31 @@ StatsScreenMain:
 	rst JumpTable
 	call StatsScreen_WaitAnim
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr z, .loop
 	ret
 
 StatsScreenMobile:
 	xor a
 	ld [wJumptableIndex], a
-	ld [wStatsScreenFlags], a ; PINK_PAGE
+	ld [wStatsScreenFlags], a
+
+	ld a, [wStatsScreenFlags]
+	and ~STAT_PAGE_MASK
+	or PINK_PAGE ; first_page
+	ld [wStatsScreenFlags], a
+
 .loop
 	farcall Mobile_SetOverworldDelay
 	ld a, [wJumptableIndex]
-	and $7f
+	and JUMPTABLE_INDEX_MASK
 	ld hl, StatsScreenPointerTable
 	rst JumpTable
 	call StatsScreen_WaitAnim
 	farcall MobileComms_CheckInactivityTimer
 	jr c, .exit
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr z, .loop
 
 .exit
@@ -107,9 +122,9 @@ StatsScreenPointerTable:
 
 StatsScreen_WaitAnim:
 	ld hl, wStatsScreenFlags
-	bit 6, [hl]
+	bit STATS_SCREEN_ANIMATE_EGG, [hl]
 	jr nz, .try_anim
-	bit 5, [hl]
+	bit STATS_SCREEN_ANIMATE_MON, [hl]
 	jr nz, .finish
 	call DelayFrame
 	ret
@@ -118,28 +133,28 @@ StatsScreen_WaitAnim:
 	farcall SetUpPokeAnim
 	jr nc, .finish
 	ld hl, wStatsScreenFlags
-	res 6, [hl]
+	res STATS_SCREEN_ANIMATE_EGG, [hl]
 .finish
 	ld hl, wStatsScreenFlags
-	res 5, [hl]
+	res STATS_SCREEN_ANIMATE_MON, [hl]
 	farcall HDMATransferTilemapToWRAMBank3
 	ret
 
 StatsScreen_SetJumptableIndex:
 	ld a, [wJumptableIndex]
-	and $80
+	and JUMPTABLE_EXIT
 	or h
 	ld [wJumptableIndex], a
 	ret
 
 StatsScreen_Exit:
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 MonStatsInit:
 	ld hl, wStatsScreenFlags
-	res 6, [hl]
+	res STATS_SCREEN_ANIMATE_EGG, [hl]
 	call ClearBGPalettes
 	call ClearTilemap
 	farcall HDMATransferTilemapToWRAMBank3
@@ -149,7 +164,7 @@ MonStatsInit:
 	jr z, .egg
 	call StatsScreen_InitUpperHalf
 	ld hl, wStatsScreenFlags
-	set 4, [hl]
+	set STATS_SCREEN_PLACE_FRONTPIC, [hl]
 	ld h, 4
 	call StatsScreen_SetJumptableIndex
 	ret
@@ -203,7 +218,7 @@ if DEF(_DEBUG)
 	hlcoord 8, 17
 	call PlaceString
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	pop hl
 	pop de
 	pop bc
@@ -218,7 +233,7 @@ endc
 StatsScreen_LoadPage:
 	call StatsScreen_LoadGFX
 	ld hl, wStatsScreenFlags
-	res 4, [hl]
+	res STATS_SCREEN_PLACE_FRONTPIC, [hl]
 	ld a, [wJumptableIndex]
 	inc a
 	ld [wJumptableIndex], a
@@ -341,28 +356,25 @@ StatsScreen_JoypadAction:
 
 .a_button
 	ld a, c
-	cp ORANGE_PAGE ; last page
+	cp BLUE_PAGE ; last page
 	jr z, .b_button
 .d_right
 	inc c
-	ld a, ORANGE_PAGE ; last page
+	ld a, BLUE_PAGE ; last page
 	cp c
 	jr nc, .set_page
 	ld c, PINK_PAGE ; first page
 	jr .set_page
 
 .d_left
-	ld a, c
 	dec c
-	and a ; cp PINK_PAGE ; first page
 	jr nz, .set_page
-	ld c, ORANGE_PAGE ; last page
+	ld c, BLUE_PAGE ; last page
 	jr .set_page
 
 .prev_storage
 	newfarcall PrevStorageBoxMon
 	jr nz, .load_storage_mon
-
 .done
 	ret
 
@@ -488,7 +500,7 @@ StatsScreen_PlaceVerticalDivider: ; unreferenced
 StatsScreen_PlaceHorizontalDivider:
 	hlcoord 0, 7
 	ld b, SCREEN_WIDTH
-	ld a, $76 ; horizontal divider
+	ld a, $62 ; horizontal divider (empty HP/exp bar)
 .loop
 	ld [hli], a
 	dec b
@@ -496,7 +508,7 @@ StatsScreen_PlaceHorizontalDivider:
 	ret
 
 StatsScreen_PlacePageSwitchArrows:
-	hlcoord 10, 6
+	hlcoord 12, 6
 	ld [hl], "◀"
 	hlcoord 19, 6
 	ld [hl], "▶"
@@ -520,7 +532,7 @@ StatsScreen_LoadGFX:
 	call .PageTilemap
 	call .LoadPals
 	ld hl, wStatsScreenFlags
-	bit 4, [hl]
+	bit STATS_SCREEN_PLACE_FRONTPIC, [hl]
 	jr nz, .place_frontpic
 	call SetDefaultBGPAndOBP
 	ret
@@ -546,23 +558,23 @@ StatsScreen_LoadGFX:
 	farcall LoadStatsScreenPals
 	call DelayFrame
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	ret
 
 .PageTilemap:
 	ld a, [wStatsScreenFlags]
 	maskbits NUM_STAT_PAGES
+	dec a
 	ld hl, .Jumptable
 	rst JumpTable
 	ret
 
 .Jumptable:
 ; entries correspond to *_PAGE constants
-	table_width 2, StatsScreen_LoadGFX.Jumptable
+	table_width 2
 	dw LoadPinkPage
 	dw LoadGreenPage
 	dw LoadBluePage
-	dw LoadOrangePage
 	assert_table_length NUM_STAT_PAGES
 
 LoadPinkPage:
@@ -642,7 +654,7 @@ LoadPinkPage:
 	hlcoord 10, 16
 	ld [hl], $40 ; left exp bar end cap
 	hlcoord 19, 16
-	ld [hl], $7f ; right exp bar end cap
+	ld [hl], $41 ; right exp bar end cap
 	ret
 
 .PrintNextLevel:
@@ -803,246 +815,10 @@ LoadBluePage:
 .OTNamePointers:
 	dw wPartyMonOTs
 	dw wOTPartyMonOTs
-	dw wBufferMonNickname ; unused
-	dw wBufferMonNickname ; unused
-	dw wBufferMonNickname ; unused
+	dw wBufferMonOT ; unused
+	dw wBufferMonOT ; unused
+	dw wBufferMonOT ; unused
 	dw wBufferMonOT
-
-	LoadOrangePage:
-		call StatsScreen_placeCaughtLevel
-		call StatsScreen_placeCaughtTime
-		call StatsScreen_placeCaughtLocation
-		call StatsScreen_PrintDVs
-		ret
-
-	StatsScreen_PrintHappiness:
-		hlcoord 1, 15
-		ld [hl], $34 ; heart icon
-
-		hlcoord 3, 15
-		lb bc, 1, 3
-		ld de, wTempMonHappiness
-		call PrintNum
-		ld de, .outofMaxLoveString
-		hlcoord 4, 16
-		call PlaceString
-		ret
-	.outofMaxLoveString:
-		db "/255@"
-
-	StatsScreen_PrintDVs:
-		hlcoord 1, 12
-		ld de, .DVstring1
-		call PlaceString
-		hlcoord 1, 13
-		ld de, .DVstring2
-		call PlaceString
-		; hlcoord 1, 14
-		; ld de, .DVstring3
-		; call PlaceString
-
-		; we're using wPokedexStatus because why not, nobody using it atm lol
-		; ATK DV
-		ld a, [wTempMonDVs] ; only get the first byte of the word
-		and %11110000 ; most significant nybble of first byte in word-sized wTempMonDVs
-		swap a ; so we can print it properly
-		ld [wPokedexStatus], a
-		ld c, 0
-		; calc HP stat contribution
-		and 1 ; a still has the ATK DV
-		jr z, .atk_not_odd
-		ld a, 0
-		add 8
-		ld b, 0
-		ld c, a
-		;
-	.atk_not_odd
-		push bc
-		ld de, wPokedexStatus
-		lb bc, PRINTNUM_LEADINGZEROS | 1, 2 ; bytes, digits
-		hlcoord 10, 12
-		call PrintNum
-
-		; DEF DV
-		ld a, [wTempMonDVs] ; only get the first byte of the word
-		and %00001111 ; least significant nybble, don't need to swap the bits of the byte
-		ld [wPokedexStatus], a ;DEF
-		; calc HP stat contribution
-		pop bc
-		and 1 ; a still has the DEF DV
-		jr z, .def_not_odd
-		ld a, c
-		add 4
-		ld b, 0
-		ld c, a
-		;
-	.def_not_odd
-		push bc
-		ld de, wPokedexStatus
-		lb bc, PRINTNUM_LEADINGZEROS | 1, 2 ; bytes, digits
-		hlcoord 17, 12
-		call PrintNum
-
-		; SPE DV
-		ld a, [wTempMonDVs + 1] ; second byte of word
-		and %11110000 ; most significant nybble of 2nd byte in word-sized wTempMonDVs
-		swap a ; so we can print it properly
-		ld [wPokedexStatus], a ;SPEED
-		; calc HP stat contribution
-		pop bc
-		and 1 ; a still has the SPEED DV
-		jr z, .speed_not_odd
-		ld a, c
-		add 2
-		ld b, 0
-		ld c, a
-		;
-	.speed_not_odd
-		push bc
-		ld de, wPokedexStatus
-		lb bc, PRINTNUM_LEADINGZEROS | 1, 2 ; bytes, digits
-		hlcoord 17, 13 ; 1, 5, 9, 13
-		call PrintNum
-
-		; SPC DV
-		ld a, [wTempMonDVs + 1] ; second byte of word
-		and %00001111 ; least significant nybble, don't need to swap the bits of the byte
-		ld [wPokedexStatus], a ;SPC
-		; calc HP stat contribution
-		pop bc
-		and 1 ; a still has the DEF DV
-		jr z, .spc_not_odd
-		ld a, c
-		add 1
-		ld b, 0
-		ld c, a
-		;
-	.spc_not_odd
-		push bc
-		ld de, wPokedexStatus
-		lb bc, PRINTNUM_LEADINGZEROS | 1, 2 ; bytes, digits
-		hlcoord 10, 13
-		call PrintNum
-		; hlcoord 18, 15 ; 1, 4, 7, 10, 13
-		; call PrintNum
-
-		; HP
-		; HP DV is determined by the last bit of each of these four DVs
-		; odd Attack DV adds 8, Defense adds 4, Speed adds 2, and Special adds 1
-		;For example, a Lugia with the DVs 5 Atk, 15 Def, 13 Spe, and 13 Spc will have:
-		; 5 Attack = Odd, HP += 8
-		; 15 Defense = Odd, HP += 4
-		; 13 Speed = Odd, HP += 2
-		; 13 Special = Odd, HP += 1
-		;resulting in an HP stat of 15
-		; THANKS SMOGON
-		; going to "and 1" each final value and push a counter to stack to preserve it
-		pop bc
-		ld a, c
-		ld [wPokedexStatus], a
-		ld de, wPokedexStatus
-		lb bc, PRINTNUM_LEADINGZEROS | 1, 2 ; bytes, digits
-		hlcoord 3, 13 ; 1, 4, 7, 10, 13
-		call PrintNum
-		ret
-
-	.DVstring1:
-		db "DVS: ATK    DEF   @"
-	.DVstring2:
-		; db "ATK    DEF@"
-		db "HP   SPC    SPE   @"
-	; .DVstring3:
-	; 	db "SPC    SPE    HP@"
-
-
-	StatsScreen_placeCaughtLocation:
-		ld de, .MetAtMapString
-		hlcoord 1, 9
-		call PlaceString
-		ld a, [wTempMonCaughtLocation]
-		and CAUGHT_LOCATION_MASK
-		jr z, .unknown_location
-		cp LANDMARK_EVENT
-		jr z, .unknown_location
-		cp LANDMARK_GIFT
-		jr z, .unknown_location
-		ld e, a
-		farcall GetLandmarkName
-		ld de, wStringBuffer1
-		hlcoord 2, 10
-		call PlaceString
-		ret
-	.unknown_location:
-		ld de, .MetUnknownMapString
-		hlcoord 2, 10
-		call PlaceString
-		ret
-	.MetAtMapString:
-		db "MET: @"
-	.MetUnknownMapString:
-		db "UNKNOWN LOCATION@"
-
-	StatsScreen_placeCaughtTime:
-		ld a, [wTempMonCaughtTime]
-		and CAUGHT_TIME_MASK
-		jr z, .unknown_time
-		rlca
-		rlca
-		dec a
-		ld hl, .times
-		call GetNthString
-		ld d, h
-		ld e, l
-		call CopyName1
-		ld de, wStringBuffer2
-		hlcoord 6, 9
-		call PlaceString
-		ret
-	.unknown_time
-		ld a, 0
-		ld hl, .unknown_time_text
-		call GetNthString
-		ld d, h
-		ld e, l
-		call CopyName1
-		ld de, wStringBuffer2
-		hlcoord 6, 9
-		call PlaceString
-		ret
-	.times
-		db "MORN@"
-		db "DAY@"
-		db "NITE@"
-	.unknown_time_text
-		db "TRADE@"
-
-	StatsScreen_placeCaughtLevel:
-		; caught level
-		ld a, [wTempMonCaughtLevel]
-		and CAUGHT_LEVEL_MASK
-		and a
-		jr z, .unknown_level
-		cp CAUGHT_EGG_LEVEL ; egg marker value
-		jr nz, .print
-		ld a, EGG_LEVEL ; egg hatch level
-
-	.print
-		ld [wTextDecimalByte], a
-		hlcoord 12, 9
-		ld de, wTextDecimalByte
-		lb bc, PRINTNUM_LEFTALIGN | 1, 3
-		call PrintNum
-		hlcoord 11, 9
-		ld [hl], "<LV>"
-		ret
-
-	.unknown_level
-		ld de, .MetUnknownLevelString
-		hlcoord 11, 9
-		call PlaceString
-		ret
-	.MetUnknownLevelString:
-		db "@"
 
 IDNoString:
 	db "<ID>№.@"
@@ -1078,7 +854,7 @@ StatsScreen_PlaceFrontpic:
 
 .AnimateMon:
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	ld a, [wCurPartySpecies]
 	call GetPokemonIndexFromID
 	ld a, l
@@ -1119,7 +895,6 @@ StatsScreen_PlaceFrontpic:
 	ld a, TRUE
 	ld [wBoxAlignment], a
 	jr .get_animation
-
 .unownegg
 	xor a
 	ld [wBoxAlignment], a
@@ -1137,7 +912,7 @@ StatsScreen_PlaceFrontpic:
 	ld e, ANIM_MON_MENU
 	predef LoadMonAnimation
 	ld hl, wStatsScreenFlags
-	set 6, [hl]
+	set STATS_SCREEN_ANIMATE_EGG, [hl]
 	ret
 
 StatsScreen_GetAnimationParam:
@@ -1268,8 +1043,8 @@ endc
 	hlcoord 1, 9
 	call PlaceString
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
-	call SetDefaultBGPAndOBP ; pals
+	set STATS_SCREEN_ANIMATE_MON, [hl]
+	call SetDefaultBGPAndOBP
 	call DelayFrame
 	hlcoord 0, 0
 	call PrepMonFrontpic
@@ -1334,13 +1109,10 @@ StatsScreen_AnimateEgg:
 	ld d, $0
 	predef LoadMonAnimation
 	ld hl, wStatsScreenFlags
-	set 6, [hl]
+	set STATS_SCREEN_ANIMATE_EGG, [hl]
 	ret
 
 StatsScreen_LoadPageIndicators:
-	hlcoord 11, 5
-	ld a, $36 ; " " " "
-	call .load_square
 	hlcoord 13, 5
 	ld a, $36 ; first of 4 small square tiles
 	call .load_square
@@ -1351,19 +1123,13 @@ StatsScreen_LoadPageIndicators:
 	ld a, $36 ; " " " "
 	call .load_square
 	ld a, c
-	cp PINK_PAGE
-	hlcoord 11, 5
-	jr z, .load_highlighted_square
 	cp GREEN_PAGE
-	hlcoord 13, 5
-	jr z, .load_highlighted_square
-	cp BLUE_PAGE
-	hlcoord 15, 5
-	jr z, .load_highlighted_square
-	; must be ORANGE_PAGE
-	hlcoord 17, 5
-.load_highlighted_square
 	ld a, $3a ; first of 4 large square tiles
+	hlcoord 13, 5 ; PINK_PAGE (< GREEN_PAGE)
+	jr c, .load_square
+	hlcoord 15, 5 ; GREEN_PAGE (= GREEN_PAGE)
+	jr z, .load_square
+	hlcoord 17, 5 ; BLUE_PAGE (> GREEN_PAGE)
 .load_square
 	push bc
 	ld [hli], a

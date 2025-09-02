@@ -294,7 +294,7 @@ MountainGymArenaEscort:
 		playsound SFX_ENTER_DOOR
 		pause 5
 		setscene SCENE_MOUNTAIN_GYM_BREAK_MOVEMENT
-		special FadeOutPalettes
+		special FadeOutToWhite
 		warp MT_MONEGO, 22, 6
 		end
 

@@ -329,7 +329,7 @@ Function1719ed:
 	call ClearBGPalettes
 	call ClearSprites
 	farcall Function171d2b
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	farcall ClearSpriteAnims
 	ret
 
@@ -341,7 +341,7 @@ Function171a11:
 	jr nz, .done
 	call Function171a36
 	farcall PlaySpriteAnimations
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	jr .loop
 .done
 	farcall ClearSpriteAnims
@@ -591,7 +591,7 @@ Function171beb:
 	call LoadMenuHeader
 	call MenuBox
 	call MenuBoxCoord2Tile
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	hlcoord 1, 14
 	ld de, String_171c73
 	call PlaceString

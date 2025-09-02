@@ -46,7 +46,7 @@ DEF NO_LIMITS EQU 0
 	const KEY_ITEM_POCKET ; 2
 	const TM_HM_POCKET    ; 3
 	const MEDICINE_POCKET ; 4
-	const BERRY_POCKET 		; 5
+	const BERRY_POCKET 	  ; 5
 
 DEF NUM_POCKETS EQU const_value
 

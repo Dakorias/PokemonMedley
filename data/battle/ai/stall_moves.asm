@@ -1,5 +1,5 @@
 ; AI_OPPORTUNIST discourages these moves
-; when the player's HP is low.
+; when its HP is low.
 
 StallMoves:
 	dw SWORDS_DANCE
@@ -14,16 +14,21 @@ StallMoves:
 	dw STRING_SHOT
 	dw AGILITY
 	dw RAGE
+	dw MIMIC
 	dw SCREECH
 	dw HARDEN
+	dw WITHDRAW
 	dw DEFENSE_CURL
+	dw BARRIER
 	dw LIGHT_SCREEN
 	dw HAZE
 	dw REFLECT
 	dw FOCUS_ENERGY
 	dw AMNESIA
 	dw TRANSFORM
+	dw SPLASH
 	dw ACID_ARMOR
 	dw CONVERSION
 	dw SUBSTITUTE
+	dw FLAME_WHEEL
 	dw -1 ; end

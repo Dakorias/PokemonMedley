@@ -92,7 +92,7 @@ Function8919e:
 
 Function891ab:
 	call Mobile22_SetBGMapMode1
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call Mobile22_SetBGMapMode0
 	ret
 
@@ -143,12 +143,12 @@ Function891fe:
 	ret
 
 Mobile_EnableSpriteUpdates:
-	ld a, 1
+	ld a, TRUE
 	ld [wSpriteUpdatesEnabled], a
 	ret
 
 Mobile_DisableSpriteUpdates:
-	ld a, 0
+	ld a, FALSE
 	ld [wSpriteUpdatesEnabled], a
 	ret
 
@@ -2099,7 +2099,7 @@ Function89d75:
 	push hl
 	call Mobile22_SetBGMapMode0
 	call _hl_
-	farcall Mobile_OpenAndCloseMenu_HDMATransferTilemapAndAttrmap
+	farcall Mobile_HDMATransferTilemapAndAttrmap_Menu
 	pop hl
 	jr asm_89d90
 

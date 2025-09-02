@@ -463,10 +463,10 @@ BattleTowerRoomMenu_InitRAM:
 	ld [wc3ed], a
 	ld [wc3ee], a
 	ld [wc3ef], a
-	ld hl, wVramState
+	ld hl, wStateFlags
 	ld a, [hl]
 	ld [wcd7f], a
-	set 1, [hl]
+	set LAST_12_SPRITE_OAM_STRUCTS_RESERVED_F, [hl]
 	ld a, (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	ldh [rIE], a
 	ld a, $1
@@ -508,7 +508,7 @@ BattleTowerRoomMenu_Cleanup:
 	ldh [rIE], a
 	ei
 	ld a, [wcd7f]
-	ld [wVramState], a
+	ld [wStateFlags], a
 	ld a, [wMobileErrorCodeBuffer]
 	ld [wScriptVar], a
 	ret
@@ -1482,8 +1482,7 @@ Function118b9a:
 	and a
 	ret
 
-pushc
-setcharmap ascii
+pushc ascii
 
 ExchangeDownloadURL:
 	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/exchange/index.txt", 0
@@ -2919,8 +2918,7 @@ Function119694:
 	jr nz, .asm_119699
 	ret
 
-pushc
-setcharmap ascii
+pushc ascii
 
 Unknown_1196b8:
 	db "Mon"
@@ -3524,8 +3522,7 @@ Function119ac9:
 	ld [wBattleTowerRoomMenuJumptableIndex], a
 	ret
 
-pushc
-setcharmap ascii
+pushc ascii
 
 XGameCode:
 	db "CGB-BXTJ-00", $0
@@ -3718,8 +3715,7 @@ Function119b6b:
 	call CopyBytes
 	jp BattleTowerRoomMenu_IncrementJumptable
 
-pushc
-setcharmap ascii
+pushc ascii
 
 .decodeBase64Character
 	cp "+"
@@ -3981,6 +3977,11 @@ BattleTower_UbersCheck:
 	and a
 	ret
 
+.ubers
+	dw MEW
+	dw CELEBI
+	dw -1
+
 .uber_under_70
 	pop af
 	ld a, [de]
@@ -3997,11 +3998,6 @@ BattleTower_UbersCheck:
 	scf
 	ret
 
-.ubers
-	dw MEW
-	dw CELEBI
-	dw -1
-
 Function119e2b:
 	call MobileAPI
 
@@ -4010,8 +4006,7 @@ BattleTowerRoomMenu_IncrementJumptable:
 	inc [hl]
 	ret
 
-pushc
-setcharmap ascii
+pushc ascii
 
 XGameCodePrefix:
 	db "X-Game-code:\n"
@@ -4048,8 +4043,7 @@ Function119e4f:
 .loop2
 	ld a, [de]
 	inc de
-pushc
-setcharmap ascii
+pushc ascii
 	cp "\n"
 popc
 	jr z, .newline
@@ -4076,8 +4070,7 @@ popc
 	ld a, [hli]
 	ld [de], a
 	inc de
-pushc
-setcharmap ascii
+pushc ascii
 	cp "\r"
 popc
 	jr z, .finish
@@ -4269,7 +4262,7 @@ Function119f98:
 	and a
 	jr z, .asm_119fd4
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	farcall Function115dc3
 	ld a, [wcd33]
 	ld [wcf66], a
@@ -4286,14 +4279,14 @@ Function119f98:
 	ld [wc30d], a
 	ld a, $1
 	ld [wc314], a
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	and a
 	ret
 
 .asm_119fef
 	call ExitMenu
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wMobileInactivityTimerSeconds]
 	ld [wcf66], a
 	farcall Function115dc3
@@ -4367,7 +4360,7 @@ Function11a00e:
 	farcall Stubbed_Function106462
 	farcall Function106464
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	farcall Function115d99
 	ld c, $0
 	farcall Function115e18
@@ -4389,7 +4382,7 @@ Function11a0ca:
 	farcall Stubbed_Function106462
 	farcall Function106464
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	farcall Function115d99
 	ld c, $0
 	farcall Function115e18
@@ -4475,7 +4468,7 @@ Function11a192:
 	and a
 	jr nz, .asm_11a1b6
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call Function11a63c
 	hlcoord 4, 2
 	ld de, String_11a6d2
@@ -4485,7 +4478,7 @@ Function11a192:
 
 .asm_11a1b6
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wMobileInactivityTimerSeconds]
 	ld [wcf66], a
 	ld [wcd80], a
@@ -4611,7 +4604,7 @@ BattleTowerRoomMenu2_UpdateYesNoMenu:
 	and a
 	jr nz, .exit_no_carry
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wMobileInactivityTimerFrames]
 	cp $0
 	jr z, .asm_11a2b4
@@ -4633,7 +4626,7 @@ BattleTowerRoomMenu2_UpdateYesNoMenu:
 
 .exit_no_carry
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	and a
 	ret
 
@@ -4703,7 +4696,7 @@ Function11a33a:
 
 .asm_11a346
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	farcall Function115dc3
 	and a
 	ret
@@ -4744,7 +4737,7 @@ Function11a38d:
 	and a
 	jr nz, .asm_11a3b1
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call Function11a63c
 	hlcoord 4, 2
 	ld de, String_11a6d2
@@ -4754,7 +4747,7 @@ Function11a38d:
 
 .asm_11a3b1
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wMobileInactivityTimerSeconds]
 	ld [wcf66], a
 	ld [wcd80], a
@@ -4815,7 +4808,7 @@ Function11a41b:
 	and a
 	jr nz, .asm_11a43f
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call Function11a63c
 	hlcoord 4, 2
 	ld de, String_11a6d2
@@ -4825,7 +4818,7 @@ Function11a41b:
 
 .asm_11a43f
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, $1c
 	ld [wcf66], a
 	ld [wcd80], a
@@ -4881,7 +4874,7 @@ Function11a49e:
 	and a
 	jr nz, .asm_11a4c7
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call Function11a63c
 	hlcoord 4, 2
 	ld de, String_11a6d2
@@ -4893,7 +4886,7 @@ Function11a49e:
 
 .asm_11a4c7
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wMobileInactivityTimerFrames]
 	ld [wcf66], a
 	ld [wcd80], a
@@ -4925,7 +4918,7 @@ Function11a4fe:
 	and a
 	jr nz, .asm_11a522
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call Function11a63c
 	hlcoord 4, 2
 	ld de, String_11a6d2
@@ -4935,7 +4928,7 @@ Function11a4fe:
 
 .asm_11a522
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wMobileInactivityTimerSeconds]
 	ld [wcf66], a
 	ld [wcd80], a
@@ -4963,7 +4956,7 @@ Function11a536:
 	call Function11a9f0
 	jr nz, .asm_11a562
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 
 .asm_11a562
 	scf
@@ -5037,7 +5030,7 @@ Function11a5b9:
 	ld b, $4
 	ld c, $12
 	call Function3eea
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call UpdateSprites
 	ld c, $0
 	farcall Function115e18
@@ -5071,7 +5064,7 @@ Function11a5f5:
 	hlcoord 15, 7
 	ld a, $ed
 	ld [hl], a
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ret
 
 Function11a63c:
@@ -5544,10 +5537,10 @@ Function11ac51:
 	ld a, [hl]
 	push af
 	set 4, [hl]
-	ld a, [wVramState]
+	ld a, [wStateFlags]
 	push af
 	xor a
-	ld [wVramState], a
+	ld [wStateFlags], a
 	ldh a, [hInMenu]
 	push af
 	ld a, $1
@@ -5564,7 +5557,7 @@ Function11ac51:
 .loop
 	call JoyTextDelay
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .asm_11aca8
 	call Function11b314
 	call Function11acb7
@@ -5572,7 +5565,7 @@ Function11ac51:
 	ld a, 30 * SPRITEOAMSTRUCT_LENGTH
 	ld [wCurSpriteOAMAddr], a
 	farcall DoNextFrameForAllSprites
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	jr .loop
 
 .asm_11aca8
@@ -5580,7 +5573,7 @@ Function11ac51:
 	pop af
 	ldh [hInMenu], a
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	pop af
 	ld [wOptions], a
 	ret
@@ -5695,7 +5688,7 @@ MobileIncJumptableIndex:
 
 Function11ad8f:
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 Function11ad95:
@@ -5708,7 +5701,7 @@ Function11ad95:
 	hlcoord 10, 10, wAttrmap
 	lb bc, 8, 8
 	call Function11afd6
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call MobileIncJumptableIndex
 	ld a, $1
 	ld [wMenuCursorY], a
@@ -5787,7 +5780,7 @@ Function11adc4:
 
 .asm_11ae2e
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ret
 
 MenuHeader_11ae38:
@@ -5821,7 +5814,7 @@ Function11ae4e:
 	hlcoord 9, 12, wAttrmap
 	lb bc, 6, 11
 	call Function11afd6
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call MobileIncJumptableIndex
 	ld a, $1
 	ld [wMenuCursorY], a
@@ -5889,7 +5882,7 @@ Function11ae98:
 .asm_11aef7
 	call ExitMenu
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ret
 
 Function11af04:
@@ -5911,7 +5904,7 @@ Function11af04:
 	hlcoord 9, 12, wAttrmap
 	lb bc, 6, 11
 	call Function11afd6
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call MobileIncJumptableIndex
 	ld a, $2
 	ld [wMenuCursorY], a
@@ -5979,7 +5972,7 @@ Function11af4e:
 .asm_11afaa
 	call ExitMenu
 	call ExitMenu
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ret
 
 Function11afb7:
@@ -6765,10 +6758,10 @@ Function11b3d9:
 	jr .loop1
 
 .skip
-	ld b, 14 * 8
+	ld b, 14 * TILE_WIDTH
 
 .load_sprites
-	ld a, 2 * 8 + 5
+	ld a, 2 * TILE_WIDTH + 5
 	add b
 	pop hl
 	ld [hli], a
@@ -6785,7 +6778,7 @@ Function11b3d9:
 	jr z, .version2
 
 .version1
-	ld a, 19 * 8 + 3
+	ld a, 19 * TILE_WIDTH + 3
 	ld [hli], a
 	ld a, [wcd4c]
 	add $3c
@@ -6796,7 +6789,7 @@ Function11b3d9:
 	ret
 
 .version2
-	ld a, 19 * 8 + 3
+	ld a, 19 * TILE_WIDTH + 3
 	ld [hli], a
 	ld a, $39
 	ld [hli], a

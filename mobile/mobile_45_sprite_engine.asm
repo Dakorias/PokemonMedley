@@ -462,7 +462,7 @@ Function1161d5:
 	pop af
 	ldh [rSVBK], a
 
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, $8
 	ld [wMusicFade], a
 	ld de, MUSIC_MOBILE_ADAPTER
@@ -637,7 +637,7 @@ Function11636e:
 	call UpdateSprites
 	pop af
 	ldh [rSVBK], a
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, $8
 	ld [wMusicFade], a
 	ld a, [wMapMusic]
@@ -659,7 +659,7 @@ Function1163c0:
 	ld bc, 16 * SPRITEOAMSTRUCT_LENGTH
 	call ByteFill
 	call DelayFrame
-	farcall _RefreshSprites
+	farcall LoadStandingSpritesGFX
 	ld b, SCGB_MAPPALS
 	call GetSGBLayout
 	ldh a, [rSVBK]
@@ -677,10 +677,10 @@ Function1163c0:
 	ld a, $90
 	ldh [hWY], a
 	call UpdateSprites
-	farcall _ClearSprites
+	farcall LoadWalkingSpritesGFX
 	pop af
 	ldh [rSVBK], a
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, [wLinkMode]
 	cp LINK_MOBILE
 	jr z, .asm_11642a
@@ -710,7 +710,7 @@ Function116441:
 	farcall Function17d405
 	ld a, $90
 	ldh [hWY], a
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ld a, $8
 	ld [wMusicFade], a
 	ld a, [wMapMusic]

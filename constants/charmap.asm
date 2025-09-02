@@ -6,10 +6,10 @@
 	charmap "<PLAY_G>",  $14 ; "<PLAYER>くん" or "<PLAYER>ちゃん"; same as "<PLAYER>" in English
 	charmap "<MOBILE>",  $15
 	charmap "<CR>",      $16
-	charmap "¯",         $1f ; soft linebreak
+	charmap "<BSP>",     $1f ; breakable space (usually " ", or "<LF>" on the Town Map)
 	charmap "<LF>",      $22
 	charmap "<POKE>",    $24 ; "<PO><KE>"
-	charmap "%",         $25 ; soft linebreak in landmark names
+	charmap "<WBR>",     $25 ; word-break opportunity (usually skipped, or "<LF>" on the Town Map)
 	charmap "<RED>",     $38 ; wRedsName
 	charmap "<GREEN>",   $39 ; wGreensName
 	charmap "<ENEMY>",   $3f
@@ -48,7 +48,7 @@
 
 ; Actual characters (from other graphics files)
 
-  charmap " ",				 $7f ; gfx/frames/space.png
+	charmap " ",         $7f ; gfx/frames/space.png
 
 	; needed for StatsScreen_PlaceShinyIcon and PrintPartyMonPage1
 	charmap "⁂",         $3f ; gfx/stats/stats_tiles.png, tile 14
@@ -136,7 +136,7 @@
 
 	charmap "■",         $d7
 	charmap "▲",         $d8
-	charmap "☎",        $d9
+	charmap "☎",         $d9
 	charmap "<BOLD_V>",  $da
 	charmap "<BOLD_S>",  $db
 	charmap "<COLON>",   $dc ; colon with tinier dots than ":"
@@ -164,7 +164,7 @@
 	charmap "▶",         $ed
 	charmap "▼",         $ee
 	charmap "♂",         $ef
-	charmap "¥",         $f0
+	charmap "¥",         $f0 ; Poké Dollar sign
 	charmap "×",         $f1
 	charmap "…",         $f2 ; ellipsis
 	charmap "/",         $f3
@@ -390,6 +390,16 @@
 	charmap "７", $fd
 	charmap "８", $fe
 	charmap "９", $ff
+
+; Unown charmap, for Unown words (see gfx/tilesets/ruins_of_alph.png)
+pushc
+	newcharmap unown
+	DEF PRINTABLE_UNOWN EQUS "ABCDEFGHIJKLMNOPQRSTUVWXYZ-"
+	for i, STRLEN("{PRINTABLE_UNOWN}")
+		charmap STRSUB("{PRINTABLE_UNOWN}", i + 1, 1), $10 * (i / 8) + 2 * i
+	endr
+	charmap "@", $ff ; end
+popc
 
 ; ASCII charmap, for mobile functions
 pushc

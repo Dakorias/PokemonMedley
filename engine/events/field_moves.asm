@@ -79,8 +79,8 @@ HeadbuttTreeGFX:
 INCBIN "gfx/overworld/headbutt_tree.2bpp"
 
 HideHeadbuttTree:
-; Replaces all four headbutted tree tiles with tile $05
-; Assumes any tileset with headbutt trees has grass at tile $05
+	; Replaces all four headbutted tree tiles with tile $05
+	; Assumes any tileset with headbutt trees has grass at tile $05
 	xor a
 	ldh [hBGMapMode], a
 	ld a, [wPlayerDirection]
@@ -213,7 +213,7 @@ Cut_WaitAnimSFX:
 
 .finished
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 Cut_SpawnLeaf:
@@ -359,7 +359,7 @@ FlyToAnim:
 	ld [wFrameCounter], a
 .loop
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .exit
 	ld a, 0 * SPRITEOAMSTRUCT_LENGTH
 	ld [wCurSpriteOAMAddr], a

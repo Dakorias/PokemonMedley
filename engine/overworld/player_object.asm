@@ -29,14 +29,14 @@ SpawnPlayer:
 	call GetMapObject
 	ld hl, MAPOBJECT_PALETTE
 	add hl, bc
-	ln e, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT
+	ln e, PAL_NPC_RED, OBJECTTYPE_SCRIPT
 	ld a, [wPlayerSpriteSetupFlags]
 	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
 	jr nz, .ok
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .ok
-	ln e, PAL_NPC_RED, OBJECTTYPE_SCRIPT
+	ln e, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT
 
 .ok
 	ld [hl], e
@@ -55,7 +55,7 @@ PlayerObjectTemplate:
 ; A dummy map object used to initialize the player object.
 ; Shorter than the actual amount copied by two bytes.
 ; Said bytes seem to be unused.
-	object_event -4, -4, SPRITE_MAIN_BOY, SPRITEMOVEDATA_PLAYER, 15, 15, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, 0, -1
+	object_event -4, -4, SPRITE_CHRIS, SPRITEMOVEDATA_PLAYER, 15, 15, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, 0, -1
 
 CopyDECoordsToMapObject::
 	push de
@@ -153,13 +153,13 @@ CopyObjectStruct::
 	ld d, h
 	ld e, l
 	call CopyMapObjectToObjectStruct
-	ld hl, wVramState
-	bit 7, [hl]
+	ld hl, wStateFlags
+	bit SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret z
 
 	ld hl, OBJECT_FLAGS2
 	add hl, de
-	set 5, [hl]
+	set FROZEN_F, [hl]
 	ret
 
 CopyMapObjectToObjectStruct:

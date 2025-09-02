@@ -255,13 +255,13 @@ ComputeAIContestantScores:
 	ld c, a
 	ld b, 0
 	add hl, bc
+	ld a, [hli]
 	push hl
 	ld h, [hl]
 	ld l, a
 	call GetPokemonIDFromIndex
 	pop hl
 	inc hl
-	ld a, [hli]
 	ld [wBugContestTempMon], a
 	ld a, [hli]
 	ld h, [hl]

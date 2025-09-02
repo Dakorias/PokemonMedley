@@ -2218,7 +2218,6 @@ SetNoteDuration:
 	ld hl, CHANNEL_NOTE_DURATION_MODIFIER
 	add hl, bc
 	ld [hl], e
-	; store result in NoteDuration
 	ld hl, CHANNEL_NOTE_DURATION
 	add hl, bc
 	ld [hl], d

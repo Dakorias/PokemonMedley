@@ -43,7 +43,7 @@ BattleTowerTrainers:
 	db "BAHN@@@@@@", POKEMANIAC
 	db "MORI@@@@@@", SCIENTIST
 	db "BUCKMAN@@@", SAGE
-	db "COBB@@@@@@", YOUNGSTER
+	db "COBB@@@@@@", POKEMANIAC
 	db "HUGHES@@@@", FISHER
 	db "ARITA@@@@@", KIMONO_GIRL
 	db "EASTON@@@@", PSYCHIC_T
@@ -64,7 +64,7 @@ BattleTowerTrainers:
 	db "THORNTON@@", LASS
 	db "TURNER@@@@", OFFICER
 	db "VAN DYKE@@", SKIER
-	db "WALKER@@@@", YOUNGSTER
+	db "WALKER@@@@", POKEMANIAC
 	db "MEYER@@@@@", SWIMMERF
 	db "JOHNSON@@@", YOUNGSTER
 	db "ADAMS@@@@@", GUITARIST

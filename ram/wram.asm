@@ -2257,7 +2257,7 @@ wWalkingDirection:: db
 wFacingDirection:: db
 wWalkingX:: db
 wWalkingY:: db
-wWalkingTile:: db
+wWalkingTileCollision:: db
 	ds 6
 wPlayerTurningDirection:: db
 
@@ -2357,12 +2357,10 @@ wBattlePlayerAction::
 wSolvedUnownPuzzle::
 	db
 
-wVramState::
-; bit 0: overworld sprite updating on/off
-; bit 1: something to do with sprite updates
-; bit 6: something to do with text
-; bit 7: on when surf initiates
-;        flickers when climbing waterfall
+wStateFlags::
+; bit 1: last 12 sprite OAM structs reserved
+; bit 6: in text state
+; bit 7: in scripted movement
 	db
 
 wBattleResult::
@@ -3166,7 +3164,9 @@ wKenjiFightCount::   db ; unreferenced
 wParryFightCount::   db
 wErinFightCount::    db
 
-	ds 68
+	ds 67
+	
+wPokerusBuffer::    db
 
 wEventFlags:: flag_array NUM_EVENTS
 
@@ -3190,8 +3190,8 @@ wBikeFlags::
 wCurMapSceneScriptPointer:: dw
 
 wCurCaller:: dw
-wCurMapWarpCount:: db
-wCurMapWarpsPointer:: dw
+wCurMapWarpEventCount:: db
+wCurMapWarpEventsPointer:: dw
 wCurMapCoordEventCount:: db
 wCurMapCoordEventsPointer:: dw
 wCurMapBGEventCount:: db

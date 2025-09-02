@@ -74,7 +74,7 @@ WillObjectBumpIntoWater:
 	add hl, bc
 	ld a, [hl]
 	ld d, a
-	call GetTileCollision
+	call GetTilePermission
 	and a ; LAND_TILE
 	jr z, WillObjectBumpIntoTile
 	scf
@@ -86,7 +86,7 @@ WillObjectBumpIntoLand:
 	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
-	call GetTileCollision
+	call GetTilePermission
 	cp WATER_TILE
 	jr z, WillObjectBumpIntoTile
 	scf
@@ -210,13 +210,13 @@ WillObjectRemainOnWater:
 	inc e
 
 .continue
-	call GetCoordTile
-	call GetTileCollision
+	call GetCoordTileCollision
+	call GetTilePermission
 	pop de
 	and a ; LAND_TILE
 	jr nz, .not_land
-	call GetCoordTile
-	call GetTileCollision
+	call GetCoordTileCollision
+	call GetTilePermission
 	and a ; LAND_TILE
 	jr nz, .not_land
 	xor a
@@ -321,7 +321,7 @@ IsNPCAtCoord:
 
 	ld hl, OBJECT_FLAGS1
 	add hl, bc
-	bit 7, [hl]
+	bit EMOTE_OBJECT_F, [hl]
 	jr nz, .next
 
 	ld hl, OBJECT_PALETTE

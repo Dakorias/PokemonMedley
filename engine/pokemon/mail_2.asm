@@ -58,7 +58,7 @@ ReadAnyMail:
 	and A_BUTTON | B_BUTTON | START
 	jr z, .loop
 	vc_patch Forbid_printing_mail
-if DEF(_CRYSTAL11_VC)
+if DEF(_CRYSTAL_VC)
 	and NO_INPUT
 else
 	and START
@@ -123,7 +123,7 @@ endc
 
 MailGFXPointers:
 ; entries correspond to *MAIL_INDEX constants
-	table_width 3, MailGFXPointers
+	table_width 3
 	assert_table_length NUM_MAIL
 	db -1 ; end
 
@@ -702,6 +702,8 @@ MailGFX_PlaceMessage:
 	and a
 	ret z
 	ld a, [wCurMailIndex]
+	hlcoord 8, 14
+	jr z, .place_author
 	hlcoord 5, 14
 
 .place_author

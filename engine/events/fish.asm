@@ -69,8 +69,6 @@ endr
 
 	; Species 0 reads from a time-based encounter table.
 	; The level byte is repurposed as the index for the new table.
-	ld e, [hl]
-	ld d, 0
 	ld hl, TimeFishGroups
 rept 6
 	add hl, de

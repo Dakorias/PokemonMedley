@@ -32,67 +32,67 @@ EnableEvents::
 
 CheckEnabledMapEventsBit5:
 	ld hl, wEnabledPlayerEvents
-	bit 5, [hl]
+	bit PLAYEREVENTS_UNUSED, [hl]
 	ret
 
 DisableWarpsConnections: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	res 2, [hl]
+	res PLAYEREVENTS_WARPS_AND_CONNECTIONS, [hl]
 	ret
 
 DisableCoordEvents: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	res 1, [hl]
+	res PLAYEREVENTS_COORD_EVENTS, [hl]
 	ret
 
 DisableStepCount: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	res 0, [hl]
+	res PLAYEREVENTS_COUNT_STEPS, [hl]
 	ret
 
 DisableWildEncounters: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	res 4, [hl]
+	res PLAYEREVENTS_WILD_ENCOUNTERS, [hl]
 	ret
 
 EnableWarpsConnections: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	set 2, [hl]
+	set PLAYEREVENTS_WARPS_AND_CONNECTIONS, [hl]
 	ret
 
 EnableCoordEvents: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	set 1, [hl]
+	set PLAYEREVENTS_COORD_EVENTS, [hl]
 	ret
 
 EnableStepCount: ; unreferenced
 	ld hl, wEnabledPlayerEvents
-	set 0, [hl]
+	set PLAYEREVENTS_COUNT_STEPS, [hl]
 	ret
 
 EnableWildEncounters:
 	ld hl, wEnabledPlayerEvents
-	set 4, [hl]
+	set PLAYEREVENTS_WILD_ENCOUNTERS, [hl]
 	ret
 
 CheckWarpConnectionsEnabled:
 	ld hl, wEnabledPlayerEvents
-	bit 2, [hl]
+	bit PLAYEREVENTS_WARPS_AND_CONNECTIONS, [hl]
 	ret
 
 CheckCoordEventsEnabled:
 	ld hl, wEnabledPlayerEvents
-	bit 1, [hl]
+	bit PLAYEREVENTS_COORD_EVENTS, [hl]
 	ret
 
 CheckStepCountEnabled:
 	ld hl, wEnabledPlayerEvents
-	bit 0, [hl]
+	bit PLAYEREVENTS_COUNT_STEPS, [hl]
 	ret
 
 CheckWildEncountersEnabled:
 	ld hl, wEnabledPlayerEvents
-	bit 4, [hl]
+	bit PLAYEREVENTS_WILD_ENCOUNTERS, [hl]
 	ret
 
 StartMap:
@@ -132,26 +132,40 @@ EnterMap:
 	ld [wMapStatus], a
 	ret
 
+UnusedWait30Frames: ; unreferenced
+	ld c, 30
+	call DelayFrames
+	ret
+
 HandleMap:
+	call ResetOverworldDelay
 	call HandleMapTimeAndJoypad
-	call HandleCmdQueue
+	farcall HandleCmdQueue ; no need to farcall
 	call MapEvents
 
 ; Not immediately entering a connected map will cause problems.
 	ld a, [wMapStatus]
 	cp MAPSTATUS_HANDLE
 	ret nz
+
 	call HandleMapObjects
 	call NextOverworldFrame
 	call HandleMapBackground
 	call CheckPlayerState
-	xor a
 	ret
 
 MapEvents:
 	ld a, [wMapEventStatus]
-	and a
-	ret nz
+	ld hl, .Jumptable
+	rst JumpTable
+	ret
+
+.Jumptable:
+; entries correspond to MAPEVENTS_* constants
+	dw .events
+	dw .no_events
+
+.events:
 	call PlayerEvents
 	call DisableEvents
 	farcall ScriptEvents
@@ -163,14 +177,17 @@ MapEvents:
 MaxOverworldDelay:
 	db 2
 
+ResetOverworldDelay:
+	ld a, [MaxOverworldDelay]
+	ld [wOverworldDelay], a
+	ret
+
 NextOverworldFrame:
-; If we haven't already performed a delay outside DelayFrame as a result
-; of a busy LY overflow, perform that now.
-	ld a, [hDelayFrameLY]
-	inc a
-	jp nz, DelayFrame
-	xor a
-	ld [hDelayFrameLY], a
+	ld a, [wOverworldDelay]
+	and a
+	ret z
+	ld c, a
+	call DelayFrames
 	ret
 
 HandleMapTimeAndJoypad:
@@ -266,14 +283,6 @@ PlayerEvents:
 
 	xor a
 	ld [wLandmarkSignTimer], a
-
-	; Have player stand (resets running sprite to standing if event starts while running)
-	ld a, [wPlayerState]
-	cp PLAYER_RUN
-	jr nz, .ok2
-	ld a, PLAYER_NORMAL
-	ld [wPlayerState], a
-	farcall UpdatePlayerSprite
 
 .ok2
 	scf
@@ -413,13 +422,13 @@ endr
 	call CallScript
 
 	ld hl, wScriptFlags
-	res 3, [hl]
+	res RUN_DEFERRED_SCRIPT, [hl]
 
 	farcall EnableScriptMode
 	farcall ScriptEvents
 
 	ld hl, wScriptFlags
-	bit 3, [hl]
+	bit RUN_DEFERRED_SCRIPT, [hl]
 	jr z, .nope
 
 	ld hl, wDeferredScriptAddr
@@ -558,7 +567,7 @@ TryObjectEvent:
 	ret
 
 ObjectEventTypeArray:
-	table_width 3, ObjectEventTypeArray
+	table_width 3
 	dbw OBJECTTYPE_SCRIPT, .script
 	dbw OBJECTTYPE_ITEMBALL, .itemball
 	dbw OBJECTTYPE_TRAINER, .trainer
@@ -629,7 +638,7 @@ TryBGEvent:
 	ret
 
 BGEventJumptable:
-	table_width 2, BGEventJumptable
+	table_width 2
 	dw .read
 	dw .up
 	dw .down
@@ -748,7 +757,7 @@ PlayerMovement:
 
 PlayerMovementPointers:
 ; entries correspond to PLAYERMOVEMENT_* constants
-	table_width 2, PlayerMovementPointers
+	table_width 2
 	dw .normal
 	dw .warp
 	dw .turn
@@ -964,7 +973,7 @@ DoPlayerEvent:
 
 PlayerEventScriptPointers:
 ; entries correspond to PLAYEREVENT_* constants
-	table_width 3, PlayerEventScriptPointers
+	table_width 3
 	dba InvalidEventScript      ; PLAYEREVENT_NONE
 	dba SeenByTrainerScript     ; PLAYEREVENT_SEENBYTRAINER
 	dba TalkToTrainerScript     ; PLAYEREVENT_TALKTOTRAINER
@@ -1013,7 +1022,7 @@ EdgeWarpScript:
 	reloadend MAPSETUP_CONNECTION
 
 ChangeDirectionScript:
-	callasm UnfreezeAllObjects
+	deactivatefacing 3
 	callasm EnableWildEncounters
 	end
 

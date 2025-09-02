@@ -26,7 +26,6 @@ FarSkipEvolutions::
 	rst Bankswitch
 	ret
 
-
 UserPartyAttr::
 	push af
 	ldh a, [hBattleTurn]
@@ -192,8 +191,7 @@ BattleTextbox::
 	call UpdateSprites
 	call ApplyTilemap
 	pop hl
-	call PrintTextboxText
-	ret
+	jp PrintTextboxText
 
 StdBattleTextbox::
 ; Open a textbox and print battle text at 20:hl.
@@ -253,7 +251,6 @@ GetBattleAnimByte::
 
 	ld a, [wBattleAnimByte]
 	ret
-
 
 PushLYOverrides::
 	ldh a, [hLCDCPointer]

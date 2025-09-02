@@ -36,7 +36,7 @@ VBlank::
 
 VBlankHandlers:
 ; entries correspond to VBLANK_* constants (see constants/ram_constants.asm)
-	table_width 2, VBlankHandlers
+	table_width 2
 	dw VBlank_Normal
 	dw VBlank_Cutscene
 	dw VBlank_SoundOnly
@@ -119,6 +119,13 @@ VBlank_Normal::
 
 	xor a
 	ld [wVBlankOccurred], a
+
+	ld a, [wOverworldDelay]
+	and a
+	jr z, .ok
+	dec a
+	ld [wOverworldDelay], a
+.ok
 
 	ld a, [wTextDelayFrames]
 	and a

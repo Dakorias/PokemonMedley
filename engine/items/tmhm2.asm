@@ -22,7 +22,7 @@ CanLearnTMHMMove:
 	cp b
 	jr nz, .loop
 
-  ld a, l
+	ld a, l
 	sub LOW(TMHMMoves + 2)
 	rrca
 	ld c, a

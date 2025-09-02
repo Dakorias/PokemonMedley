@@ -4025,9 +4025,9 @@ InitBattleMon:
 	ld a, MON_SPECIES
 	call GetPartyParamLocation
 	ld de, wBattleMonSpecies
-	ld bc, MON_ID
+	ld bc, MON_OT_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_ID
+	ld bc, MON_DVS - MON_OT_ID
 	add hl, bc
 	ld de, wBattleMonDVs
 	ld bc, MON_POKERUS - MON_DVS
@@ -4111,9 +4111,9 @@ InitEnemyMon:
 	ld hl, wOTPartyMon1Species
 	call GetPartyLocation
 	ld de, wEnemyMonSpecies
-	ld bc, MON_ID
+	ld bc, MON_OT_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_ID
+	ld bc, MON_DVS - MON_OT_ID
 	add hl, bc
 	ld de, wEnemyMonDVs
 	ld bc, MON_POKERUS - MON_DVS
@@ -7013,7 +7013,7 @@ BadgeStatBoosts:
 	rrca
 	ld c, a
 	ld a, d
-	and ((1 << ANCHORBADGE) | (1 << HIVEBADGE) | (1 << FOGBADGE) | (1 << STORMBADGE) | (1 << GLACIERBADGE) | (1 << RISINGBADGE))
+	and ((1 << ANCHORBADGE) | (1 << CRUSHBADGE) | (1 << FOGBADGE) | (1 << STORMBADGE) | (1 << GLACIERBADGE) | (1 << RISINGBADGE))
 	or b
 	or c
 	ld b, a
@@ -7331,7 +7331,7 @@ GiveExperiencePoints:
 	call Divide
 ; Boost Experience for traded Pokemon
 	pop bc
-	ld hl, MON_ID
+	ld hl, MON_OT_ID
 	add hl, bc
 	ld a, [wPlayerID]
 	cp [hl]
@@ -9421,7 +9421,7 @@ BattleStartMessage:
 	farcall StubbedTrainerRankings_HookedEncounters
 
 	ld hl, HookedPokemonAttackedText
-	jr .PlaceBattleStartText
+	jr .PrintBattleStartText
 
 .NotFishing:
 	ld hl, PokemonFellFromTreeText

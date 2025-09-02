@@ -142,6 +142,10 @@ SECTION "Effect Commands", ROMX
 
 INCLUDE "engine/battle/effect_commands.asm"
 
+SECTION "Type Matchups and Items", ROMX
+
+INCLUDE "data/types/type_boost_items.asm"
+INCLUDE "data/types/type_matchups.asm"
 
 SECTION "Enemy Trainers", ROMX
 
@@ -445,6 +449,10 @@ INCLUDE "engine/events/print_unown_2.asm"
 INCLUDE "engine/games/card_flip.asm"
 INCLUDE "engine/games/unown_puzzle.asm"
 INCLUDE "engine/games/memory_game.asm"
+INCLUDE "engine/battle/hidden_power.asm"
+INCLUDE "engine/battle/misc.asm"
+INCLUDE "engine/pokedex/unown_dex.asm"
+INCLUDE "engine/events/play_slow_cry.asm"
 
 
 SECTION "bank39", ROMX
@@ -455,23 +463,18 @@ INCLUDE "engine/movie/intro.asm"
 
 
 SECTION "bank3E", ROMX
-
+INCLUDE "engine/link/time_capsule.asm"
+INCLUDE "engine/link/time_capsule_2.asm"
 INCLUDE "engine/gfx/load_font.asm"
 INCLUDE "engine/events/name_rater.asm"
-INCLUDE "engine/events/play_slow_cry.asm"
-INCLUDE "engine/pokedex/new_pokedex_entry.asm"
-INCLUDE "engine/pokedex/unown_dex.asm"
-INCLUDE "engine/battle/hidden_power.asm"
-INCLUDE "engine/battle/misc.asm"
 
 
 SECTION "bank3F", ROMX
 
-INCLUDE "engine/link/time_capsule.asm"
-INCLUDE "engine/link/time_capsule_2.asm"
 INCLUDE "engine/tilesets/tileset_anims.asm"
 INCLUDE "engine/events/npc_trade.asm"
 INCLUDE "engine/events/mom_phone.asm"
+INCLUDE "engine/pokedex/new_pokedex_entry.asm"
 
 
 SECTION "mobile40", ROMX

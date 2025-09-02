@@ -485,7 +485,7 @@ Function1704e1:
 	bit 7, a
 	jr nz, .done
 	call .DoJumptable
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	jr .loop
 
 .done
@@ -1052,9 +1052,9 @@ BattleTowerAction_0A:
 	ret
 
 CheckMobileEventIndex: ; something to do with GS Ball
-	ld a, BANK(sMobileEventIndex)
+	ld a, BANK(sGSBallFlag)
 	call OpenSRAM
-	ld a, [sMobileEventIndex]
+	ld a, [sGSBallFlag]
 	ld [wScriptVar], a
 	call CloseSRAM
 	ret

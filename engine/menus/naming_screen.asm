@@ -2,7 +2,7 @@ DEF NAMINGSCREEN_CURSOR     EQU $7e
 
 DEF NAMINGSCREEN_BORDER     EQU "■" ; $d7
 DEF NAMINGSCREEN_MIDDLELINE EQU "→" ; $eb
-DEF NAMINGSCREEN_UNDERLINE  EQU "☎" ; $d9
+DEF NAMINGSCREEN_UNDERLINE  EQU "<DOT>" ; $d9
 
 _NamingScreen:
 	call DisableSpriteUpdates
@@ -86,6 +86,7 @@ NamingScreen:
 .Pokemon:
 	ld a, [wCurPartySpecies]
 	ld [wTempIconSpecies], a
+
 	; Is it a PartyMon or a BoxMon?
 	ld a, [wMonType]
 	and a
@@ -100,6 +101,7 @@ NamingScreen:
 	inc de
 	ld a, [hl]
 	ld [de], a
+
 	ld hl, LoadMenuMonIcon
 	ld a, BANK(LoadMenuMonIcon)
 	ld e, MONICON_NAMINGSCREEN
@@ -224,21 +226,12 @@ NamingScreen:
 	pop de
 	ld b, SPRITE_ANIM_OBJ_RED_WALK
 	ld a, d
-	cp HIGH(MainBoySpriteGFX)
-	jr nz, .not_chris
+	cp HIGH(KrisSpriteGFX)
+	jr nz, .not_kris
 	ld a, e
-	cp LOW(MainBoySpriteGFX)
-	jr nz, .not_chris
+	cp LOW(KrisSpriteGFX)
+	jr nz, .not_kris
 	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
-	jr .not_kris
-.not_chris
-	ld a, d
-	cp HIGH(MainGirlSpriteGFX)
-	jr nz, .not_kris
-	ld a, e
-	cp LOW(MainGirlSpriteGFX)
-	jr nz, .not_kris
-	ld b, SPRITE_ANIM_OBJ_RED_WALK
 .not_kris
 	ld a, b
 	depixel 4, 4, 4, 0
@@ -256,7 +249,7 @@ NamingScreen:
 	jr .StoreParams
 
 .StoreBoxIconParams:
-; the terminator isn't saved, so no "- 1" is needed.
+	; the terminator isn't saved, so no "- 1" is needed.
 	ld a, BOX_NAME_LENGTH
 	hlcoord 5, 4
 	jr .StoreParams
@@ -346,7 +339,7 @@ NamingScreen_ApplyTextInputMode:
 NamingScreenJoypadLoop:
 	call JoyTextDelay
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .quit
 	call .RunJumptable
 	farcall PlaySpriteAnimationsAndDelayFrame
@@ -399,7 +392,7 @@ NamingScreenJoypadLoop:
 	depixel 10, 3
 	call NamingScreen_IsTargetBox
 	jr nz, .got_cursor_position
-	ld d, 8 * 8
+	ld d, 8 * TILE_WIDTH
 .got_cursor_position
 	ld a, SPRITE_ANIM_OBJ_NAMING_SCREEN_CURSOR
 	call InitSpriteAnimStruct
@@ -468,7 +461,7 @@ NamingScreenJoypadLoop:
 .end
 	call NamingScreen_StoreEntry
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .select
@@ -892,6 +885,9 @@ INCBIN "gfx/naming_screen/cursor.2bpp"
 
 INCLUDE "data/text/name_input_chars.asm"
 
+NamingScreenGFX_End: ; unreferenced
+INCBIN "gfx/naming_screen/end.1bpp"
+
 NamingScreenGFX_MiddleLine:
 INCBIN "gfx/naming_screen/middle_line.1bpp"
 
@@ -1013,7 +1009,7 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 .DoMailEntry:
 	call JoyTextDelay
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .exit_mail
 	call .DoJumptable
 	farcall PlaySpriteAnimationsAndDelayFrame
@@ -1139,7 +1135,7 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 .finished
 	call NamingScreen_StoreEntry
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .select
@@ -1157,7 +1153,7 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 	call .PlaceMailCharset
 	ret
 
-; called from engine/gfx/sprite_anims.asm
+; called from engine/sprite_anims/functions.asm
 
 ComposeMail_AnimateCursor:
 	call .GetDPad
@@ -1338,7 +1334,6 @@ ComposeMail_GetCursorPosition:
 MailComposition_TryAddLastCharacter:
 	ld a, [wNamingScreenLastCharacter]
 	jp MailComposition_TryAddCharacter
-
 
 .one_back
 	push hl

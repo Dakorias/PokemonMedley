@@ -91,7 +91,7 @@ FindOakRating:
 	jr nc, .match
 .next
 	rept 4
-	inc hl
+		inc hl
 	endr
 	jr FindOakRating
 

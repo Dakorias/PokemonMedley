@@ -1,14 +1,3 @@
-BetaLoadPlayerTrainerClass: ; unreferenced
-	ld c, HARRISON
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .got_class
-	ld c, KAREN ; not KRIS?
-.got_class
-	ld a, c
-	ld [wTrainerClass], a
-	ret
-
 MovePlayerPicRight:
 	hlcoord 6, 4
 	ld de, 1
@@ -83,13 +72,13 @@ GetPlayerNameArray: ; unreferenced
 	ret
 
 GetPlayerIcon:
-	ld de, MainBoySpriteGFX
-	ld b, BANK(MainBoySpriteGFX)
+	ld de, ChrisSpriteGFX
+	ld b, BANK(ChrisSpriteGFX)
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .got_gfx
-	ld de, MainGirlSpriteGFX
-	ld b, BANK(MainGirlSpriteGFX)
+	ld de, KrisSpriteGFX
+	ld b, BANK(KrisSpriteGFX)
 .got_gfx
 	ret
 

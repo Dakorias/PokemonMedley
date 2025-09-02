@@ -7,6 +7,7 @@ ConvertMon_2to1:
 	ld a, [wTempSpecies]
 	ld b, a
 	ld c, 0
+	ld hl, Pokered_MonIndices
 .loop
 	inc c
 	ld a, [hli]
@@ -25,6 +26,7 @@ ConvertMon_1to2:
 	push hl
 	ld a, [wTempSpecies]
 	dec a
+	ld hl, Pokered_MonIndices
 	ld b, 0
 	ld c, a
 	add hl, bc
@@ -33,3 +35,5 @@ ConvertMon_1to2:
 	pop hl
 	pop bc
 	ret
+
+INCLUDE "data/pokemon/gen1_order.asm"

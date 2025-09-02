@@ -29,7 +29,6 @@ DEF EFFECTIVENESS_MASK EQU %01111111
 	const_def 7
 	shift_const STAB_DAMAGE
 
-
 ; enemy AI behavior
 DEF BASE_AI_SWITCH_SCORE EQU 10
 
@@ -200,7 +199,7 @@ DEF ALL_STATUS EQU (1 << PSN) | (1 << BRN) | (1 << FRZ) | (1 << PAR) | SLP_MASK
 	const SUBSTATUS_X_ACCURACY
 	const SUBSTATUS_MIST
 	const SUBSTATUS_FOCUS_ENERGY
-	const SUBSTATUS_ROOST
+	const_skip
 	const SUBSTATUS_SUBSTITUTE
 	const SUBSTATUS_RECHARGE
 	const SUBSTATUS_RAGE
@@ -224,6 +223,7 @@ DEF ALL_STATUS EQU (1 << PSN) | (1 << BRN) | (1 << FRZ) | (1 << PAR) | SLP_MASK
 	const SCREENS_SAFEGUARD
 	const SCREENS_LIGHT_SCREEN
 	const SCREENS_REFLECT
+	const SCREENS_UNUSED
 
 ; values in wBattleWeather
 	const_def

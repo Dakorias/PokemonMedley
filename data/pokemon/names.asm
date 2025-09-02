@@ -292,7 +292,7 @@ PokemonNames::
 	db "AGGRON@@@@"
 	db "MAWILE@@@@"
 	db "SNUBBULL@@"
-  db "GRANBULL@@"
+  	db "GRANBULL@@"
 	db "AZURILL@@@"
 	db "MARILL@@@@"
 	db "AZUMARILL@"
@@ -341,3 +341,4 @@ PokemonNames::
 	db "DEOXYS@@@@"
 	db "MEW@@@@@@@"
 	assert_table_length NUM_POKEMON
+

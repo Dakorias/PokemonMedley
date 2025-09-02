@@ -70,8 +70,6 @@ INCLUDE "data/moves/contact_moves.asm"
 INCLUDE "data/moves/critical_hit_moves.asm"
 INCLUDE "data/moves/eruption_power.asm"
 INCLUDE "data/moves/flail_reversal_power.asm"
-INCLUDE "data/types/type_boost_items.asm"
-INCLUDE "data/types/type_matchups.asm"
 INCLUDE "engine/battle/ai/switch.asm"
 
 DoPlayerTurn:
@@ -751,7 +749,7 @@ BattleCommand_CheckObedience:
 
 	; If the monster's id doesn't match the player's,
 	; some conditions need to be met.
-	ld a, MON_ID
+	ld a, MON_OT_ID
 	call BattlePartyAttr
 
 	ld a, [wPlayerID]
@@ -782,7 +780,7 @@ BattleCommand_CheckObedience:
 	jr nz, .getlevel
 
 	; hivebadge
-	bit HIVEBADGE, [hl]
+	bit CRUSHBADGE, [hl]
 	ld a, 30
 	jr nz, .getlevel
 

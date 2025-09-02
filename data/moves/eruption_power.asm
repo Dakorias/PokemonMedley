@@ -14,4 +14,4 @@ EruptionPower:
 	db HP_BAR_LENGTH_PX * 12 / 15, 120
 	db HP_BAR_LENGTH_PX * 13 / 15, 130
 	db HP_BAR_LENGTH_PX * 14 / 15, 140
-	db HP_BAR_LENGTH_PX, 					 150
+	db HP_BAR_LENGTH_PX, 150

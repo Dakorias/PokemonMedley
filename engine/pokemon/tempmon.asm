@@ -18,6 +18,7 @@ CopyMonToTempMon:
 	ld bc, PARTYMON_STRUCT_LENGTH
 	cp OTPARTYMON
 	jr z, .copywholestruct
+
 	; tried to run old box code, crash
 	di
 	jp @

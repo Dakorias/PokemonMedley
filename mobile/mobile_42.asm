@@ -95,10 +95,10 @@ RunMobileTradeAnim_Frontpics:
 	push af
 	xor a
 	ldh [hMapAnims], a
-	ld hl, wVramState
+	ld hl, wStateFlags
 	ld a, [hl]
 	push af
-	res 0, [hl]
+	res SPRITE_UPDATES_DISABLED_F, [hl]
 	ld hl, wOptions
 	ld a, [hl]
 	push af
@@ -110,7 +110,7 @@ RunMobileTradeAnim_Frontpics:
 	pop af
 	ld [wOptions], a
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	pop af
 	ldh [hMapAnims], a
 	ret
@@ -124,7 +124,7 @@ RunMobileTradeAnim_NoFrontpics:
 	push af
 	xor a
 	ldh [hMapAnims], a
-	ld hl, wVramState
+	ld hl, wStateFlags
 	ld a, [hl]
 	push af
 	res 0, [hl]
@@ -139,7 +139,7 @@ RunMobileTradeAnim_NoFrontpics:
 	pop af
 	ld [wOptions], a
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	pop af
 	ldh [hMapAnims], a
 	ret
@@ -337,7 +337,7 @@ MobileTradeAnim_InitSpeciesName:
 
 MobileTradeAnim_JumptableLoop:
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .StopAnim
 	call .ExecuteMobileTradeAnimCommand
 	call DelayFrame
@@ -404,7 +404,7 @@ GetMobileTradeAnimByte:
 
 EndMobileTradeAnim:
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 WaitMobileTradeSpriteAnims:
@@ -1516,9 +1516,9 @@ MobileTradeAnim_AnimateSentPulse:
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
 	ld a, [hl]
-	cp -1 * 8 - 6
+	cp -1 * TILE_WIDTH - 6
 	jr z, .delete
-	sub 1 * 8
+	sub 1 * TILE_WIDTH
 	ld [hl], a
 	ret
 
@@ -1530,9 +1530,9 @@ MobileTradeAnim_AnimateOTPulse:
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
 	ld a, [hl]
-	cp 9 * 8 + 2
+	cp 9 * TILE_WIDTH + 2
 	ret z
-	add 1 * 8
+	add 1 * TILE_WIDTH
 	ld [hl], a
 	ret
 

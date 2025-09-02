@@ -1,5 +1,8 @@
 # 16-bit index expansion for Crystal
 
+This repository is a modernized and rebased version of [AX6](https://github.com/aaaaaa123456789)'s work found at https://github.com/aaaaaa123456789/pokecrystal16.
+It includes additional features such as the new `expand-item-ID` branch and the `newbox`/`item-newbox` branches.
+
 This repository contains a modified Pokémon Crystal game, updated to handle 16-bit indexes. The main goal of this
 project is to create a reusable system that ROM hacks can use to bring 16-bit indexes into their games.  
 It is *not* within scope to create a new game, or to add additional features beyond 16-bit indexes.
@@ -17,33 +20,36 @@ fork this repository to build a new game on top** (unless you intend to contribu
 history will be repeatedly rewritten, making merges impossible. If you do want to contribute to the repository, let
 me know in advance so I can notify you of history rewrites.
 
+For update notifications, discussions, bug reports, and feedback, join our Discord server: [Fellowship of the Roms (Public)](https://discord.gg/dvpf6wcqMn). 
+Once there, navigate to the `#reaction-roles` channel and react to pokecrystal16 to gain access to the `#pokecrystal16` channels.
+
 For further documentation, check out the [wiki].
 
 ## Branches
 
-Last PC16 rebase: **2024-06-28**
+Last PC16 rebase: **2025-01-22**
 
-* `master`: (status: **stable**, last update: **2024-01-13**) Base branch. This branch contains a slightly modified
+* `master`: (status: **stable**, last update: **2025-01-22**) Base branch. This branch contains a slightly modified
   version of Pokémon Crystal, with some quality-of-life improvements intended to make development easier. These
   improvements have been taken from the documentation in the [main disassembly repository][pokecrystal]. This branch
   contains no 16-bit features and it is only intended as a reference.
-* `base-components`: (status: **stable**, last update: **2023-07-18**) This branch defines the basic components that
+* `base-components`: (status: **stable**, last update: **2025-01-22**) This branch defines the basic components that
   will comprise the 16-bit index table system, on top of which the remaining branches will be built. Since it only
   defines macros (and a handful of WRAM locations to be shared by all index tables), it should build the same ROM as
   `master`.
-* `expand-mon-ID`: (status: **stable**, last update: **2023-07-18**) This branch implements 16-bit indexes for Pokémon
+* `expand-mon-ID`: (status: **stable**, last update: **2025-01-22**) This branch implements 16-bit indexes for Pokémon
   species, thus allowing more than 253 species to be included in a single game.
-* `expand-move-ID`: (status: **stable**, last update: **2023-09-18**) This branch implements 16-bit indexes for moves,
+* `expand-move-ID`: (status: **stable**, last update: **2025-01-22**) This branch implements 16-bit indexes for moves,
   on top of the existing 16-bit support for Pokémon species from the previous branch. (Interaction between the
   branches is kept to a minimum, though.)
-* `newbox`: (status: **experimental**, last update: **2024-01-13**) This branch ports Rangi & FIQ's "newbox" from
+* `newbox`: (status: **experimental**, last update: **2025-01-22**) This branch ports Rangi & FIQ's "newbox" from
   Polished Crystal. Newbox is a complete overhaul to Bill's PC, and this branch ports the functionality on
   top of the previous branches.
-* `expand-item-ID`: (status: **very experimental - use at on RISK!**, last update: **2024-06-28**) This branch implements 16-bit
+* `expand-item-ID`: (status: **very experimental - use at on RISK!**, last update: **2025-01-22**) This branch implements 16-bit
   indexes for items, on top of the existing 16-bit support for Pokémon moves from the `expand-move-ID` branch.
-* `item-newbox` : (status: **very experimental - use at on RISK!**, last update: **2024-01-15**) This branch is the same
+* `item-newbox` : (status: **very experimental - use at on RISK!**, last update: **2025-01-22**) This branch is the same
   as the `newbox` branch, but it builds on top of `expand-item-ID`.
-* `pokecrystal`: (status: **N/A**, last update **2024-06-28**) This branch contains pret's vanilla pokecrystal and
+* `pokecrystal`: (status: **N/A**, last update **2025-01-22**) This branch contains pret's vanilla pokecrystal and
   should only be used to compare with the previous branches to view pokecrystal16 changes. **DO NOT USE THIS BRANCH!**
 
 To view the differences between any two branches (or any two commits in the repository), you can use GitHub's [tree
@@ -72,6 +78,6 @@ bank! The index work is done, and I'll try to remove any hurdles that would rend
 want to push the limits of the hardware and add 20,000 new Pokémon, you'll find yourself against a technical challenge
 that will go beyond indexes.
 
-[compare]: https://github.com/aaaaaa123456789/pokecrystal16/compare
+[compare]: https://github.com/vulcandth/pokecrystal16/compare
 [pokecrystal]: https://github.com/pret/pokecrystal/
-[wiki]: https://github.com/aaaaaa123456789/pokecrystal16/wiki
+[wiki]: https://github.com/vulcandth/pokecrystal16/wiki

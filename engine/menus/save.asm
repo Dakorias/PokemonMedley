@@ -182,7 +182,7 @@ WriteBackupSave:
 ; on game load if we have a valid main save but not a backup save.
 	; Save storage, mail, mobile event and mystery gift to backup
 	farcall BackupPartyMonMail
-	farcall BackupMobileEventIndex
+	farcall BackupGSBallFlag
 	farcall BackupMysteryGift
 	call SaveStorageSystem
 
@@ -356,6 +356,14 @@ Function14d83: ; unreferenced
 	xor a
 	ld [s4_a60c], a ; address of MBC30 bank
 	ld [s4_a60d], a ; address of MBC30 bank
+	call CloseSRAM
+	ret
+
+DisableMobileStadium: ; unreferenced
+	ld a, BANK(sMobileStadiumFlag)
+	call OpenSRAM
+	xor a
+	ld [sMobileStadiumFlag], a
 	call CloseSRAM
 	ret
 
@@ -570,7 +578,7 @@ TryLoadSaveFile:
 	call WasMidSaveAborted
 	call z, WriteBackupSave
 	farcall RestorePartyMonMail
-	farcall RestoreMobileEventIndex
+	farcall RestoreGSBallFlag
 	farcall RestoreMysteryGift
 	call LoadStorageSystem
 
@@ -586,7 +594,7 @@ TryLoadSaveFile:
 	call LoadBackupPokemonData
 	call LoadBackupIndexTables
 	farcall RestorePartyMonMail
-	farcall RestoreMobileEventIndex
+	farcall RestoreGSBallFlag
 	farcall RestoreMysteryGift
 	call LoadStorageSystem
 	call SaveGameData

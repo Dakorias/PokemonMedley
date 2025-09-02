@@ -5,6 +5,7 @@ LoadWildMonData:
 	xor a
 	ld [hli], a
 	ld [hli], a
+	ld [hli], a
 	ld [hl], a
 	jr .done_copy
 
@@ -291,6 +292,7 @@ ChooseWildEncounter:
 	call GetTimeOfDayNotEve
 	ld bc, NUM_GRASSMON * 3
 	call AddNTimes
+	ld de, GrassMonProbTable
 
 .watermon
 ; hl contains the pointer to the wild mon data, let's save that to the stack
@@ -344,6 +346,7 @@ ChooseWildEncounter:
 	call SimpleDivide
 	add d
 	ld b, a
+
 ; Store the level
 .ok
 	ld a, b
@@ -355,6 +358,7 @@ ChooseWildEncounter:
 	call ValidateTempWildMonSpecies
 	jr c, .nowildbattle
 
+	ld a, l
 	sub LOW(UNOWN)
 	jr nz, .done
 	if HIGH(UNOWN) > 1
@@ -541,6 +545,9 @@ InitRoamMons:
 	ld hl, MEW
 	call GetPokemonIDFromIndex
 	ld [wRoamMon1Species], a
+	ld hl, MEW
+	call GetPokemonIDFromIndex
+	ld [wRoamMon2Species], a
 
 ; level
 	ld a, 40
@@ -548,14 +555,12 @@ InitRoamMons:
 	ld [wRoamMon2Level], a
 
 ; raikou starting map
-; TODO: Replace GROUP_NONE and MAP_NONE with the starting map for Raikou to roam.
 	ld a, GROUP_NONE
 	ld [wRoamMon1MapGroup], a
 	ld a, MAP_NONE
 	ld [wRoamMon1MapNumber], a
 
 ; entei starting map
-; TODO: Replace GROUP_NONE and MAP_NONE with the starting map for Entei to roam.
 	ld a, GROUP_NONE
 	ld [wRoamMon2MapGroup], a
 	ld a, MAP_NONE
@@ -799,7 +804,7 @@ _BackUpMapIndices:
 INCLUDE "data/wild/roammon_maps.asm"
 
 ValidateTempWildMonSpecies:
-  ld a, h
+	ld a, h
 	or l
 	scf
 	ret z
@@ -816,7 +821,7 @@ ValidateTempWildMonSpecies:
 	ccf
 	ret
 
-GetCallerRouteWildGrassMons::
+GetCallerRouteWildGrassMons:
 	farcall GetCallerLocation
 	ld d, b
 	ld e, c
@@ -849,7 +854,6 @@ RandomUnseenWildMon:
 	ld bc, 10 ; skip three mons plus the level of the fourth
 	add hl, bc
 	ld c, a
-	ld b, 0
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -971,7 +975,7 @@ RandomPhoneMon:
 .no_item
 	bit TRAINERTYPE_MOVES_F, c
 	jr z, .no_moves
-	add a, NUM_MOVES
+	add a, NUM_MOVES * 2
 .no_moves
 	ld c, a
 	ld b, 0

@@ -15,7 +15,7 @@ _TimeOfDayPals::
 
 ; forced pals?
 	ld hl, wTimeOfDayPalFlags
-	bit 7, [hl]
+	bit FORCED_PALSET_F, [hl]
 	jr nz, .dontchange
 
 ; do we need to bother updating?
@@ -112,14 +112,14 @@ _UpdateTimePals::
 	call DmgToCgbTimePals
 	ret
 
-FadeInPalettes::
+FadeInFromWhite::
 	ld c, $12
 	call GetTimePalFade
 	ld b, $4
 	call ConvertTimePalsDecHL
 	ret
 
-FadeOutPalettes::
+FadeOutToWhite::
 	call FillWhiteBGColor
 	ld c, $9
 	call GetTimePalFade
@@ -143,14 +143,14 @@ BattleTowerFade:
 	jr nz, .loop
 	ret
 
-FadeInQuickly:
+FadeInFromBlack:
 	ld c, $0
 	call GetTimePalFade
 	ld b, $4
 	call ConvertTimePalsIncHL
 	ret
 
-FadeBlackQuickly:
+FadeOutToBlack:
 	ld c, $9
 	call GetTimePalFade
 	ld b, $4
@@ -158,6 +158,7 @@ FadeBlackQuickly:
 	ret
 
 FillWhiteBGColor:
+; Copy white palette of wBGPals1 Pal0 into white palette of wBGPals1 Pal1-Pal6
 	ldh a, [rSVBK]
 	push af
 	ld a, BANK(wBGPals1)
@@ -210,16 +211,14 @@ ReplaceTimeOfDayPals:
 	ld [wTimeOfDayPalset], a
 	ret
 
-
-
 .BrightnessLevels:
 ; actual palettes used when time is
 ; EVE_F, NITE_F, DAY_F, MORN_F
-	dc EVE_F, 		 NITE_F,     DAY_F,			 MORN_F			; PALLETE_AUTO
+	dc EVE_F, 	   NITE_F,     DAY_F,	   MORN_F	  ; PALLETE_AUTO
 	dc DAY_F,      DAY_F,      DAY_F,      DAY_F      ; PALETTE_DAY
 	dc NITE_F,     NITE_F,     NITE_F,     NITE_F     ; PALETTE_NITE
 	dc MORN_F,     MORN_F,     MORN_F,     MORN_F     ; PALETTE_MORN
-	dc EVE_F, 		 EVE_F,		   EVE_F, 		 EVE_F 			; PALETTE_EVE
+	dc EVE_F, 	   EVE_F,	   EVE_F, 	   EVE_F 	  ; PALETTE_EVE
 
 GetTimePalette:
 	jumptable .TimePalettes, wTimeOfDay

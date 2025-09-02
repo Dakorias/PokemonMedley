@@ -2146,9 +2146,9 @@ AI_Smart_RainDance:
 ; Particularly, if the player is a Water-type.
 	ld a, [wBattleMonType1]
 	cp WATER
-	jr z, AIBadWeatherType
+	jp z, AIBadWeatherType
 	cp FIRE
-	jr z, AIGoodWeatherType
+	jp z, AIGoodWeatherType
 
 	ld a, [wBattleMonType2]
 	cp WATER

@@ -191,7 +191,6 @@ endr
 	push de
 	call CheckCaughtMon
 	ld a, [wTempSpecies]
-	dec a
 	call SetSeenAndCaughtMon
 	pop de
 
@@ -452,6 +451,18 @@ AddTempmonToParty:
 
 	ld a, [wCurPartySpecies]
 	ld [wNamedObjectIndex], a
+	cp EGG
+	jr z, .egg
+	call SetSeenAndCaughtMon
+	ld hl, wPartyMon1Happiness
+	ld a, [wPartyCount]
+	dec a
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
+	ld [hl], BASE_HAPPINESS
+.egg
+
+	ld a, [wCurPartySpecies]
 	call GetPokemonIndexFromID
 	ld a, l
 	sub LOW(UNOWN)
@@ -466,18 +477,6 @@ AddTempmonToParty:
 			cp HIGH(UNOWN)
 		endc
 	endc
-	jr z, .egg
-	call SetSeenAndCaughtMon
-	ld hl, wPartyMon1Happiness
-	ld a, [wPartyCount]
-	dec a
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	ld [hl], BASE_HAPPINESS
-.egg
-
-	ld a, [wCurPartySpecies]
-	cp UNOWN
 	jr nz, .done
 	ld hl, wPartyMon1DVs
 	ld a, [wPartyCount]
@@ -668,6 +667,7 @@ SendMonIntoBox:
 ; the data comes mainly from 'wEnemyMon:'
 	newfarcall NewStorageBoxPointer
 	jr nc, .not_full
+
 	and a
 	ret
 
@@ -755,16 +755,14 @@ SendMonIntoBox:
 	call GetPokemonIndexFromID
 	ld a, l
 	sub LOW(UNOWN)
+	jr nz, .not_unown
 	if HIGH(UNOWN) == 0
 		or h
+	elif HIGH(UNOWN) == 1
+		dec h
 	else
-		jr nz, .done
-		if HIGH(UNOWN) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(UNOWN)
-		endc
+		ld a, h
+		cp HIGH(UNOWN)
 	endc
 	jr nz, .not_unown
 	ld hl, wBufferMonDVs
@@ -884,6 +882,7 @@ String_Egg:
 
 RemoveMonFromParty:
 	ld hl, wPartyCount
+
 	ld a, [hl]
 	dec a
 	ld [hli], a
@@ -1062,7 +1061,7 @@ CalcMonStatC:
 	jr z, .no_stat_exp
 	add hl, bc
 	ld a, [hl]
-	ld b, a
+    ld b, a
 
 .no_stat_exp
 	pop hl

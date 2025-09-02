@@ -9,10 +9,10 @@
 	const TRAINERCARDSTATE_QUIT          ; 6
 
 TrainerCard:
-	ld a, [wVramState]
+	ld a, [wStateFlags]
 	push af
 	xor a
-	ld [wVramState], a
+	ld [wStateFlags], a
 	ld hl, wOptions
 	ld a, [hl]
 	push af
@@ -22,7 +22,7 @@ TrainerCard:
 	call UpdateTime
 	call JoyTextDelay
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .quit
 	ldh a, [hJoyLast]
 	and B_BUTTON
@@ -35,7 +35,7 @@ TrainerCard:
 	pop af
 	ld [wOptions], a
 	pop af
-	ld [wVramState], a
+	ld [wStateFlags], a
 	ret
 
 .InitRAM:
@@ -98,7 +98,7 @@ TrainerCard_IncrementJumptable:
 
 TrainerCard_Quit:
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 TrainerCard_Page1_LoadGFX:

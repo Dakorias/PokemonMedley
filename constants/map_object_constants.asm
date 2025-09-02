@@ -45,7 +45,7 @@ DEF OW_RIGHT EQU RIGHT << 2
 
 ; object_struct OBJECT_FLAGS1 bit flags
 	const_def
-  shift_const INVISIBLE     ; 0
+	shift_const INVISIBLE     ; 0
 	shift_const WONT_DELETE   ; 1
 	shift_const FIXED_FACING  ; 2
 	shift_const SLIDING       ; 3
@@ -56,7 +56,7 @@ DEF OW_RIGHT EQU RIGHT << 2
 
 ; object_struct OBJECT_FLAGS2 bit flags
 	const_def
-  shift_const LOW_PRIORITY   ; 0
+	shift_const LOW_PRIORITY   ; 0
 	shift_const HIGH_PRIORITY  ; 1
 	shift_const BOULDER_MOVING ; 2
 	shift_const OVERHEAD       ; 3
@@ -67,12 +67,12 @@ DEF OW_RIGHT EQU RIGHT << 2
 
 ; object_struct OBJECT_PALETTE bit flags
 	const_def 5
-  shift_const SWIMMING         ; 5
+	shift_const SWIMMING         ; 5
 	shift_const STRENGTH_BOULDER ; 6
 	shift_const BIG_OBJECT       ; 7
 
 ; facing attribute bit flags
-  const_def 1
+	const_def 1
 	shift_const RELATIVE_ATTRIBUTES ; 1
 	shift_const ABSOLUTE_TILE_ID    ; 2
 
@@ -238,7 +238,6 @@ DEF NUM_STEP_TYPES EQU const_value
 	const OBJECT_ACTION_BOULDER_DUST  ; 0e
 	const OBJECT_ACTION_GRASS_SHAKE   ; 0f
 	const OBJECT_ACTION_SKYFALL       ; 10
-  const OBJECT_ACTION_RUN           ; 11
 DEF NUM_OBJECT_ACTIONS EQU const_value
 
 ; Facings indexes (see data/sprites/facings.asm)
@@ -281,11 +280,10 @@ DEF NUM_FACINGS EQU const_value
 	const_def
 	const STEP_SLOW          ; 0
 	const STEP_WALK          ; 1
-  const STEP_RUN           ; 2
-	const STEP_BIKE          ; 3
-	const STEP_LEDGE         ; 4
-	const STEP_ICE           ; 5
-	const STEP_TURN          ; 6
-	const STEP_BACK_LEDGE    ; 7
-	const STEP_WALK_IN_PLACE ; 8
+	const STEP_BIKE          ; 2
+	const STEP_LEDGE         ; 3
+	const STEP_ICE           ; 4
+	const STEP_TURN          ; 5
+	const STEP_BACK_LEDGE    ; 6
+	const STEP_WALK_IN_PLACE ; 7
 DEF NUM_STEPS EQU const_value

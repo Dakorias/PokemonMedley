@@ -157,7 +157,7 @@ HeraldRouteGrottoEntryScript:
 	closetext
 	playsound SFX_ENTER_DOOR
 	pause 5
-	special FadeOutPalettes
+	special FadeOutToWhite
 	warp HERALD_GROTTO, 2, 13
 	end
 

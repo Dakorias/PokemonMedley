@@ -10,6 +10,7 @@ NPCTrade::
 	call GetPokemonIDFromIndex
 	ld l, LOCKED_MON_ID_TRADE_SEND
 	call LockPokemonID
+
 	ld e, NPCTRADE_GETMON
 	call GetTradeAttr
 	ld a, [hli]

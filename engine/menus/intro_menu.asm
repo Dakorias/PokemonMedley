@@ -63,7 +63,7 @@ NewGame:
 	ld [wDebugFlags], a
 	call ResetWRAM
 	call NewGame_ClearTilemapEtc
-	call AreYouABoyOrAreYouAGirl
+	call PlayerProfileSetup
 	call OakSpeech
 	call InitializeWorld
 
@@ -77,15 +77,15 @@ NewGame:
 	ldh [hMapEntryMethod], a
 	jp FinishContinueFunction
 
-AreYouABoyOrAreYouAGirl:
-	farcall Mobile_AlwaysReturnNotCarry ; mobile
+PlayerProfileSetup:
+	farcall CheckMobileAdapterStatus
 	jr c, .ok
 	farcall InitGender
 	ret
 
 .ok
 	ld c, 0
-	farcall InitMobileProfile ; mobile
+	farcall InitMobileProfile
 	ret
 
 if DEF(_DEBUG)
@@ -233,7 +233,7 @@ endc
 
 	farcall DeletePartyMonMail
 
-	farcall DeleteMobileEventIndex
+	farcall ClearGSBallFlag
 
 	call ResetGameTime
 	ret
@@ -374,7 +374,7 @@ PostCreditsSpawn:
 	ret
 
 Continue_MobileAdapterMenu:
-	farcall Mobile_AlwaysReturnNotCarry ; mobile check
+	farcall CheckMobileAdapterStatus
 	ret nc
 
 ; the rest of this stuff is never reached because
@@ -408,9 +408,9 @@ ConfirmContinue:
 	call DelayFrame
 	call GetJoypad
 	ld hl, hJoyPressed
-	bit A_BUTTON_F, [hl]
+	bit A_BUTTON, [hl]
 	jr nz, .PressA
-	bit B_BUTTON_F, [hl]
+	bit B_BUTTON, [hl]
 	jr z, .loop
 	scf
 	ret
@@ -1164,7 +1164,7 @@ TitleScreenMain:
 ; Keep Select pressed, and hold Left + Up.
 ; Then let go of Select.
 .check_clock_reset
-	bit SELECT_F, [hl]
+	bit SELECT, [hl]
 	jr nz, .check_start
 
 	xor a

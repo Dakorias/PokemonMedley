@@ -228,16 +228,16 @@ WaitSFX::
 
 .wait
 	ld hl, wChannel5Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .wait
 	ld hl, wChannel6Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .wait
 	ld hl, wChannel7Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .wait
 	ld hl, wChannel8Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .wait
 
 	pop hl
@@ -249,16 +249,16 @@ IsSFXPlaying::
 	push hl
 
 	ld hl, wChannel5Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .playing
 	ld hl, wChannel6Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .playing
 	ld hl, wChannel7Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .playing
 	ld hl, wChannel8Flags1
-	bit 0, [hl]
+	bit SOUND_CHANNEL_ON, [hl]
 	jr nz, .playing
 
 	pop hl
@@ -458,16 +458,16 @@ GetMapMusic_MaybeSpecial::
 CheckSFX::
 ; Return carry if any SFX channels are active.
 	ld a, [wChannel5Flags1]
-	bit 0, a
+	bit SOUND_CHANNEL_ON, a
 	jr nz, .playing
 	ld a, [wChannel6Flags1]
-	bit 0, a
+	bit SOUND_CHANNEL_ON, a
 	jr nz, .playing
 	ld a, [wChannel7Flags1]
-	bit 0, a
+	bit SOUND_CHANNEL_ON, a
 	jr nz, .playing
 	ld a, [wChannel8Flags1]
-	bit 0, a
+	bit SOUND_CHANNEL_ON, a
 	jr nz, .playing
 	and a
 	ret

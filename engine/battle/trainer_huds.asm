@@ -125,8 +125,8 @@ DrawPlayerPartyIconHUDBorder:
 	jr PlaceHUDBorderTiles
 
 .tiles
-	db $7c ; right side
-	db $7c ; bottom right
+	db $73 ; right side
+	db $5c ; bottom right
 	db $6f ; bottom left
 	db $76 ; bottom side
 .tiles_end
@@ -146,14 +146,14 @@ DrawEnemyHUDBorder:
 	call CheckCaughtMon
 	ret z
 	hlcoord 1, 1
-	ld [hl], $74
+	ld [hl], $5d
 	ret
 
 .tiles
-	db $7c ; left side
-	db $7c ; bottom left
-	db $7c ; bottom right
-	db $7c ; bottom side
+	db $6d ; left side
+	db $74 ; bottom left
+	db $78 ; bottom right
+	db $76 ; bottom side
 .tiles_end
 
 PlaceHUDBorderTiles:
@@ -209,7 +209,7 @@ LoadTrainerHudOAM:
 	ld [hli], a ; x
 	ld a, [de]
 	ld [hli], a ; tile id
-	ld a, PAL_BATTLE_OB_GREEN
+	ld a, PAL_BATTLE_OB_YELLOW
 	ld [hli], a ; attributes
 	ld a, [wPlaceBallsX]
 	ld b, a

@@ -19,10 +19,10 @@ ReadTrainerParty:
 	call ByteFill
 
 	ld a, [wOtherTrainerClass]
-	cp HARRISON
+	cp POKEMON_PROF
 	jr nz, .not_cal2
 	ld a, [wOtherTrainerID]
-	cp HARRISON
+	cp POKEMON_PROF
 	jr z, .cal2
 	ld a, [wOtherTrainerClass]
 .not_cal2
@@ -55,6 +55,7 @@ ReadTrainerParty:
 	jr .skip_trainer
 .got_trainer
 	inc hl
+
 .skip_name
 	call GetNextTrainerDataByte
 	cp "@"
@@ -82,6 +83,7 @@ ReadTrainerParty:
 ReadTrainerPartyPieces:
 	ld h, d
 	ld l, e
+
 .loop
 	call GetNextTrainerDataByte
 	cp $ff
@@ -97,11 +99,13 @@ ReadTrainerPartyPieces:
 	ld l, a
 	call GetPokemonIDFromIndex
 	ld [wCurPartySpecies], a
+
 	ld a, OTPARTYMON
 	ld [wMonType], a
 	predef TryAddMonToParty
 	pop hl
 	inc hl ;because hl was pushed before the last call to GetNextTrainerDataByte
+
 	ld a, [wOtherTrainerType]
 	and TRAINERTYPE_ITEM
 	jr z, .no_item
@@ -115,8 +119,8 @@ ReadTrainerPartyPieces:
 	pop hl
 	call GetNextTrainerDataByte
 	ld [de], a
-
 .no_item
+
 	ld a, [wOtherTrainerType]
 	rra ; TRAINERTYPE_MOVES_F == 0
 	jr nc, .no_moves
@@ -128,8 +132,8 @@ ReadTrainerPartyPieces:
 	ld d, h
 	ld e, l
 	pop hl
-	ld b, NUM_MOVES
 
+	ld b, NUM_MOVES
 .copy_moves
 	call GetNextTrainerDataByte
 	push hl
@@ -178,11 +182,11 @@ ReadTrainerPartyPieces:
 	inc de
 	dec b
 	jr nz, .copy_pp
-
 .copied_pp
-	pop hl
 
+	pop hl
 .no_moves
+
 	jp .loop
 
 ComputeTrainerReward:
@@ -221,7 +225,7 @@ Battle_GetTrainerName::
 
 GetTrainerName::
 	ld a, c
-	cp HARRISON
+	cp POKEMON_PROF
 	jr nz, .not_cal2
 
 	ld a, BANK(sMysteryGiftTrainerHouseFlag)
@@ -255,6 +259,7 @@ GetTrainerName::
 .loop
 	dec b
 	jr z, .done
+
 	ld a, [wTrainerGroupBank]
 	call GetFarByte
 	add a, l

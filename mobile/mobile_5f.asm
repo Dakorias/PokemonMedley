@@ -77,7 +77,7 @@ Function17c000:
 	ldh [rVBK], a
 
 	call EnableLCD
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	ret
 
 HaveWantGFX:
@@ -420,7 +420,6 @@ Function17d1f1:
 
 	ld a, [wUnownLetter]
 	ld [wFirstUnownSeen], a
-
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -486,8 +485,8 @@ MenuHeader_17d26a:
 MenuData_17d272:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4
-	db "ニュース¯よみこむ@"
-	db "ニュース¯みる@"
+	db "ニュース<WO>よみこむ@"
+	db "ニュース<WO>みる@"
 	db "せつめい@"
 	db "やめる@"
 
@@ -614,7 +613,7 @@ Function17d370:
 	call ClearBGPalettes
 	call ClearSprites
 	call ClearScreen
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	call DisableLCD
 	ld hl, vTiles0 tile $ee
 	ld de, wc608
@@ -659,7 +658,7 @@ Function17d3f6:
 	call ClearBGPalettes
 	call ClearSprites
 	call ClearScreen
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 
 Function17d405:
 	call DisableLCD
@@ -704,7 +703,7 @@ Function17d45a:
 	bit 7, a
 	jr nz, .asm_17d46f
 	call Function17d474
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	jr .asm_17d45a
 
 .asm_17d46f
@@ -903,7 +902,7 @@ Function17d48d:
 	call Function17e451
 	call Function17e55b
 	call Function17e5af
-	farcall ReloadMapPart
+	farcall HDMATransferTilemapAndAttrmap_Overworld
 	jp Function17e438
 
 Function17d5be:
@@ -2843,7 +2842,7 @@ IncCrashCheckPointer_SaveChecksum:
 	inc_crash_check_pointer_farcall SaveChecksum
 
 IncCrashCheckPointer_SaveTrainerRankingsChecksum:
-	inc_crash_check_pointer_farcall UpdateTrainerRankingsChecksum2, BackupMobileEventIndex
+	inc_crash_check_pointer_farcall UpdateTrainerRankingsChecksum2, BackupGSBallFlag
 
 Function17e3e0:
 	call IncCrashCheckPointer
@@ -4311,7 +4310,7 @@ DisplayMobileError:
 	call JoyTextDelay
 	call .RunJumptable
 	ld a, [wc303]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .quit
 	farcall HDMATransferAttrmapAndTilemapToWRAMBank3
 	jr .loop
@@ -5010,7 +5009,7 @@ Function17ff23:
 	xor a
 	ld [wMusicFadeID + 1], a
 	ld hl, wc303
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 Function17ff3c:

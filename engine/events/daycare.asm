@@ -491,7 +491,7 @@ DayCare_GiveEgg:
 	call AddNTimes
 	ld b, h
 	ld c, l
-	ld hl, MON_ID + 1
+	ld hl, MON_OT_ID + 1
 	add hl, bc
 	push hl
 	ld hl, MON_MAXHP
@@ -592,7 +592,6 @@ DayCare_InitBreeding:
 	callfar GetLowestEvolutionStage
 	ld a, EGG_LEVEL
 	ld [wCurPartyLevel], a
-
 	call Daycare_CheckAlternateOffspring
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
@@ -748,6 +747,7 @@ Daycare_CheckAlternateOffspring:
 .done
 	pop hl
 	ret
+
 .alternate_offspring_table
 	dw NIDORAN_F, NIDORAN_M
 	dw -1

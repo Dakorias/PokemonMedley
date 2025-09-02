@@ -12,5 +12,4 @@ ResidualMoves:
 	dw CONVERSION
 	dw SUBSTITUTE
 	dw SPIKES
-	dw WILL_O_WISP
 	dw -1 ; end

@@ -62,6 +62,7 @@ CheckOwnMonAnywhere:
 .loop
 	newfarcall GetStorageBoxMon
 	jr z, .next
+
 	; Check if the species is correct
 	ld hl, wBufferMonAltSpecies ; TODO : fix species
 	ld a, [wScriptVar]
@@ -102,7 +103,6 @@ CheckOwnMonAnywhere:
 	; Failed to find a matching mon
 	xor a
 	ret
-
 
 UpdateOTPointer:
 	push hl

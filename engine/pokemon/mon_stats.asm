@@ -177,28 +177,17 @@ GetGender:
 
 .DVs:
 ; Attack DV
-	ld a, [hl]
-	cpl
-	and $10
-	swap a
-	ld b, a  ; ~(Atk DV & 1) << 1
-; Defense DV
 	ld a, [hli]
-	and $1
-	add a
-	add a
-	or b
-	ld b, a  ; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2
-; Special DV
+	and $f0
+	ld b, a
+; Speed DV
 	ld a, [hl]
-	cpl
-	and $1
-	add a
-	add a
-	add a
-	or b
+	and $f0
 	swap a
-	ld b, a  ; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2 | ~(Spc DV & 1) << 3
+
+; Put our DVs together.
+	or b
+	ld b, a
 
 ; We need the gender ratio to do anything with this.
 	push bc
