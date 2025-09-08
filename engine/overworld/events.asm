@@ -132,12 +132,8 @@ EnterMap:
 	ld [wMapStatus], a
 	ret
 
-UnusedWait30Frames: ; unreferenced
-	ld c, 30
-	call DelayFrames
-	ret
-
 HandleMap:
+	call ResetOverworldDelay
 	call HandleMapTimeAndJoypad
 	call HandleCmdQueue
 	call MapEvents
@@ -151,24 +147,42 @@ HandleMap:
 	call NextOverworldFrame
 	call HandleMapBackground
 	call CheckPlayerState
-	xor a
 	ret
 
 MapEvents:
 	ld a, [wMapEventStatus]
-	and a
-	ret nz
+	ld hl, .Jumptable
+	rst JumpTable
+	ret
+
+.Jumptable:
+; entries correspond to MAPEVENTS_* constants
+	dw .events
+	dw .no_events
+
+.events:
 	call PlayerEvents
 	call DisableEvents
 	farcall ScriptEvents
 	ret
 
+.no_events:
+	ret
+
+MaxOverworldDelay:
+	db 1
+
+ResetOverworldDelay:
+	ld a, [MaxOverworldDelay]
+	ld [wOverworldDelay], a
+	ret
+
 NextOverworldFrame:
 	ld a, [wOverworldDelay]
-	inc a
-	jp nz, DelayFrame
-	xor a
-	ld [wOverworldDelay], a
+	and a
+	ret z
+	ld c, a
+	call DelayFrames
 	ret
 
 HandleMapTimeAndJoypad:
