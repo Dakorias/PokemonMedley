@@ -130,7 +130,7 @@ AddOutdoorSprites:
 	ld l, a
 .loop
 	ld a, [hli]
-	add a
+	and a
 	ret z
 	call AddSpriteGFX
 	jr .loop

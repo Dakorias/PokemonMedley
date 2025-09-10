@@ -1327,6 +1327,11 @@ BattleCommand_Critical:
 	ld [wCriticalHit], a
 	ret
 
+GetNextTypeMatchupsByte:
+   ld a, BANK(TypeMatchups)
+   call GetFarByte
+   ret
+
 BattleCommand_Stab:
 ; STAB = Same Type Attack Bonus
 	ld a, BATTLE_VARS_MOVE_ANIM
@@ -1411,7 +1416,8 @@ BattleCommand_Stab:
 	ld hl, TypeMatchups
 
 .TypesLoop:
-	ld a, [hli]
+	call GetNextTypeMatchupsByte
+    inc hl
 
 	cp -1
 	jr z, .end
@@ -1429,7 +1435,7 @@ BattleCommand_Stab:
 .SkipForesightCheck:
 	cp b
 	jr nz, .SkipType
-	ld a, [hl]
+	call GetNextTypeMatchupsByte
 	cp d
 	jr z, .GotMatchup
 	cp e
@@ -1444,7 +1450,7 @@ BattleCommand_Stab:
 	and %10000000
 	ld b, a
 ; If the target is immune to the move, treat it as a miss and calculate the damage as 0
-	ld a, [hl]
+	call GetNextTypeMatchupsByte
 	and a
 	jr nz, .NotImmune
 	inc a
@@ -1580,7 +1586,8 @@ CheckTypeMatchup:
 	ld [wTypeMatchup], a
 	ld hl, TypeMatchups
 .TypesLoop:
-	ld a, [hli]
+	call GetNextTypeMatchupsByte
+    inc hl
 	cp -1
 	jr z, .End
 	cp -2
@@ -1594,7 +1601,8 @@ CheckTypeMatchup:
 .Next:
 	cp d
 	jr nz, .Nope
-	ld a, [hli]
+	call GetNextTypeMatchupsByte
+    inc hl
 	cp b
 	jr z, .Yup
 	cp c
@@ -1612,7 +1620,8 @@ CheckTypeMatchup:
 	ldh [hDividend + 0], a
 	ldh [hMultiplicand + 0], a
 	ldh [hMultiplicand + 1], a
-	ld a, [hli]
+	call GetNextTypeMatchupsByte
+    inc hl
 	ldh [hMultiplicand + 2], a
 	ld a, [wTypeMatchup]
 	ldh [hMultiplier], a
