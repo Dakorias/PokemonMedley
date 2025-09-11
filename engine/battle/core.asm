@@ -8417,14 +8417,6 @@ InitEnemyTrainer:
 	callfar GetTrainerAttributes
 	callfar ReadTrainerParty
 
-	; RIVALP's first mon has no held item
-	ld a, [wTrainerClass]
-	cp POKEMON_PROF
-	jr nz, .ok
-	xor a
-	ld [wOTPartyMon1Item], a
-
-.ok
 	ld de, vTiles2
 	callfar GetTrainerPic
 	xor a

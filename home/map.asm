@@ -109,7 +109,6 @@ LoadOverworldTilemap::
 	rst Bankswitch
 	call LoadMetatileAttributes
 
-
 	ld a, BANK(_LoadOverworldTilemap)
 	rst Bankswitch
 	call _LoadOverworldTilemap
@@ -134,6 +133,7 @@ _LoadMetatilesOrAttributes:
 	inc de
 	ld a, [de]
 	ld [wTilesetDataAddress + 1], a
+	
 	; de <- wOverworldMapAnchor
 	ld a, [wOverworldMapAnchor]
 	ld e, a

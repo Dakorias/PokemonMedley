@@ -65,21 +65,21 @@ ENDM
 	endgroup
 
 	newgroup HERALD_COVE                                          ;  5
-	map_const HERALD_COVE,																 20, 12 ;  1
-	map_const HERALD_ROUTE,																 30, 12 ;  2
-	map_const HERALD_LAB,							       							  7,  5 ;  3
-	map_const HERALD_POKECENTER,				 										7,  4 ;  4
-	map_const HERALD_GYM,							       							  5,  4 ;  5
-	map_const HERALD_HOUSE,														  		5,  4 ;  6
-	map_const HERALD_PORT,														   		8,  6 ;  7
+	map_const HERALD_COVE,								    20, 12 ; 1
+	map_const HERALD_ROUTE,									30, 12 ; 2
+	map_const HERALD_LAB,							       	7,  5 ;  3
+	map_const HERALD_POKECENTER,				 			7,  4 ;  4
+	map_const HERALD_GYM,							       	5,  4 ;  5
+	map_const HERALD_HOUSE,									5,  4 ;  6
+	map_const HERALD_PORT,									8,  6 ;  7
 	map_const PLAYERS_HOUSE_1F,                             5,  4 ;  8
 	map_const PLAYERS_HOUSE_2F,                             4,  3 ;  9
-	map_const REGISTRATION_CENTER,							 						5,  5 ; 10
-	map_const HERALD_GROTTO,																4,  8 ; 11
-	map_const HERALD_BAY,																	 29, 20 ; 12
-	map_const HERALD_BAY_HOUSE,														 5,  4  ; 13
-	map_const CRAGGY_BEACH,																 14, 40 ; 14
-	map_const RUGGED_CLIFF_GROTTO, 												 12, 11 ; 15
+	map_const REGISTRATION_CENTER,							5,  5 ; 10
+	map_const HERALD_GROTTO,								4,  8 ; 11
+	map_const HERALD_BAY,									29, 20 ; 12
+	map_const HERALD_BAY_HOUSE,								5,  4  ; 13
+	map_const CRAGGY_BEACH,									14, 40 ; 14
+	map_const RUGGED_CLIFF_GROTTO, 							12, 11 ; 15
 	endgroup
 
 	newgroup CRAGGY_COAST																					; 6
