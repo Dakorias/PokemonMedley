@@ -102,7 +102,7 @@ ENDM
 	connection west, HeraldRoute, HERALD_ROUTE, -3
 
 	map_attributes HeraldRoute, HERALD_ROUTE, $35, NORTH | SOUTH | EAST
-	connection north, CraggyBeach, CRAGGY_BEACH, 15
+	connection north, CraggyBeach, CRAGGY_BEACH, 13
 	connection south, HeraldBay, HERALD_BAY, 0
 	connection east, HeraldCove, HERALD_COVE, 3
 
@@ -111,7 +111,7 @@ ENDM
 
 	map_attributes CraggyBeach, CRAGGY_BEACH, $35, NORTH | SOUTH
 	connection north, CraggyCoast, CRAGGY_COAST, 0
-	connection south, HeraldRoute, HERALD_ROUTE, -15
+	connection south, HeraldRoute, HERALD_ROUTE, -13
 
 	map_attributes CraggyCoast, CRAGGY_COAST, $35, NORTH | SOUTH
 	connection north, ScenicBluff, SCENIC_BLUFF, 5

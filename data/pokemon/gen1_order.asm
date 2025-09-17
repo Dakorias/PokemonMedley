@@ -13,7 +13,7 @@ Pokered_MonIndices:
 	db WOOPER
 	db EXEGGCUTE
 	db WOOPER
-	db GENGAR
+	db WOOPER
 	db WOOPER
 	db WOOPER
 	db WOOPER
@@ -146,7 +146,7 @@ Pokered_MonIndices:
 	db WOOPER
 	db WOOPER
 	db HITMONTOP ; MISSINGNO.
-	db HAUNTER
+	db WOOPER
 	db ABRA
 	db ALAKAZAM
 	db PIDGEOTTO

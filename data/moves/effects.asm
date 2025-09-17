@@ -2387,3 +2387,30 @@ FutureSight:
 	checkfaint
 	buildopponentrage
 	endmove
+
+BeatUp:
+	checkobedience
+	usedmovetext
+	movedelay
+	doturn
+	startloop
+	lowersub
+	checkhit
+	critical
+	beatup
+	damagecalc
+	damagevariation
+	clearmissdamage
+	moveanimnosub
+	failuretext
+	applydamage
+	criticaltext
+	cleartext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	endloop
+	raisesub
+	kingsrock
+	endmove
+	

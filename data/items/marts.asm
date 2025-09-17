@@ -394,6 +394,7 @@ MartHeraldCove:
 	db 2 ; # items
 	db POKE_BALL
 	db POTION
+	db ANTIDOTE
 	db -1 ; end
 
 MartHeraldBerries:

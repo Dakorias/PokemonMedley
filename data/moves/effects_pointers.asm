@@ -177,4 +177,5 @@ MoveEffectsPointers:
 	dw Yawn
 	dw AquaRing
 	dw FutureSight
+	dw BeatUp
 	assert_table_length NUM_MOVE_EFFECTS

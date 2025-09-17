@@ -188,4 +188,5 @@ BattleCommandPointers:
 	dw BattleCommand_Tailwind
 	dw BattleCommand_FutureSight
 	dw BattleCommand_CheckFutureSight
+	dw BattleCommand_BeatUp
 	assert_table_length NUM_EFFECT_COMMANDS

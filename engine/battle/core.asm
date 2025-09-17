@@ -641,6 +641,8 @@ ParsePlayerAction:
 	bit SUBSTATUS_ENCORED, [hl]
 	jr z, .not_encored
 	ld a, [wLastPlayerMove]
+	and a
+	jr z, .not_encored
 	ld [wCurPlayerMove], a
 	jr .encored
 
@@ -826,7 +828,7 @@ TryEnemyFlee:
 	ld de, 2
 	ld hl, AlwaysFleeMons
 	call IsInWordArray
-	jr c, .Flee
+	jr c, .Stay
 
 	call BattleRandom
 	add a, a
@@ -837,7 +839,7 @@ TryEnemyFlee:
 	ld hl, OftenFleeMons
 	call IsInWordArray
 	pop de
-	jr c, .Flee
+	jr c, .Stay
 
 	ld a, d
 	cp 20 percent ; double the value because of the previous add a, a
@@ -846,14 +848,14 @@ TryEnemyFlee:
 	ld de, 2
 	ld hl, SometimesFleeMons
 	call IsInWordArray
-	jr c, .Flee
+	jr c, .Stay
 
 .Stay:
 	and a
 	ret
 
 .Flee:
-	scf
+;	scf
 	ret
 
 INCLUDE "data/wild/flee_mons.asm"
