@@ -84,7 +84,7 @@ ENDM
 
 	newgroup CRAGGY_COAST																					; 6
 	map_const CRAGGY_COAST,																 20, 16 ; 1
-	map_const SCENIC_BLUFF, 													   	 18, 26 ; 2
+	map_const SCENIC_BLUFF, 													   	 18, 36 ; 2
 	map_const MT_MONEGO, 															     14, 16 ; 3
 	map_const MT_MONEGO_B1F,															 12, 12 ; 4
 	map_const CRAGGY_COAST_HOUSE1,													5,  4 ; 5
