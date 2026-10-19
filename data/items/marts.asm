@@ -391,10 +391,27 @@ MartUnderground:
 	db -1 ; end
 
 MartHeraldCove:
-	db 2 ; # items
+	db 20 ; # items
 	db POKE_BALL
 	db POTION
 	db ANTIDOTE
+	db RESCUE_BALL
+	db DUSK_BALL
+	db DAWN_BALL
+	db TIMER_BALL
+	db SPEED_BALL
+	db SHINY_BALL
+	db VIRAL_BALL
+	db FORTUNE_BALL
+	db METRONOME_I
+	db DREAM_BERRY
+	db CHOICE_BAND
+	db FOCUS_SASH
+	db LIFE_ORB
+	db ROCKY_HELMET
+	db LOADED_DICE
+	db SHELL_BELL
+	db WKNESSPOLICY
 	db -1 ; end
 
 MartHeraldBerries:
