@@ -20,7 +20,6 @@ RuggedCliffGrottoButterfree:
 
 .GiovanniFinish
 	moveobject RUGGED_CLIFF_GROTTO_GIOVANNI, 21, 12
-	appear HERALD_LAB_PERCY
 	playsound SFX_EXIT_BUILDING
 	appear RUGGED_CLIFF_GROTTO_GIOVANNI
 	opentext
@@ -77,7 +76,6 @@ RuggedCliffGrotto_MapEvents:
 	def_coord_events
 
 	def_bg_events
-	bg_event 22, 30, BGEVENT_READ, RuggedCliffGrottoSignScript
 
 	def_object_events
 	object_event 21, 15, SPRITE_BUTTERFREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_ITEMBALL, 0, RuggedCliffGrottoButterfree, EVENT_RUGGED_CLIFF_GROTTO_FINISH

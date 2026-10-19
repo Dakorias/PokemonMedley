@@ -186,12 +186,12 @@ NextOverworldFrame:
 	ret
 
 HandleMapTimeAndJoypad:
+	call GetJoypad
 	ld a, [wMapEventStatus]
 	cp MAPEVENTS_OFF
 	ret z
 
 	call UpdateTime
-	call GetJoypad
 	call TimeOfDayPals
 	ret
 
