@@ -166,6 +166,7 @@ SECTION "bank10", ROMX
 
 INCLUDE "data/moves/moves.asm"
 INCLUDE "engine/pokemon/evolve.asm"
+INCLUDE "engine/events/teachytv.asm"
 
 
 SECTION "bank11", ROMX

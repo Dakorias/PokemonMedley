@@ -61,7 +61,7 @@ BattleCommandPointers:
 	dw BattleCommand_CheckCharge
 	dw BattleCommand_TrapTarget
 	dw BattleCommand_Defog
-	dw BattleCommand_Curl
+	dw BattleCommand_Roost
 	dw BattleCommand_Curl
 	dw BattleCommand_ConstantDamage
 	dw BattleCommand_Counter
@@ -189,4 +189,8 @@ BattleCommandPointers:
 	dw BattleCommand_FutureSight
 	dw BattleCommand_CheckFutureSight
 	dw BattleCommand_BeatUp
+	dw BattleCommand_Taunt
+	dw BattleCommand_Yawn
+	dw BattleCommand_AquaRing
+	dw BattleCommand_FangHit
 	assert_table_length NUM_EFFECT_COMMANDS

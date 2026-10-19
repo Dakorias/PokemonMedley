@@ -31,6 +31,97 @@ DoSleep:
 	sleeptarget
 	endmove
 
+
+Roost:
+	checkobedience
+	usedmovetext
+	doturn
+	roost
+	heal
+	endmove
+
+FangHit:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	fanghit
+	kingsrock
+	endmove
+
+PhantomForce:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	kingsrock
+	endmove
+
+Taunt:
+	checkobedience
+	usedmovetext
+	doturn
+	taunt
+	endmove
+
+Tailwind:
+	checkobedience
+	usedmovetext
+	doturn
+	tailwind
+	endmove
+
+BanefulBunker:
+	checkobedience
+	usedmovetext
+	doturn
+	protect
+	endmove
+
+SpikyShield:
+	checkobedience
+	usedmovetext
+	doturn
+	protect
+	endmove
+
+Yawn:
+	checkobedience
+	usedmovetext
+	doturn
+	yawn
+	endmove
+
+AquaRing:
+	checkobedience
+	usedmovetext
+	doturn
+	aquaring
+	endmove
 PoisonHit:
 	checkobedience
 	usedmovetext
@@ -2341,32 +2432,6 @@ ClearSmog:
 	supereffectivetext
 	checkfaint
 	resetstats
-	buildopponentrage
-	kingsrock
-	endmove
-
-PhantomForce:
-Taunt:
-Tailwind:
-BanefulBunker:
-SpikyShield:
-Yawn:
-AquaRing:
-	checkobedience
-	usedmovetext
-	doturn
-	critical
-	damagestats
-	damagecalc
-	stab
-	damagevariation
-	checkhit
-	moveanim
-	failuretext
-	applydamage
-	criticaltext
-	supereffectivetext
-	checkfaint
 	buildopponentrage
 	kingsrock
 	endmove

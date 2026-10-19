@@ -40,9 +40,11 @@ INCLUDE "engine/battle/move_effects/pursuit.asm"
 INCLUDE "engine/battle/move_effects/quiver_dance.asm"
 INCLUDE "engine/battle/move_effects/rage.asm"
 INCLUDE "engine/battle/move_effects/rain_dance.asm"
+INCLUDE "engine/battle/move_effects/roost.asm"
 INCLUDE "engine/battle/move_effects/rapid_spin.asm"
 INCLUDE "engine/battle/move_effects/return.asm"
 INCLUDE "engine/battle/move_effects/rollout.asm"
+
 INCLUDE "engine/battle/move_effects/safeguard.asm"
 INCLUDE "engine/battle/move_effects/sandstorm.asm"
 INCLUDE "engine/battle/move_effects/selfdestruct.asm"
@@ -66,10 +68,8 @@ INCLUDE "engine/battle/move_effects/uturn.asm"
 INCLUDE "data/battle/accuracy_multipliers.asm"
 INCLUDE "data/battle/critical_hit_chances.asm"
 INCLUDE "data/battle/stat_names.asm"
-INCLUDE "data/moves/brine_power.asm"
 INCLUDE "data/moves/contact_moves.asm"
 INCLUDE "data/moves/critical_hit_moves.asm"
-INCLUDE "data/moves/eruption_power.asm"
 INCLUDE "data/moves/flail_reversal_power.asm"
 INCLUDE "engine/battle/ai/switch.asm"
 
@@ -142,13 +142,12 @@ DoMove:
 	ld a, h
 	ld [wBattleScriptBufferAddress + 1], a
 
-.ReadMoveEffectCommand:
+	.ReadMoveEffectCommand
 ; ld a, [wBattleScriptBufferAddress++]
 	ld a, [wBattleScriptBufferAddress]
 	ld l, a
 	ld a, [wBattleScriptBufferAddress + 1]
 	ld h, a
-
 	ld a, [hli]
 
 	push af
@@ -159,6 +158,12 @@ DoMove:
 	pop af
 
 ; endturn_command (-2) is used to terminate branches without ending the read cycle.
+	cp endmove_command
+	jr nz, .check_endturn
+	push af
+	farcall HandleWhiteHerb
+	pop af
+.check_endturn
 	cp endturn_command
 	ret nc
 
@@ -182,6 +187,10 @@ DoMove:
 .DoMoveEffectCommand:
 	jp hl
 
+CheckTaunt:
+	farcall CheckTauntCore
+	ret
+
 CheckTurn:
 BattleCommand_CheckTurn:
 ; Repurposed as hardcoded turn handling. Useless as a command.
@@ -191,6 +200,8 @@ BattleCommand_CheckTurn:
 	call GetBattleVar
 	and a
 	jp z, EndTurn
+	farcall CheckChoiceLockCore
+	ret c
 
 	xor a
 	ld [wAttackMissed], a
@@ -927,7 +938,7 @@ BattleCommand_CheckObedience:
 	and a
 	jr nz, .GetTotalPP
 
-.CheckMovePP:
+.CheckMovePP
 	ld hl, wBattleMonPP
 	ld a, [wCurMoveNum]
 	ld e, a
@@ -1082,6 +1093,9 @@ BattleCommand_DoTurn:
 	ld a, b
 	and a
 	jp nz, EndMoveEffect
+	farcall RecordHeldMoveUse
+	call CheckTaunt
+	jp c, EndMoveEffect
 
 	; SubStatus5
 	inc de
@@ -1311,7 +1325,6 @@ BattleCommand_Critical:
 	call GetUserItem
 	ld a, b
 	cp HELD_CRITICAL_UP ; Increased critical chance. Only Razor Claw has this.
-	pop bc
 	jr nz, .Tally
 
 ; +1 critical level
@@ -1838,7 +1851,7 @@ BattleCommand_CheckHit:
 
 	ld c, 40
 	call DelayFrames
-
+	farcall ApplyProtectContactRetaliation
 ; 'protecting itself!'
 	ld hl, ProtectingItselfText
 	call StdBattleTextbox
@@ -2261,6 +2274,9 @@ BattleCommand_FailureText:
 	jp EndMoveEffect
 
 .multihit
+	ld a, BATTLE_VARS_SUBSTATUS3
+	call GetBattleVarAddr
+	res SUBSTATUS_IN_LOOP, [hl]
 	call BattleCommand_RaiseSub
 	jp EndMoveEffect
 
@@ -2335,6 +2351,9 @@ BattleCommand_ApplyDamage:
 	call DoPlayerDamage
 
 .done_damage
+	pop bc
+	push bc
+	farcall TryWeaknessPolicy
 	pop bc
 	ld a, b
 	and a
@@ -2589,6 +2608,9 @@ BattleCommand_CheckFaint:
 	call BattleCommand_RaiseSub
 
 .finish
+	ld a, BATTLE_VARS_SUBSTATUS3
+	call GetBattleVarAddr
+	res SUBSTATUS_IN_LOOP, [hl]
 	jp EndMoveEffect
 
 BattleCommand_BuildOpponentRage:
@@ -3173,6 +3195,9 @@ BattleCommand_DamageCalc:
 	and a
 	jp z, .DoneItem
 
+	cp HELD_METRONOME
+	jp z, .Metronome
+
 	cp HELD_LIFE_ORB
 	jr z, .LifeOrb
 
@@ -3199,7 +3224,7 @@ BattleCommand_DamageCalc:
 	ld a, BATTLE_VARS_MOVE_TYPE
 	call GetBattleVar
 	cp b
-	jr nz, .DoneItem
+	jp nz, .DoneItem
 
 ; * 100 + item effect amount
 	ld a, c
@@ -3224,7 +3249,7 @@ BattleCommand_DamageCalc:
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
-	jr .DoneItem
+	jp .DoneItem
 
 .CategoryBoost
 	ld a, BATTLE_VARS_MOVE_TYPE
@@ -3235,12 +3260,12 @@ BattleCommand_DamageCalc:
 	ld a, [hl]
 	cp MUSCLE_BAND
 	jr z, .doCategoryBoost
-	jr .DoneItem
+	jp .DoneItem
 
 .special
 	ld a, [hl]
 	cp WISE_GLASSES
-	jr nz, .DoneItem
+	jp nz, .DoneItem
 
 .doCategoryBoost
 	ld a, 10
@@ -3252,27 +3277,27 @@ BattleCommand_DamageCalc:
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
-	jr .DoneItem
+	jp .DoneItem
 
 .ChoiceBoost
 	ld a, c
 	cp SP_ATTACK
 	jr z, .choice_specs
 	and a
-	jr nz, .DoneItem ; Must be Scarf, so no boost
+	jp nz, .DoneItem ; Must be Scarf, so no boost
 
 ; Choice Band
 	ld a, BATTLE_VARS_MOVE_TYPE
 	call GetBattleVar
 	cp SPECIAL
 	jr c, .doChoiceBoost
-	jr .DoneItem
+	jp .DoneItem
 
 .choice_specs
 	ld a, BATTLE_VARS_MOVE_TYPE
 	call GetBattleVar
 	cp SPECIAL
-	jr c, .DoneItem
+	jp c, .DoneItem
 
 .doChoiceBoost
 	ld a, 50
@@ -3284,6 +3309,11 @@ BattleCommand_DamageCalc:
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
+	jp .DoneItem
+
+.Metronome
+	farcall ApplyMetronomeBoostCore
+	jp .DoneItem
 
 .DoneItem:
 ; Critical hits
@@ -3519,7 +3549,7 @@ BattleCommand_ConstantDamage:
 	ldh [hMultiplicand + 1], a
 	ld a, [hli]
 	ldh [hMultiplicand + 2], a
-	ld a, 48
+	ld a, 150
 	ldh [hMultiplier], a
 	call Multiply
 	ld a, [hli]
@@ -3551,20 +3581,14 @@ BattleCommand_ConstantDamage:
 	ld b, 4
 	call Divide
 	ldh a, [hQuotient + 3]
+	and a
+	jr nz, .eruption_minimum_met
+	inc a
+.eruption_minimum_met
 	ld b, a
-	ld hl, EruptionPower
-
-.eruption_loop
-	ld a, [hli]
-	cp b
-	jr nc, .break_loop_eruption
-	inc hl
-	jr .eruption_loop
-
-.break_loop_eruption
 	ldh a, [hBattleTurn]
 	and a
-	ld a, [hl]
+	ld a, b
 	jp nz, .notPlayersTurn
 
 	ld hl, wPlayerMoveStructPower
@@ -3580,59 +3604,29 @@ BattleCommand_ConstantDamage:
 	jr z, .brine_got_hp
 	ld hl, wBattleMonHP
 .brine_got_hp
-	xor a
-	ldh [hDividend], a
-	ldh [hMultiplicand + 0], a
-	ld a, [hli]
-	ldh [hMultiplicand + 1], a
-	ld a, [hli]
-	ldh [hMultiplicand + 2], a
-	ld a, 48
-	ldh [hMultiplier], a
-	call Multiply
 	ld a, [hli]
 	ld b, a
-	ld a, [hl]
-	ldh [hDivisor], a
-	ld a, b
-	and a
-	jr z, .skip_to_divide_brine
-
-	ldh a, [hProduct + 4]
-	srl b
-	rr a
-	srl b
-	rr a
-	ldh [hDivisor], a
-	ldh a, [hProduct + 2]
-	ld b, a
-	srl b
-	ldh a, [hProduct + 3]
-	rr a
-	srl b
-	rr a
-	ldh [hDividend + 3], a
-	ld a, b
-	ldh [hDividend + 2], a
-
-.skip_to_divide_brine
-	ld b, 4
-	call Divide
-	ldh a, [hQuotient + 3]
-	ld b, a
-	ld hl, BrinePower
-
-.brine_loop
+	ld a, [hli]
+	ld c, a
+	sla c
+	rl b
 	ld a, [hli]
 	cp b
-	jr nc, .break_loop_brine
-	inc hl
-	jr .brine_loop
-
-.break_loop_brine
+	jr c, .normal_brine
+	jr nz, .double_brine
+	ld a, [hl]
+	cp c
+	jr c, .normal_brine
+.double_brine
+	ld a, 130
+	jr .store_brine_power
+.normal_brine
+	ld a, 65
+.store_brine_power
+	ld b, a
 	ldh a, [hBattleTurn]
 	and a
-	ld a, [hl]
+	ld a, b
 	jr nz, .notPlayersTurn
 
 	ld hl, wPlayerMoveStructPower
@@ -5136,6 +5130,7 @@ CalcPlayerStats:
 
 	ld hl, ApplyPrzEffectOnSpeed
 	call CallBattleCore
+	farcall ApplyTailwindOnSpeedCore
 
 	ld hl, ApplyBrnEffectOnAttack
 	call CallBattleCore
@@ -5156,6 +5151,7 @@ CalcEnemyStats:
 
 	ld hl, ApplyPrzEffectOnSpeed
 	call CallBattleCore
+	farcall ApplyTailwindOnSpeedCore
 
 	ld hl, ApplyBrnEffectOnAttack
 	call CallBattleCore
@@ -5505,10 +5501,31 @@ BattleCommand_EndLoop:
 	call GetBattleVarAddr
 	ld a, [hl]
 	cp EFFECT_POISON_MULTI_HIT
-	jr z, .twineedle
-	cp EFFECT_DOUBLE_HIT
+	jr nz, .not_twineedle
+	push bc
+	push de
+	farcall GetUserItem
+	ld a, b
+	pop de
+	pop bc
+	cp HELD_LOADED_DICE
+	jp z, .loaded_dice
 	ld a, 1
-	jr z, .double_hit
+	jp .double_hit
+.not_twineedle
+	cp EFFECT_DOUBLE_HIT
+	jp nz, .check_beat_up
+	push bc
+	push de
+	farcall GetUserItem
+	ld a, b
+	pop de
+	pop bc
+	cp HELD_LOADED_DICE
+	ld a, 1
+	jr nz, .double_hit
+	jr .loaded_dice
+.check_beat_up
 	ld a, [hl]
 	cp EFFECT_BEAT_UP
 	jr z, .beat_up
@@ -5553,6 +5570,14 @@ BattleCommand_EndLoop:
 	jp EndMoveEffect
 
 .not_triple_kick
+	push bc
+	push de
+	farcall GetUserItem
+	ld a, b
+	pop de
+	pop bc
+	cp HELD_LOADED_DICE
+	jr z, .loaded_dice
 	call BattleRandom
 	and $3
 	cp 2
@@ -5561,6 +5586,11 @@ BattleCommand_EndLoop:
 	and $3
 .got_number_hits
 	inc a
+	jr .double_hit
+.loaded_dice
+	call BattleRandom
+	and 1
+	add 4
 .double_hit
 	ld [de], a
 	inc a
@@ -5727,7 +5757,7 @@ CheckOpponentWentFirst:
 		call .checkfaint
 		ret z
 		xor a
-		farcall GetEighthMaxHP
+		farcall GetTenthMaxHP
 		farcall SubtractHPFromUser
 		ld hl, BattleText_UserLostSomeOfItsHP
 		jp StdBattleTextbox
@@ -5750,6 +5780,16 @@ CheckOpponentWentFirst:
 		rr c
 		srl b
 		rr c
+		ld a, b
+		or c
+		jr nz, .shell_bell_heal
+		inc c
+.shell_bell_heal
+		call .checkfaint
+		ret z
+		farcall RestoreHP
+		ld hl, BattleText_TargetRecoveredWithItem
+		jp StdBattleTextbox
 
 	.checkfaint
 		; if we fainted, abort the move sequence
@@ -5982,32 +6022,14 @@ BattleCommand_TrapTarget:
 	ld a, BATTLE_VARS_MOVE_ANIM
 	call GetBattleVar
 	ld [de], a
-	call GetMoveIndexFromID
-	ld b, h
-	ld c, l
-	ld hl, .Traps
+	ld bc, WRAP
+	call CompareMove
+	ld hl, SandTombTrapText
+	jr nz, .got_trap_text
+	ld hl, WrappedByText
 
-.find_trap_text
-	ld a, [hli]
-	cp c
-	ld a, [hli]
-	jr nz, .next_trap_text
-	cp b
-	jr z, .found_trap_text
-.next_trap_text
-	inc hl
-	inc hl
-	jr .find_trap_text
-
-.found_trap_text
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
+.got_trap_text
 	jp StdBattleTextbox
-
-.Traps:
-	dw WRAP,      WrappedByText     ; 'was WRAPPED by'
-	dw SAND_TOMB, SandTombTrapText  ; 'was TRAPPED'
 
 BattleCommand_Recoil:
 	ld hl, wBattleMonMaxHP
@@ -6308,6 +6330,31 @@ DoubleDamage:
 	ret
 
 BattleCommand_ResetStats:
+	ld a, BATTLE_VARS_MOVE_EFFECT
+	call GetBattleVar
+	cp EFFECT_CLEAR_SMOG
+	jr nz, .reset_both
+	ldh a, [hBattleTurn]
+	and a
+	push af
+	jr z, .reset_enemy
+	ld a, BASE_STAT_LEVEL
+	ld hl, wPlayerStatLevels
+	call .Fill
+	call SetPlayerTurn
+	call CalcPlayerStats
+	jr .clear_smog_done
+.reset_enemy
+	ld a, BASE_STAT_LEVEL
+	ld hl, wEnemyStatLevels
+	call .Fill
+	call SetEnemyTurn
+	call CalcEnemyStats
+.clear_smog_done
+	pop af
+	ldh [hBattleTurn], a
+	jr .message
+.reset_both
 	ld a, BASE_STAT_LEVEL
 	ld hl, wPlayerStatLevels
 	call .Fill
@@ -6325,6 +6372,7 @@ BattleCommand_ResetStats:
 	pop af
 	ldh [hBattleTurn], a
 
+	.message
 	call AnimateCurrentMove
 
 	ld hl, EliminatedStatsText
@@ -6452,10 +6500,23 @@ ResetActorDisable:
 	ret
 
 BattleCommand_Tailwind:
-	ld hl, wPlayerTailwind
-	ldh a, [hBattleTurn]
-	and a
-	ld hl, wEnemyTailwind
+	farcall BattleCommand_TailwindCore
+	ret
+
+BattleCommand_Taunt:
+	farcall BattleCommand_TauntCore
+	ret
+
+BattleCommand_Yawn:
+	farcall BattleCommand_YawnCore
+	ret
+
+BattleCommand_AquaRing:
+	farcall BattleCommand_AquaRingCore
+	ret
+
+BattleCommand_FangHit:
+	farcall BattleCommand_FangHitCore
 	ret
 
 
@@ -6498,7 +6559,7 @@ BattleCommand_Screen:
 	ld a, [hBattleTurn]
 	and a
 	ld hl, wBattleMonItem
-	jr z, .got_item
+	farcall ItemRecoveryAnim
 	ld hl, wEnemyMonItem
 .got_item
 	ld a, [hl]
@@ -7120,3 +7181,558 @@ ApplyChoiceScarfOnSpeed:
 	ldh a, [hQuotient + 3]
 	ld [hl], a
 	ret
+
+PUSHS
+SECTION "Battle Status Effects", ROMX
+
+ApplyMetronomeBoostCore:
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerMetronomeCount
+	jr z, .got_count
+	ld hl, wEnemyMetronomeCount
+.got_count
+	ld a, [hl]
+	and a
+	ret z
+	ld b, a
+	ld a, BATTLE_VARS_MOVE
+	farcall GetBattleVar
+	push af
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerMetronomeMove
+	jr z, .got_move
+	ld hl, wEnemyMetronomeMove
+.got_move
+	pop af
+	cp [hl]
+	ret nz
+	ld hl, .MetronomeMultipliers - 1
+.multiplier_loop
+	inc hl
+	dec b
+	jr nz, .multiplier_loop
+	ld a, [hl]
+	ldh [hMultiplier], a
+	xor a
+	ldh [hMultiplicand + 0], a
+	ldh a, [hQuotient + 2]
+	ldh [hMultiplicand + 1], a
+	ldh a, [hQuotient + 3]
+	ldh [hMultiplicand + 2], a
+	farcall Multiply
+	ld a, 100
+	ldh [hDivisor], a
+	ld b, 4
+	farcall Divide
+	ret
+.MetronomeMultipliers
+	db 120, 140, 160, 180, 200
+
+CheckTauntCore:
+	ld hl, wPlayerTauntCount
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_timer
+	ld hl, wEnemyTauntCount
+.got_timer
+	ld a, [hl]
+	and $7f
+	jr z, .not_taunted
+	push hl
+	ld a, BATTLE_VARS_MOVE_EFFECT
+	farcall GetBattleVar
+	pop hl
+	cp EFFECT_FUTURE_SIGHT
+	jr z, .blocked
+	ldh a, [hBattleTurn]
+	and a
+	jr nz, .enemy_move
+	ld a, [wPlayerMoveStruct + MOVE_POWER]
+	jr .got_power
+.enemy_move
+	ld a, [wEnemyMoveStruct + MOVE_POWER]
+.got_power
+	and a
+	jr nz, .not_taunted
+.blocked
+	farcall AnimateFailedMove
+	farcall PrintButItFailed
+	scf
+	ret
+.not_taunted
+	ret
+
+CheckChoiceLockCore:
+	farcall GetUserItem
+	ld a, b
+	cp HELD_CHOICE_BOOST
+	jr nz, .not_choice_item
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerChoiceMove
+	jr z, .got_lock
+	ld hl, wEnemyChoiceMove
+.got_lock
+	ld a, [hl]
+	and a
+	ret z
+	push hl
+	ld a, BATTLE_VARS_MOVE
+	farcall GetBattleVar
+	ld b, a
+	pop hl
+	ld a, [hl]
+	cp b
+	ret z
+	farcall AnimateFailedMove
+	farcall PrintButItFailed
+	farcall EndTurn
+	scf
+	ret
+.not_choice_item
+	xor a
+	ret
+
+RecordHeldMoveUse:
+	farcall GetUserItem
+	ld a, b
+	cp HELD_CHOICE_BOOST
+	jr nz, .metronome
+	ld a, BATTLE_VARS_MOVE
+	farcall GetBattleVar
+	ld b, a
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerChoiceMove
+	jr z, .save_choice
+	ld hl, wEnemyChoiceMove
+.save_choice
+	ld a, [hl]
+	and a
+	jr nz, .metronome
+	ld a, b
+	ld [hl], a
+.metronome
+	farcall GetUserItem
+	ld a, b
+	cp HELD_METRONOME
+	jr z, .track_metronome
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerMetronomeMove
+	jr z, .clear_metronome
+	ld hl, wEnemyMetronomeMove
+.clear_metronome
+	xor a
+	ld [hli], a
+	ld [hl], a
+	ret
+.track_metronome
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerMoveStruct + MOVE_POWER
+	jr z, .check_metronome_power
+	ld hl, wEnemyMoveStruct + MOVE_POWER
+.check_metronome_power
+	ld a, [hl]
+	and a
+	jr z, .clear_metronome
+	ld a, BATTLE_VARS_MOVE
+	farcall GetBattleVar
+	ld b, a
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerMetronomeMove
+	jr z, .got_metronome_state
+	ld hl, wEnemyMetronomeMove
+.got_metronome_state
+	ld a, [hl]
+	cp b
+	jr nz, .new_metronome_move
+	inc hl
+	ld a, [hl]
+	cp 5
+	ret nc
+	inc [hl]
+	ret
+.new_metronome_move
+	ld [hl], b
+	inc hl
+	xor a
+	ld [hl], a
+	ret
+
+TryWeaknessPolicy:
+	ld a, [wAttackMissed]
+	and a
+	ret nz
+	ld a, [wTypeModifier]
+	and EFFECTIVENESS_MASK
+	cp EFFECTIVE + 1
+	ret c
+	ld a, [wCurDamage]
+	ld b, a
+	ld a, [wCurDamage + 1]
+	or b
+	ret z
+	ld a, BATTLE_VARS_SUBSTATUS4_OPP
+	farcall GetBattleVar
+	bit SUBSTATUS_SUBSTITUTE, a
+	ret nz
+	farcall GetOpponentItem
+	ld a, b
+	cp HELD_WEAKNESS_POLICY
+	ret nz
+	ld a, [hl]
+	ld [wNamedObjectIndex], a
+	ldh a, [hBattleTurn]
+	push af
+	farcall SwitchTurnCore
+	ld hl, wBattleMonHP
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .check_hp
+	ld hl, wEnemyMonHP
+.check_hp
+	ld a, [hli]
+	or [hl]
+	jr z, .restore_turn
+	ld hl, wPlayerAtkLevel
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_stats
+	ld hl, wEnemyAtkLevel
+.got_stats
+	ld a, [hl]
+	add 2
+	cp MAX_STAT_LEVEL + 1
+	jr nc, .cap_attack
+	ld [hl], a
+	jr .special_attack
+.cap_attack
+	ld [hl], MAX_STAT_LEVEL
+	jr .special_attack
+.special_attack
+	ld de, 3
+	add hl, de
+	ld a, [hl]
+	add 2
+	cp MAX_STAT_LEVEL + 1
+	jr nc, .cap_special_attack
+	ld [hl], a
+	jr .recalculate
+.cap_special_attack
+	ld [hl], MAX_STAT_LEVEL
+.recalculate
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .calc_player
+	farcall CalcEnemyStats
+	jr .consume
+.calc_player
+	farcall CalcPlayerStats
+.consume
+	farcall SwitchTurnCore
+	farcall ConsumeHeldItem
+	farcall SwitchTurnCore
+	ld a, [wNamedObjectIndex]
+	farcall GetItemName
+	ld hl, BattleText_UsersStringBuffer1Activated
+	farcall StdBattleTextbox
+.restore_turn
+	pop af
+	ldh [hBattleTurn], a
+	ret
+
+HandleWhiteHerb:
+	ldh a, [hBattleTurn]
+	push af
+	farcall SetPlayerTurn
+	call .try_activate
+	farcall SetEnemyTurn
+	call .try_activate
+	pop af
+	ldh [hBattleTurn], a
+	ret
+
+.try_activate
+	farcall GetUserItem
+	ld a, b
+	cp HELD_WHITE_HERB
+	ret nz
+	ld a, [hl]
+	ld [wNamedObjectIndex], a
+	ld hl, wPlayerStatLevels
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_levels
+	ld hl, wEnemyStatLevels
+.got_levels
+	ld b, NUM_LEVEL_STATS
+	ld c, 0
+.restore_loop
+	ld a, [hl]
+	cp BASE_STAT_LEVEL
+	jr nc, .next_stat
+	ld [hl], BASE_STAT_LEVEL
+	ld c, 1
+.next_stat
+	inc hl
+	dec b
+	jr nz, .restore_loop
+	ld a, c
+	and a
+	ret z
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .calc_player
+	farcall CalcEnemyStats
+	jr .consume
+.calc_player
+	farcall CalcPlayerStats
+.consume
+	farcall SwitchTurnCore
+	farcall ConsumeHeldItem
+	farcall SwitchTurnCore
+	ld a, [wNamedObjectIndex]
+	farcall GetItemName
+	ld hl, BattleText_UsersStringBuffer1Activated
+	farcall StdBattleTextbox
+	ret
+
+ActivateDreamBerry:
+	ldh a, [hBattleTurn]
+	push af
+	farcall SwitchTurnCore
+	farcall ItemRecoveryAnim
+	farcall GetMaxHP
+	xor a
+	ldh [hMultiplicand + 0], a
+	ld a, b
+	ldh [hMultiplicand + 1], a
+	ld a, c
+	ldh [hMultiplicand + 2], a
+	ld a, 3
+	ldh [hMultiplier], a
+	call Multiply
+	ldh a, [hProduct + 0]
+	ldh [hDividend + 0], a
+	ldh a, [hProduct + 1]
+	ldh [hDividend + 1], a
+	ldh a, [hProduct + 2]
+	ldh [hDividend + 2], a
+	ldh a, [hProduct + 3]
+	ldh [hDividend + 3], a
+	ld a, 4
+	ldh [hDivisor], a
+	ld b, 4
+	call Divide
+	ldh a, [hQuotient + 2]
+	ld b, a
+	ldh a, [hQuotient + 3]
+	ld c, a
+	farcall RestoreHP
+	ld hl, wBattleMonStatus
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .set_sleep
+	ld hl, wEnemyMonStatus
+.set_sleep
+	ld a, 3
+	ld [hl], a
+	farcall UpdateUserInParty
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .update_player_hud
+	farcall UpdateEnemyHUD
+	jr .consume
+.update_player_hud
+	farcall UpdatePlayerHUD
+.consume
+	farcall SwitchTurnCore
+	farcall ConsumeHeldItem
+	farcall SwitchTurnCore
+	pop af
+	ldh [hBattleTurn], a
+	ld hl, FellAsleepText
+	farcall StdBattleTextbox
+	ret
+
+BattleCommand_TailwindCore:
+	ld hl, wPlayerTailwind
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_timer
+	ld hl, wEnemyTailwind
+.got_timer
+	ld a, [hl]
+	and a
+	jr nz, .failed
+	ld a, 5
+	ld [hl], a
+	farcall RecalculateBattleSpeeds
+	farcall AnimateCurrentMove
+	ld hl, TailwindBlewText
+	farcall StdBattleTextbox
+	ret
+.failed
+	farcall AnimateFailedMove
+	farcall PrintButItFailed
+	ret
+
+BattleCommand_TauntCore:
+	ld hl, wEnemyTauntCount
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_target
+	ld hl, wPlayerTauntCount
+.got_target
+	ld a, [hl]
+	and $7f
+	jr nz, .fail
+	farcall BattleRandom
+	and 1
+	add 4
+	ld b, a
+	ld a, [hl]
+	and $80
+	or b
+	ld [hl], a
+	farcall AnimateCurrentMove
+	ld hl, FellForTauntText
+	farcall StdBattleTextbox
+	ret
+.fail
+	farcall AnimateFailedMove
+	farcall PrintButItFailed
+	ret
+
+BattleCommand_YawnCore:
+	farcall CheckSubstituteOpp
+	ret nz
+	farcall SafeCheckSafeguard
+	ret nz
+	ld hl, wEnemyYawnCount
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_target
+	ld hl, wPlayerYawnCount
+.got_target
+	ld a, [hl]
+	and a
+	jr nz, .fail
+	ld a, 2
+	ld [hl], a
+	farcall AnimateCurrentMove
+	ld hl, GrewDrowsyText
+	farcall StdBattleTextbox
+	ret
+.fail
+	farcall AnimateFailedMove
+	farcall PrintButItFailed
+	ret
+
+BattleCommand_AquaRingCore:
+	ld hl, wPlayerTauntCount
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_user
+	ld hl, wEnemyTauntCount
+.got_user
+	bit 7, [hl]
+	jr nz, .fail
+	set 7, [hl]
+	farcall AnimateCurrentMove
+	ld hl, SurroundedByWaterText
+	farcall StdBattleTextbox
+	ret
+.fail
+	farcall AnimateFailedMove
+	farcall PrintButItFailed
+	ret
+
+BattleCommand_FangHitCore:
+	ld a, [wAttackMissed]
+	and a
+	ret nz
+	farcall BattleRandom
+	cp 26
+	jr nc, .flinch_chance
+	ld a, BATTLE_VARS_MOVE_TYPE
+	farcall GetBattleVar
+	cp ELECTRIC
+	jr nz, .burn_chance
+	farcall BattleCommand_ParalyzeTarget
+	jr .flinch_chance
+.burn_chance
+	cp FIRE
+	jr nz, .freeze_chance
+	farcall BattleCommand_BurnTarget
+	jr .flinch_chance
+.freeze_chance
+	cp ICE
+	jr nz, .flinch_chance
+	farcall BattleCommand_FreezeTarget
+.flinch_chance
+	farcall BattleRandom
+	cp 26
+	ret nc
+	farcall CheckSubstituteOpp
+	ret nz
+	farcall EndRechargeOpp
+	ld a, BATTLE_VARS_SUBSTATUS3_OPP
+	farcall GetBattleVarAddr
+	set SUBSTATUS_FLINCHED, [hl]
+	ret
+
+ApplyTailwindOnSpeedCore:
+	ld hl, wEnemyTailwind
+	ld de, wEnemyMonSpeed
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_side
+	ld hl, wPlayerTailwind
+	ld de, wBattleMonSpeed
+.got_side
+	ld a, [hl]
+	and a
+	ret z
+	ld a, [de]
+	add a
+	ld [de], a
+	inc de
+	ld a, [de]
+	rla
+	ld [de], a
+	ld a, [de]
+	cp HIGH(MAX_STAT_VALUE)
+	ret c
+	jr nz, .cap_speed
+	dec de
+	ld a, [de]
+	cp LOW(MAX_STAT_VALUE)
+	ret c
+	jr z, .done
+.cap_speed
+	ld a, HIGH(MAX_STAT_VALUE)
+	ld [de], a
+	dec de
+	ld a, LOW(MAX_STAT_VALUE)
+	ld [de], a
+.done
+	ret
+
+RecalculateBattleSpeeds:
+	ldh a, [hBattleTurn]
+	push af
+	farcall SetPlayerTurn
+	farcall CalcPlayerStats
+	farcall SetEnemyTurn
+	farcall CalcEnemyStats
+	pop af
+	ldh [hBattleTurn], a
+	ret
+
+POPS

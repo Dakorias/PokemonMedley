@@ -22,76 +22,125 @@ BattleCommand_Disable:
 DoEncoreDisable:
 	ld a, [de]
 	and $f
-	jr nz, .failed
+	jp nz, .failed
 
 	ld a, BATTLE_VARS_LAST_COUNTER_MOVE_OPP
 	call GetBattleVar
 	and a
-	jr z, .failed
+	jp z, .failed
+	ld [wNamedObjectIndex], a
+
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVar
 	ld bc, STRUGGLE
 	call CompareMove
-	jr z, .failed
+	jp z, .failed
 
-	; Don't allow encoring Encore
-	cp b
-	jr nz, .move_ok
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVar
+	push bc
+	ld bc, DISABLE
+	call CompareMove
+	pop bc
+	jr nz, .check_encore_target
+	ld a, [wNamedObjectIndex]
+	push bc
+	ld bc, DISABLE
+	call CompareMove
+	pop bc
+	jp z, .failed
+	jr .find_move
+
+.check_encore_target
+	ld a, [wNamedObjectIndex]
+	push bc
 	ld bc, ENCORE
 	call CompareMove
-	ret z
+	pop bc
 	jr z, .failed
-.move_ok
 
-	push hl
+.find_move
+	ld a, [wNamedObjectIndex]
+	ld b, a
 	push de
-	push bc
-	push af
+	ld c, $ff
+	ld d, NUM_MOVES
+.find_move_loop
+	inc c
+	ld a, [hli]
+	cp b
+	jr z, .found_move
+	dec d
+	jr nz, .find_move_loop
+	pop de
+	jr .failed
 
-	ld [wNamedObjectIndex], a
-	call GetMoveName
-
-	; Can't Disable/Encore moves with no PP left
+.found_move
+	pop de
+	dec hl
+	push hl
 	push bc
 	ld bc, wBattleMonPP - wBattleMonMoves
 	add hl, bc
-	pop bc
 	ld a, [hl]
-	and $3f
+	and PP_MASK
+	pop bc
+	pop hl
 	jr z, .failed
 
-	; Get move effect text and duration
-	ld a, b
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVar
+	push bc
 	ld bc, DISABLE
 	call CompareMove
-	ret z
-	ld hl, WasDisabledText
-	ld a, 4
-	jr z, .got_text_and_duration
-	ld hl, GotAnEncoreText
-	dec a
+	pop bc
+	jr nz, .encore
 
-	; Force opponent to use encored move in case it moves second
-	push hl
+.disable_duration
+	call BattleRandom
+	and 7
+	jr z, .disable_duration
+	inc a
+	jr .set_count
+
+.encore
+	ld a, 3
 	push af
 	ld a, BATTLE_VARS_LAST_MOVE_OPP
 	call GetBattleVarAddr
-	ld a, BATTLE_VARS_LAST_COUNTER_MOVE_OPP
-	call GetBattleVar
+	ld a, [wNamedObjectIndex]
 	ld [hl], a
 	pop af
-	pop hl
-.got_text_and_duration
+
+.set_count
 	inc c
 	swap c
 	or c
 	ld [de], a
 	call AnimateCurrentMove
-	call StdBattleTextbox
+
+	ld a, BATTLE_VARS_MOVE
+	call GetBattleVar
+	ld bc, DISABLE
+	call CompareMove
+	jr nz, .encore_success
+	ld hl, wDisabledMove
+	ldh a, [hBattleTurn]
+	and a
+	jr nz, .got_disabled_move_pointer
+	inc hl
+.got_disabled_move_pointer
+	ld a, BATTLE_VARS_LAST_COUNTER_MOVE_OPP
+	call GetBattleVar
+	ld [hl], a
+	ld [wNamedObjectIndex], a
+	call GetMoveName
+	ld hl, WasDisabledText
+	jp StdBattleTextbox
+
+.encore_success
+	ld hl, GotAnEncoreText
+	jp StdBattleTextbox
 
 .failed
 	call AnimateFailedMove

@@ -1001,6 +1001,26 @@ ProtectedItselfText:
 	line "PROTECTED itself!"
 	prompt
 
+FellForTauntText:
+	text "<TARGET> fell for"
+	line "<USER>'s TAUNT!"
+	prompt
+
+TailwindBlewText:
+	text "A tailwind blew"
+	line "from behind <USER>!"
+	prompt
+
+GrewDrowsyText:
+	text "<TARGET> grew"
+	line "drowsy!"
+	prompt
+
+SurroundedByWaterText:
+	text "<USER> surrounded"
+	line "itself with water!"
+	prompt
+
 ProtectingItselfText:
 	text "<TARGET>'s"
 	line "PROTECTING itself!"

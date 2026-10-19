@@ -505,6 +505,25 @@ wTrickRoom:: db
 
 wPlayerTailwind:: db
 wEnemyTailwind:: db
+wPlayerTauntCount:: db
+wPlayerYawnCount:: db
+wPlayerChoiceMove:: db
+wPlayerMetronomeMove:: db
+wPlayerMetronomeCount:: db
+wEnemyTauntCount:: db
+wEnemyYawnCount:: db
+wEnemyChoiceMove:: db
+wEnemyMetronomeMove:: db
+wEnemyMetronomeCount:: db
+wBattleElapsedTurns:: db
+wPlayerRoostType1:: db
+wPlayerRoostType2:: db
+wEnemyRoostType1:: db
+wEnemyRoostType2:: db
+wPlayerBattleItemRestoreFlags:: ds PARTY_LENGTH
+wEnemyBattleItemRestoreFlags:: ds PARTY_LENGTH
+wPlayerBattleItemBackup:: ds PARTY_LENGTH
+wEnemyBattleItemBackup:: ds PARTY_LENGTH
 
 wEnemyMinimized:: db
 

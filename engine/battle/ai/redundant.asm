@@ -170,8 +170,7 @@ AI_Redundant:
 
 .TrickRoom
 	ld a, [wTrickRoom]
-	ld d, a
-	and d
+	and a
 	jr nz, .Redundant
 	jr .NotRedundant
 

@@ -159,7 +159,7 @@ ItemEffects:
 	dw PokeBallEffect      ; FORTUNE_BALL
 	dw NoEffect            ; LEFTOVERS
 	dw RestoreHPEffect     ; DREAM_BERRY
-	dw NoEffect            ; TEACHY_TV
+	dw TeachyTvEffect      ; TEACHY_TV
 	dw NoEffect            ; LIGHT_CLAY
 	dw RestorePPEffect     ; MYSTERYBERRY
 	dw NoEffect            ; DRAGON_SCALE
@@ -544,6 +544,9 @@ PokeBallEffect:
 	predef TryAddMonToParty
 
 	farcall SetCaughtData
+	ld a, [wCurItem]
+	cp VIRAL_BALL
+	call z, .set_party_pokerus
 
 	ld a, [wCurItem]
 	cp FORTUNE_BALL
@@ -561,6 +564,7 @@ PokeBallEffect:
 
 	ld a, FRIEND_BALL_HAPPINESS
 	ld [hl], a
+	jr .SkipPartyMonFriendBall
 
 .fortune_ball_partymon
 	ld a, [wPartyCount]
@@ -590,10 +594,11 @@ PokeBallEffect:
 	pop af
 	ld [wCurPartyMon], a
 
-	ld a, $aa
+	ld a, $ff
 	ld hl, wTempMon + MON_DVS
 	ld [hli], a
 	ld [hl], a
+	jr .SkipPartyMonFriendBall
 
 .shiny_ball_partymon
 	ld a, [wPartyCount]
@@ -623,9 +628,10 @@ PokeBallEffect:
 	pop af
 	ld [wCurPartyMon], a
 
-	ld a, $aa ;So it appears shiny in nickname menu
+	ld a, ATKDEFDV_SHINY
 	ld hl, wTempMon + MON_DVS
 	ld [hli], a
+	ld a, SPDSPCDV_SHINY
 	ld [hl], a
 
 .SkipPartyMonFriendBall:
@@ -670,6 +676,12 @@ PokeBallEffect:
 	predef SendMonIntoBox
 
 	farcall SetBoxMonCaughtData
+	ld a, [wCurItem]
+	cp VIRAL_BALL
+	jr nz, .not_viral_ball
+	ld a, $11
+	ld [wBufferMon + MON_POKERUS], a
+.not_viral_ball
 
 	newfarcall NewStorageBoxPointer
 	jr nc, .BoxNotFullYet
@@ -691,6 +703,7 @@ PokeBallEffect:
 .fortune_ball_boxmon
 	ld hl, wBufferMonDVs
 	call .apply_fortune_ball_DVs
+	jr .SkipBoxMonFriendBall
 
 .shiny_ball_boxmon
 	ld hl, wBufferMonDVs
@@ -770,66 +783,27 @@ PokeBallEffect:
 	call LoadStandardFont
 	jr .return_from_capture
 
-.apply_fortune_ball_DVs
-	push bc
-	ld a, [hli]
-	ld b, a
-	ld c, [hl]
-	push hl
-	push bc
-	ld hl, sp + 0
-	ld b, 2
-	call CountSetBits
-	pop hl
-	pop hl
-	ld [hl], $aa
-	dec hl
-	ld c, a
-	ld a, [hli]
-	and $c0
-	ld b, a
-	or $2a
+	.apply_fortune_ball_DVs
+	ld a, $ff
 	ld [hli], a
-	ld a, b
-	sub $40
-	add a, a
-	sbc a
-	add a, c
-	pop bc
-	rra
-	ret nc
-	set 4, [hl]
+	ld [hl], a
 	ret
 
-.apply_shiny_ball_DVs
-	push bc
-	ld a, [hli]
-	ld b, a
-	ld c, [hl]
-	push hl
-	push bc
-	ld hl, sp + 0
-	ld b, 2
-	call CountSetBits
-	pop hl
-	pop hl
-	ld [hl], $aa
-	dec hl
-	ld c, a
-	ld a, [hl]
-	and $c0
-	ld b, a
-	or $2a
+	.apply_shiny_ball_DVs
+	ld a, ATKDEFDV_SHINY
+	ld [hli], a
+	ld a, SPDSPCDV_SHINY
 	ld [hl], a
-	ld a, b
-	sub $40
-	add a, a
-	sbc a
-	add a, c
-	pop bc
-	rra
-	ret nc
-	set 4, [hl]
+	ret
+
+.set_party_pokerus
+	ld a, [wPartyCount]
+	dec a
+	ld hl, wPartyMon1
+	call GetPartyLocation
+	ld bc, MON_POKERUS
+	add hl, bc
+	ld [hl], $11
 	ret
 
 .catch_bug_contest_mon
@@ -888,8 +862,6 @@ BallMultiplierFunctionTable:
 	dbw DAWN_BALL,    DawnBallMultiplier
 	dbw TIMER_BALL,   TimerBallMultiplier
 	dbw SPEED_BALL,   SpeedBallMultiplier
-	dbw VIRAL_BALL,   GreatBallMultiplier
-	dbw FORTUNE_BALL, GreatBallMultiplier
 	db -1 ; end
 
 DuskBallMultiplier:
@@ -917,12 +889,9 @@ DuskBallMultiplier:
 
 RescueBallMultiplier:
 ;	status effect?
-	ld b, a
 	ld a, [wEnemyMonStatus]
 	and a
-	jr z, .hasstatus
-	ret nz ; no status
-.hasstatus
+	ret z
 ; b is the catch rate
 ; a := b + b + b == b × 3
 	ld a, b
@@ -957,36 +926,45 @@ SpeedBallMultiplier:
 
 
 TimerBallMultiplier:
-; multiply catch rate by 1 + (turns passed * 3) / 10, capped at 4
-	ld a, [wPlayerTurnsTaken]
-	ld b, a
-	add a
-	add b
-	add 1
-	cp 4
-	jr c, .nocap
-	ld a, 4
-
-.nocap
-	and a
-	ret z
-	push bc
-	ld b, a
+; 1x through turn 3, 2x through turn 6, 3x through turn 9, then 4x.
+	ld a, [wBattleElapsedTurns]
+	inc a
+	cp 10
+	jr c, .factor_index_ready
+	ld a, 10
+.factor_index_ready
+	ld hl, .factors
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld a, [hl]
+	ld c, a
+	ld d, b
 	xor a
 .loop
-	add c
-	dec b
+	add d
+	jr c, .max
+	dec c
 	jr nz, .loop
-	pop bc
+	ld b, a
 	ret
+.max
+	ld b, $ff
+	ret
+.factors
+	db 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4
 
 
 DawnBallMultiplier:
 	ld a, [wTimeOfDay]
 	cp DAY
-	jr z, .daytime
-	ret nz ; not daytime
-.daytime
+	ret nz
+	ld a, [wEnvironment]
+	cp TOWN
+	jr z, .daytime_outdoors
+	cp ROUTE
+	ret nz
+.daytime_outdoors
 ; b is the catch rate
 ; a := b + b + b == b × 3
 	ld a, b
@@ -1377,6 +1355,10 @@ TownMapEffect:
 
 BicycleEffect:
 	farcall BikeFunction
+	ret
+
+TeachyTvEffect:
+	farcall TeachyTv
 	ret
 
 EvoStoneEffect:

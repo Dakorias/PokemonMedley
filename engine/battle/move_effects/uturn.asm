@@ -1,4 +1,7 @@
 BattleCommand_Uturn:
+	ld a, [wAttackMissed]
+	and a
+	ret nz
 	ldh a, [hBattleTurn]
 	and a
 	jp nz, .EnemyUturn

@@ -178,4 +178,6 @@ MoveEffectsPointers:
 	dw AquaRing
 	dw FutureSight
 	dw BeatUp
+	dw Roost
+	dw FangHit
 	assert_table_length NUM_MOVE_EFFECTS

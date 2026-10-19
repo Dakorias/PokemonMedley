@@ -84,7 +84,7 @@ Moves1:
 	move EFFECT_NORMAL_HIT,         35, FLYING,       100, 35,   0 ; PECK
 	move EFFECT_NORMAL_HIT,         80, FLYING,       100, 20,   0 ; DRILL_PECK
 	move EFFECT_RECOIL_HIT,         90, FIGHTING,      95, 25,   0 ; SUBMISSION
-	move EFFECT_PARALYZE_HIT,       65, ELECTRIC,      95, 20,  10 ; THUNDER_FANG
+	move EFFECT_FANG_HIT,           65, ELECTRIC,      95, 20,  10 ; THUNDER_FANG
 	move EFFECT_COUNTER,             1, FIGHTING,     100, 20,   0 ; COUNTER
 	move EFFECT_LEVEL_DAMAGE,        1, FIGHTING,     100, 20,   0 ; SEISMIC_TOSS
 	move EFFECT_NORMAL_HIT,         80, FIGHTING,     100, 15,   0 ; STRENGTH
@@ -119,7 +119,7 @@ Moves1:
 	move EFFECT_RAGE,               20, NORMAL,       100, 20,   0 ; RAGE
 	move EFFECT_BLAST_BURN,        150, FIRE,         100,  5,  50 ; BLAST_BURN
 	move EFFECT_LEVEL_DAMAGE,        1, GHOST,        100, 15,   0 ; NIGHT_SHADE
-	move EFFECT_BURN_HIT,           65, FIRE,          95, 20,  10 ; FIRE_FANG
+	move EFFECT_FANG_HIT,           65, FIRE,          95, 20,  10 ; FIRE_FANG
 	move EFFECT_DEFENSE_DOWN_2,      0, NORMAL,        85, 40,   0 ; SCREECH
 	move EFFECT_EVASION_UP,          0, NORMAL,       100, 15,   0 ; DOUBLE_TEAM
 	move EFFECT_HEAL,                0, NORMAL,       100, 10,   0 ; RECOVER
@@ -127,7 +127,7 @@ Moves1:
 	move EFFECT_TAUNT,         			 0, NORMAL,       100, 20,   0 ; TAUNT
 	move EFFECT_ACCURACY_DOWN,       0, NORMAL,       100, 20,   0 ; SMOKESCREEN
 	move EFFECT_CONFUSE,             0, GHOST,        100, 10,   0 ; CONFUSE_RAY
-	move EFFECT_ERUPTION,            1, FIRE,          90, 10,   0 ; ERUPTION
+	move EFFECT_ERUPTION,          150, FIRE,          90, 10,   0 ; ERUPTION
 	move EFFECT_DEFENSE_CURL,        0, NORMAL,       100, 40,   0 ; DEFENSE_CURL
 	move EFFECT_COIL,      					 0, POISON,       100, 30,   0 ; COIL
 	move EFFECT_LIGHT_SCREEN,        0, PSYCHIC_TYPE, 100, 30,   0 ; LIGHT_SCREEN
@@ -160,7 +160,7 @@ Moves1:
 	move EFFECT_PRIORITY_HIT,       40, WATER,        100, 15,   0 ; AQUA_JET
 	move EFFECT_LEECH_HIT,          40, BUG,          100, 15,   0 ; LEECH_LIFE
 	move EFFECT_SLEEP,               0, NORMAL,        75, 10,   0 ; LOVELY_KISS
-	move EFFECT_HEAL,                0, FLYING,       100, 10,   0 ; ROOST
+	move EFFECT_ROOST,               0, FLYING,       100, 10,   0 ; ROOST
 	move EFFECT_TRANSFORM,           0, NORMAL,       100, 10,   0 ; TRANSFORM
 	move EFFECT_ALL_UP_HIT,         60, GHOST,        100, 10,  10 ; OMINOUS_WIND
 	move EFFECT_CONFUSE_HIT,        70, NORMAL,       100, 10,  30 ; DIZZY_PUNCH
@@ -235,7 +235,7 @@ Moves1:
 	move EFFECT_NORMAL_HIT,         55, FLYING,        95, 25,   0 ; AIR_CUTTER
 	move EFFECT_NORMAL_HIT,         80, GROUND,        95, 15,   0 ; DRILL_RUN
 	move EFFECT_RETURN,              1, NORMAL,       100, 20,   0 ; RETURN
-	move EFFECT_FREEZE_HIT,         65, ICE,           95, 20,   0 ; ICE_FANG
+	move EFFECT_FANG_HIT,           65, ICE,           95, 20,  10 ; ICE_FANG
 	move EFFECT_POISON_HIT,         70, POISON,       100, 20,  10 ; CROSS_POISON
 	move EFFECT_SAFEGUARD,           0, NORMAL,       100, 25,   0 ; SAFEGUARD
 	move EFFECT_PAIN_SPLIT,          0, NORMAL,       100, 20,   0 ; PAIN_SPLIT
@@ -275,7 +275,7 @@ Moves1:
 	move EFFECT_MEAN_LOOK,           0, BUG,          100, 35,   0 ; SPIDER_WEB
 	move EFFECT_SP_ATK_DOWN_HIT,    55, DARK,          95, 15,   0 ; SNARL
 	move EFFECT_SP_ATK_DOWN_2,       0, DARK,         100, 20,   0 ; FAKE_TEARS
-	move EFFECT_ATTACK_UP,           0, DRAGON,       100, 15,   0 ; DRAGON_DANCE
+	move EFFECT_DRAGON_DANCE,         0, DRAGON,       100, 15,   0 ; DRAGON_DANCE
 	move EFFECT_UTURN,              70, ELECTRIC,     100, 15,   0 ; VOLT_SWITCH
 	move EFFECT_PARALYZE_HIT,       20, ELECTRIC,     100, 20, 100 ; NUZZLE
 	move EFFECT_SUPERPOWER,        120, FIGHTING,     100,  5,   0 ; SUPERPOWER
@@ -329,7 +329,7 @@ Moves1:
 	move EFFECT_ATTACK_DOWN_2,       0, FLYING,       100, 25,   0 ; FEATHERDANCE
 	move EFFECT_EVASION_UP,          0, NORMAL,       100, 35,   0 ; MINIMIZE
 	move EFFECT_OHKO,       			   1, GROUND,        30,  5,   0 ; FISSURE
-	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0 ; CLEAR_SMOG
+	move EFFECT_CLEAR_SMOG,         40, POISON,       100, 35,   0 ; CLEAR_SMOG
 	move EFFECT_TRAP_TARGET,        30, BUG,           90, 15,   0 ; INFESTATION
 	move EFFECT_YAWN,                0, NORMAL,       100, 15,   0 ; YAWN
 	move EFFECT_HEAL,                0, NORMAL,       100, 10,   0 ; SLACK_OFF

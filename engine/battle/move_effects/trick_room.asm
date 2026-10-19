@@ -9,12 +9,10 @@ BattleCommand_TrickRoom:
 	ld [hl], 0
 
 	ld hl, TrickRoomEndedText
+	jr .print_text
 
 .new_trick_room
 	ld hl, TrickRoomText
-	jp StdBattleTextbox
-	ret nz
 
-	ld a, [wFailedMessage]
-	and a
-	ret nz
+.print_text
+	jp StdBattleTextbox

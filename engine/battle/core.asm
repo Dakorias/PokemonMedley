@@ -92,7 +92,7 @@ DoBattle:
 	call SendOutPlayerMon
 	call EmptyBattleTextbox
 	call LoadTilemapToTempTilemap
-	call SetPlayerTurn
+	farcall SetPlayerTurn
 	call SpikesDamage
 	ld a, [wLinkMode]
 	and a
@@ -151,7 +151,7 @@ WildFled_EnemyFled_LinkBattleCanceled:
 	call PlaySFX
 
 .skip_sfx
-	call SetPlayerTurn
+	farcall SetPlayerTurn
 	ld a, 1
 	ld [wBattleEnded], a
 	ret
@@ -289,6 +289,7 @@ HandleBetweenTurnEffects:
 	ret c
 
 .NoMoreFaintingConditions:
+	farcall HandleBattleMoveTimers
 	call HandleLeftovers
 	call HandleMysteryberry
 	call HandleDefrost
@@ -299,6 +300,191 @@ HandleBetweenTurnEffects:
 	call UpdateBattleMonInParty
 	call LoadTilemapToTempTilemap
 	jp HandleEncore
+
+PUSHS
+SECTION "Battle Move Timers", ROMX
+
+HandleBattleMoveTimers:
+	ld a, [wBattleElapsedTurns]
+	cp 10
+	jr nc, .turn_counter_done
+	inc a
+	ld [wBattleElapsedTurns], a
+.turn_counter_done
+	ldh a, [hBattleTurn]
+	push af
+	ld hl, wPlayerTailwind
+	ld b, 2
+.dec_team_timers
+	ld a, [hl]
+	and a
+	jr z, .next_team_timer
+	dec [hl]
+	jr nz, .next_team_timer
+	farcall RecalculateBattleSpeeds
+.next_team_timer
+	inc hl
+	dec b
+	jr nz, .dec_team_timers
+
+	ld hl, wPlayerTauntCount
+	call .dec_taunt
+	ld hl, wEnemyTauntCount
+	call .dec_taunt
+	jr .taunt_timers_done
+.dec_taunt
+	ld a, [hl]
+	and $7f
+	ret z
+	dec [hl]
+	ret
+.taunt_timers_done
+
+	ld hl, wPlayerYawnCount
+	call .tick_yawn
+	ld hl, wEnemyYawnCount
+	call .tick_yawn
+
+	ld a, [wPlayerTauntCount]
+	bit 7, a
+	call nz, .heal_player_ring
+	ld a, [wEnemyTauntCount]
+	bit 7, a
+	call nz, .heal_enemy_ring
+
+	ld hl, wPlayerSubStatus2
+	bit SUBSTATUS_ROOST, [hl]
+	jr z, .restore_enemy_roost
+	res SUBSTATUS_ROOST, [hl]
+	ld a, [wPlayerRoostType1]
+	ld [wBattleMonType1], a
+	ld a, [wPlayerRoostType2]
+	ld [wBattleMonType2], a
+.restore_enemy_roost
+	ld hl, wEnemySubStatus2
+	bit SUBSTATUS_ROOST, [hl]
+	jr z, .done
+	res SUBSTATUS_ROOST, [hl]
+	ld a, [wEnemyRoostType1]
+	ld [wEnemyMonType1], a
+	ld a, [wEnemyRoostType2]
+	ld [wEnemyMonType2], a
+.done
+	pop af
+	ldh [hBattleTurn], a
+	ret
+
+.tick_yawn
+	ld a, [hl]
+	and a
+	ret z
+	dec [hl]
+	ret nz
+	ld a, l
+	cp LOW(wPlayerYawnCount)
+	jr nz, .yawn_enemy
+	ldh a, [hBattleTurn]
+	push af
+	farcall SetPlayerTurn
+	farcall GetUserItem
+	ld a, b
+	cp HELD_PREVENT_SLEEP
+	jr z, .restore_player_turn
+	ld hl, wBattleMonStatus
+	ld a, [hl]
+	and ALL_STATUS
+	jr nz, .restore_player_turn
+	ld a, [wPlayerScreens]
+	bit SCREENS_SAFEGUARD, a
+	jr nz, .restore_player_turn
+	ld a, 3
+	ld [hl], a
+	farcall UpdateBattleMonInParty
+	farcall UpdatePlayerHUD
+	farcall SetEnemyTurn
+	ld hl, FellAsleepText
+	farcall StdBattleTextbox
+	farcall UseHeldStatusHealingItem
+	jr .restore_player_turn
+.restore_player_turn
+	pop af
+	ldh [hBattleTurn], a
+	ret
+.yawn_enemy
+	ldh a, [hBattleTurn]
+	push af
+	farcall SetEnemyTurn
+	farcall GetUserItem
+	ld a, b
+	cp HELD_PREVENT_SLEEP
+	jr z, .restore_enemy_turn
+	ld hl, wEnemyMonStatus
+	ld a, [hl]
+	and ALL_STATUS
+	jr nz, .restore_enemy_turn
+	ld a, [wEnemyScreens]
+	bit SCREENS_SAFEGUARD, a
+	jr nz, .restore_enemy_turn
+	ld a, 3
+	ld [hl], a
+	farcall UpdateEnemyMonInParty
+	farcall UpdateEnemyHUD
+	farcall SetPlayerTurn
+	ld hl, FellAsleepText
+	farcall StdBattleTextbox
+	farcall UseHeldStatusHealingItem
+	jr .restore_enemy_turn
+.restore_enemy_turn
+	pop af
+	ldh [hBattleTurn], a
+	ret
+
+.heal_player_ring
+	farcall SetPlayerTurn
+	farcall CheckFullHP
+	jr z, .player_ring_done
+	farcall GetSixteenthMaxHP
+	farcall RestoreHP
+	farcall UpdateBattleMonInParty
+	farcall UpdatePlayerHUD
+.player_ring_done
+	ret
+
+.heal_enemy_ring
+	farcall SetEnemyTurn
+	farcall CheckFullHP
+	jr z, .enemy_ring_done
+	farcall GetSixteenthMaxHP
+	farcall RestoreHP
+	farcall UpdateEnemyMonInParty
+	farcall UpdateEnemyHUD
+.enemy_ring_done
+	ret
+
+GetTenthMaxHP:
+	farcall GetMaxHP
+	xor a
+	ldh [hDividend + 0], a
+	ldh [hDividend + 1], a
+	ld a, b
+	ldh [hDividend + 2], a
+	ld a, c
+	ldh [hDividend + 3], a
+	ld a, 10
+	ldh [hDivisor], a
+	ld b, 4
+	call Divide
+	ldh a, [hQuotient + 2]
+	ld b, a
+	ldh a, [hQuotient + 3]
+	ld c, a
+	ld a, b
+	or c
+	ret nz
+	inc c
+	ret
+
+POPS
 
 CheckFaint_PlayerThenEnemy:
 ; BUG: Perish Song and Spikes can leave a Pokemon with 0 HP and not faint (see docs/bugs_and_glitches.md)
@@ -1024,20 +1210,35 @@ EnemyTurn_EndOpponentProtectEndureDestinyBond:
 	jp EndOpponentProtectEndureDestinyBond
 
 EndOpponentProtectEndureDestinyBond:
+	newfarjp ClearOpponentProtection
+
+PUSHS
+SECTION "Battle Protect Cleanup", ROMX
+
+ClearOpponentProtection:
 	ld a, BATTLE_VARS_SUBSTATUS1_OPP
 	call GetBattleVarAddr
 	res SUBSTATUS_PROTECT, [hl]
 	res SUBSTATUS_ENDURE, [hl]
+	ld a, BATTLE_VARS_SUBSTATUS2_OPP
+	call GetBattleVarAddr
+	res SUBSTATUS_BANEFUL_BUNKER, [hl]
+	res SUBSTATUS_SPIKY_SHIELD, [hl]
 	ld a, BATTLE_VARS_SUBSTATUS5_OPP
 	call GetBattleVarAddr
 	res SUBSTATUS_DESTINY_BOND, [hl]
 	ret
 
-EndUserDestinyBond:
+ClearUserDestinyBond:
 	ld a, BATTLE_VARS_SUBSTATUS5
 	call GetBattleVarAddr
 	res SUBSTATUS_DESTINY_BOND, [hl]
 	ret
+
+POPS
+
+EndUserDestinyBond:
+	newfarjp ClearUserDestinyBond
 
 HasUserFainted:
 	ldh a, [hBattleTurn]
@@ -3755,6 +3956,12 @@ ShowSetEnemyMonAndSendOutAnimation:
 	ret
 
 NewEnemyMonStatus:
+	newfarjp NewEnemyMonStatusCore
+
+PUSHS
+SECTION "Enemy Battle Status Reset", ROMX
+
+NewEnemyMonStatusCore:
 	xor a
 	ld [wLastPlayerCounterMove], a
 	ld [wLastEnemyCounterMove], a
@@ -3773,9 +3980,17 @@ endr
 	ld [wPlayerWrapCount], a
 	ld [wEnemyWrapCount], a
 	ld [wEnemyTurnsTaken], a
+	ld hl, wEnemyTauntCount
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
 	ld hl, wPlayerSubStatus5
 	res SUBSTATUS_CANT_RUN, [hl]
 	ret
+
+POPS
 
 ResetEnemyStatLevels:
 	ld a, BASE_STAT_LEVEL
@@ -4237,6 +4452,12 @@ SendOutPlayerMon:
 	ret
 
 NewBattleMonStatus:
+	newfarjp NewBattleMonStatusCore
+
+PUSHS
+SECTION "Player Battle Status Reset", ROMX
+
+NewBattleMonStatusCore:
 	xor a
 	ld [wLastPlayerCounterMove], a
 	ld [wLastEnemyCounterMove], a
@@ -4250,6 +4471,7 @@ endr
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
+	ld [hli], a
 	ld [hl], a
 	ld [wPlayerDisableCount], a
 	ld [wPlayerFuryCutterCount], a
@@ -4260,9 +4482,17 @@ endr
 	ld [wEnemyWrapCount], a
 	ld [wPlayerWrapCount], a
 	ld [wPlayerTurnsTaken], a
+	ld hl, wPlayerTauntCount
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
 	ld hl, wEnemySubStatus5
 	res SUBSTATUS_CANT_RUN, [hl]
 	ret
+
+POPS
 
 BreakAttraction:
 	ld hl, wPlayerSubStatus1
@@ -4430,8 +4660,11 @@ HandleHealingItems:
 HandleHPHealingItem:
 	callfar GetOpponentItem
 	ld a, b
+	cp HELD_DREAM_BERRY
+	jr z, .check_hp
 	cp HELD_BERRY
 	ret nz
+.check_hp
 	ld de, wEnemyMonHP + 1
 	ld hl, wEnemyMonMaxHP
 	ldh a, [hBattleTurn]
@@ -4469,6 +4702,16 @@ HandleHPHealingItem:
 	ret nc
 
 .less
+	push hl
+	push de
+	push bc
+	callfar GetOpponentItem
+	ld a, b
+	cp HELD_DREAM_BERRY
+	pop bc
+	pop de
+	pop hl
+	jr z, .activate_dream_berry
 	call ItemRecoveryAnim
 	; store max HP in wHPBuffer1
 	ld a, [hli]
@@ -4510,6 +4753,10 @@ HandleHPHealingItem:
 .got_hp_bar_coords
 	ld [wWhichHPBar], a
 	predef AnimateHPBar
+.activate_dream_berry
+	farcall ActivateDreamBerry
+	ret
+
 UseOpponentItem:
 	call RefreshBattleHuds
 	callfar GetOpponentItem
@@ -8580,6 +8827,7 @@ ExitBattle:
 	ret
 
 CleanUpBattleRAM:
+	farcall RestoreBattleItems
 	call BattleEnd_HandleRoamMons
 	xor a
 	ld [wLowHealthAlarm], a

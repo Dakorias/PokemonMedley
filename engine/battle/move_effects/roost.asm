@@ -1,43 +1,47 @@
 BattleCommand_Roost:
-; Remove the flying type until endturn
-	; Do nothing if HP is full (error message is handled later)
+; Save the active types so they can be restored after this turn.
 	farcall CheckFullHP
 	ret z
-
-	call CheckIfUserIsFlyingType
-	ret nz
-
-	lb bc, FLYING, UNKNOWN_T
 
 	ldh a, [hBattleTurn]
 	and a
 	ld hl, wBattleMonType1
+	ld de, wPlayerRoostType1
 	jr z, .got_types
 	ld hl, wEnemyMonType1
+	ld de, wEnemyRoostType1
 .got_types
-	; Check if both types are flying
 	ld a, [hli]
-	cp b
-	jr nz, .not_double_flying
-	ld a, [hld]
-	cp b
-	jr z, .normalize
-.not_double_flying
-	; Roost shouldn't mess with non-Flying types.
+	ld b, a
+	ld [de], a
+	inc de
 	ld a, [hl]
-	cp b
-	ret nz ; don't set the roost status if types don't change
-
-	; We've found the flying type.
-	ld [hl], c
-	jr .types_ok
-.normalize
-	; Pure Flying types become Normal
+	ld [de], a
+	ld c, a
+	ld a, b
+	cp FLYING
+	jr z, .primary_flying
+	ld a, c
+	cp FLYING
+	ret nz
+	xor a
+	ld [hl], a
+	jr .set_flag
+.primary_flying
+	ld a, c
+	cp FLYING
+	jr z, .pure_flying
+	ld a, c
+	ld [hli], a
+	xor a
+	ld [hl], a
+	jr .set_flag
+.pure_flying
 	ld a, NORMAL
 	ld [hli], a
 	ld [hl], a
-.types_ok
-	ld a, BATTLE_VARS_SUBSTATUS4
+.set_flag
+	ld a, BATTLE_VARS_SUBSTATUS2
 	call GetBattleVarAddr
 	set SUBSTATUS_ROOST, [hl]
 	ret

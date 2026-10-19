@@ -114,7 +114,6 @@ GetRemindableMoves:
 
 	; Retrieves and stores the level of the
 	; currently selected Pokémon.
-	push af
 	ld a, MON_LEVEL
 	call GetPartyParamLocation
 	ld a, [hl]
@@ -123,32 +122,23 @@ GetRemindableMoves:
 	; The "b" register will contain the number of
 	; moves in the move list and "wd002 + 1"
 	; is where the move list begins.
-	ld b, 0
-	ld de, wd002 + 1
-
 	; Retrieves the currently selected Pokémon's evolution
 	; and attack address from the "EvosAttacksPointers"
 	; table that is located in another bank. This is the
 	; list of evolutions and learnset of every Pokémon.
 	ld a, [wCurPartySpecies]
-	dec a
-	push bc
-	ld c, a
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
 	ld hl, EvosAttacksPointers
-	add hl, bc
-	add hl, bc
 	ld a, BANK(EvosAttacksPointers)
-	call GetFarWord
-
-; Skips the evolution data to start at the learnset for the
-; currently selected Pokémon in the "EvosAttacksPointers"
-; table. This is "db 0 ; no more evolutions".
-.skip_evos
-	ld a, BANK("Evolutions and Attacks")
-	call GetFarByte
-	inc hl
-	and a
-	jr nz, .skip_evos
+	call LoadDoubleIndirectPointer
+	ld b, a
+	ldh [hTemp], a
+	call SkipEvolutions
+	ld b, 0
+	ld de, wd002 + 1
+	push bc
 
 ; Loops through the move list until it reaches
 ; the end of the "EvosAttacksPointers" table
@@ -160,18 +150,28 @@ GetRemindableMoves:
 ; if the Pokémon's level is higher, it will
 ; attempt to add the move to the move list.
 .loop_moves
-	ld a, BANK("Evolutions and Attacks")
-	call GetFarByte
-	inc hl
+	call GetNextEvoAttackByte
 	and a
 	jr z, .done
 	ld c, a
 	ld a, [wCurPartyLevel]
 	cp c
-	ld a, BANK("Evolutions and Attacks")
-	call GetFarByte
-	inc hl
+	push af
+	call GetNextEvoAttackByte
+	ld e, a
+	call GetNextEvoAttackByte
+	ld d, a
+	pop af
 	jr c, .loop_moves
+	push hl
+	push bc
+	push de
+	ld h, d
+	ld l, e
+	call GetMoveIDFromIndex
+	pop de
+	pop bc
+	pop hl
 
 	; Checks if the move is already in the
 	; move list or already learned by the
@@ -197,8 +197,6 @@ GetRemindableMoves:
 ; Which is the move list.
 .done
 	pop bc
-	pop af
-	ld [wCurPartySpecies], a
 	ld a, b
 	ld [wd002], a
 	and a

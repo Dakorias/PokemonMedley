@@ -155,25 +155,12 @@ ClearBattleRAM:
 	ld [hl], a
 
 	ld [wMenuScrollPosition], a
-	ld [wCriticalHit], a
-	ld [wBattleMonSpecies], a
-	ld [wBattleParticipantsNotFainted], a
 	ld [wCurBattleMon], a
 	ld [wForcedSwitch], a
 	ld [wTimeOfDayPal], a
-	ld [wPlayerTurnsTaken], a
-	ld [wEnemyTurnsTaken], a
 	ld [wEvolvableFlags], a
 
 	ld hl, wPlayerHPPal
-	ld [hli], a
-	ld [hl], a
-
-	ld hl, wBattleMonDVs
-	ld [hli], a
-	ld [hl], a
-
-	ld hl, wEnemyMonDVs
 	ld [hli], a
 	ld [hl], a
 

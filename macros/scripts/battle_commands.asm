@@ -189,6 +189,10 @@ ENDM
 	command futuresight
 	command checkfuturesight
 	command beatup
+	command taunt
+	command yawn
+	command aquaring
+	command fanghit
 DEF NUM_EFFECT_COMMANDS EQU const_value - 1
 
 	const_def -1, -1
