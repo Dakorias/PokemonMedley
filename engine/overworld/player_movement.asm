@@ -242,6 +242,14 @@ DoPlayerMovement::
 	maskbits NUM_DIRECTIONS
 	cp e
 	jr z, .not_turning
+	ld d, 0
+	ld hl, .forced_dpad
+	add hl, de
+	ld a, [hl]
+	ld b, a
+	ldh a, [hJoyPressed]
+	and b
+	jr z, .not_turning
 
 	ld a, STEP_TURN
 	call .DoStep
@@ -337,8 +345,11 @@ DoPlayerMovement::
 	jr nz, .ensurewalk
 	ld a, [wPlayerState]
 	cp PLAYER_RUN
-	call nz, .StartRunning
-	jr .run
+	jr z, .run
+	call .StartRunning
+	ld a, PLAYERMOVEMENT_FINISH
+	scf
+	ret
 
 .ensurewalk
 	ld a, [wPlayerState]

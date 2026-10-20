@@ -571,6 +571,7 @@ PokeBallEffect:
 	dec a
 	ld hl, wPartyMon1
 	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
 	ld b, h
 	ld c, l
 
@@ -605,6 +606,7 @@ PokeBallEffect:
 	dec a
 	ld hl, wPartyMon1
 	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
 	ld b, h
 	ld c, l
 

@@ -68,7 +68,10 @@ INCLUDE "engine/battle/move_effects/uturn.asm"
 INCLUDE "data/battle/accuracy_multipliers.asm"
 INCLUDE "data/battle/critical_hit_chances.asm"
 INCLUDE "data/battle/stat_names.asm"
+	PUSHS
+	SECTION "Contact Moves", ROMX
 INCLUDE "data/moves/contact_moves.asm"
+	POPS
 INCLUDE "data/moves/critical_hit_moves.asm"
 INCLUDE "data/moves/flail_reversal_power.asm"
 INCLUDE "engine/battle/ai/switch.asm"
@@ -109,6 +112,8 @@ DoTurn:
 	ld a, [wTurnEnded]
 	and a
 	ret nz
+	farcall CheckChoiceLockCore
+	ret c
 
 	call UpdateMoveData
 
@@ -200,8 +205,6 @@ BattleCommand_CheckTurn:
 	call GetBattleVar
 	and a
 	jp z, EndTurn
-	farcall CheckChoiceLockCore
-	ret c
 
 	xor a
 	ld [wAttackMissed], a
@@ -1325,6 +1328,7 @@ BattleCommand_Critical:
 	call GetUserItem
 	ld a, b
 	cp HELD_CRITICAL_UP ; Increased critical chance. Only Razor Claw has this.
+	pop bc
 	jr nz, .Tally
 
 ; +1 critical level
@@ -2608,6 +2612,7 @@ BattleCommand_CheckFaint:
 	call BattleCommand_RaiseSub
 
 .finish
+	farcall ApplyUserPostHitItemCore
 	ld a, BATTLE_VARS_SUBSTATUS3
 	call GetBattleVarAddr
 	res SUBSTATUS_IN_LOOP, [hl]
@@ -3283,8 +3288,8 @@ BattleCommand_DamageCalc:
 	ld a, c
 	cp SP_ATTACK
 	jr z, .choice_specs
-	and a
-	jp nz, .DoneItem ; Must be Scarf, so no boost
+	cp ATTACK
+	jp nz, .DoneItem
 
 ; Choice Band
 	ld a, BATTLE_VARS_MOVE_TYPE
@@ -4769,6 +4774,22 @@ BattleCommand_StatUpMessage:
 	text_far _BattleStatWentUpText
 	text_end
 
+ApplyWeaknessPolicyStatBoosts:
+	xor a
+	ld [wAttackMissed], a
+	ld [wEffectFailed], a
+	call BattleCommand_AttackUp2
+	call BattleCommand_StatUpMessage
+	xor a
+	ld [wAttackMissed], a
+	ld [wEffectFailed], a
+	call BattleCommand_SpecialAttackUp2
+	call BattleCommand_StatUpMessage
+	xor a
+	ld [wAttackMissed], a
+	ld [wEffectFailed], a
+	ret
+
 BattleCommand_StatDownMessage:
 	ld a, [wFailedMessage]
 	and a
@@ -5730,10 +5751,7 @@ CheckOpponentWentFirst:
 		ld a, b
 		cp HELD_FLINCH
 		jr z, .flinch
-		cp HELD_LIFE_ORB
-		jr z, .lifeorb
-		cp HELD_SHELL_BELL
-		jr z, .shellbell
+		farcall ApplyUserPostHitItemCore
 		ret
 
 	.flinch
@@ -5753,44 +5771,6 @@ CheckOpponentWentFirst:
 		set SUBSTATUS_FLINCHED, [hl]
 		ret
 
-	.lifeorb
-		call .checkfaint
-		ret z
-		xor a
-		farcall GetTenthMaxHP
-		farcall SubtractHPFromUser
-		ld hl, BattleText_UserLostSomeOfItsHP
-		jp StdBattleTextbox
-
-	.shellbell
-		call .checkfaint
-		ret z
-		farcall CheckFullHP
-		ret z
-		ld a, [wCurDamage]
-		ld b, a
-		ld a, [wCurDamage + 1]
-		ld c, a
-		or b
-		ret z ; No damage
-		; halve bc 3 times to get 1/8th
-		srl b
-		rr c
-		srl b
-		rr c
-		srl b
-		rr c
-		ld a, b
-		or c
-		jr nz, .shell_bell_heal
-		inc c
-.shell_bell_heal
-		call .checkfaint
-		ret z
-		farcall RestoreHP
-		ld hl, BattleText_TargetRecoveredWithItem
-		jp StdBattleTextbox
-
 	.checkfaint
 		; if we fainted, abort the move sequence
 		farcall HasUserFainted
@@ -5803,12 +5783,23 @@ CheckContactMove:
 ; Check if user's move makes contact. Return nc if it does.
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVar
-	ld de, 1
+	ld c, a
 	ld hl, ContactMoves
-	push bc
-	call IsInArray
-	pop bc
-	ccf
+	ld b, BANK(ContactMoves)
+.loop
+	ld a, b
+	call GetFarByte
+	cp -1
+	jr z, .not_contact
+	cp c
+	jr z, .contact
+	inc hl
+	jr .loop
+.not_contact
+	scf
+	ret
+.contact
+	and a
 	ret
 
 BattleCommand_OHKO:
@@ -7185,6 +7176,55 @@ ApplyChoiceScarfOnSpeed:
 PUSHS
 SECTION "Battle Status Effects", ROMX
 
+ApplyUserPostHitItemCore:
+	ld a, [wAttackMissed]
+	and a
+	ret nz
+	farcall HasUserFainted
+	ret z
+	farcall GetUserItem
+	ld a, b
+	cp HELD_LIFE_ORB
+	jr z, .life_orb
+	cp HELD_SHELL_BELL
+	ret nz
+	farcall CheckFullHP
+	ret z
+	ld a, [wCurDamage]
+	ld b, a
+	ld a, [wCurDamage + 1]
+	ld c, a
+	ld a, b
+	or c
+	ret z
+	srl b
+	rr c
+	srl b
+	rr c
+	srl b
+	rr c
+	ld a, b
+	or c
+	jr nz, .shell_bell_heal
+	inc c
+.shell_bell_heal
+	farcall BattleCommand_SwitchTurn
+	farcall RestoreHP
+	ld a, SHELL_BELL
+	ld [wNamedObjectIndex], a
+	call GetItemName
+	ld hl, BattleText_TargetRecoveredWithItem
+	call StdBattleTextbox
+	farcall BattleCommand_SwitchTurn
+	ret
+.life_orb
+	xor a
+	farcall GetTenthMaxHP
+	farcall SubtractHPFromUser
+	ld hl, BattleText_UserLostSomeOfItsHP
+	call StdBattleTextbox
+	ret
+
 ApplyMetronomeBoostCore:
 	ldh a, [hBattleTurn]
 	and a
@@ -7197,7 +7237,7 @@ ApplyMetronomeBoostCore:
 	ret z
 	ld b, a
 	ld a, BATTLE_VARS_MOVE
-	farcall GetBattleVar
+	call GetBattleVar
 	push af
 	ldh a, [hBattleTurn]
 	and a
@@ -7301,7 +7341,7 @@ RecordHeldMoveUse:
 	cp HELD_CHOICE_BOOST
 	jr nz, .metronome
 	ld a, BATTLE_VARS_MOVE
-	farcall GetBattleVar
+	call GetBattleVar
 	ld b, a
 	ldh a, [hBattleTurn]
 	and a
@@ -7340,7 +7380,7 @@ RecordHeldMoveUse:
 	and a
 	jr z, .clear_metronome
 	ld a, BATTLE_VARS_MOVE
-	farcall GetBattleVar
+	call GetBattleVar
 	ld b, a
 	ldh a, [hBattleTurn]
 	and a
@@ -7378,7 +7418,7 @@ TryWeaknessPolicy:
 	or b
 	ret z
 	ld a, BATTLE_VARS_SUBSTATUS4_OPP
-	farcall GetBattleVar
+	call GetBattleVar
 	bit SUBSTATUS_SUBSTITUTE, a
 	ret nz
 	farcall GetOpponentItem
@@ -7399,48 +7439,14 @@ TryWeaknessPolicy:
 	ld a, [hli]
 	or [hl]
 	jr z, .restore_turn
-	ld hl, wPlayerAtkLevel
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .got_stats
-	ld hl, wEnemyAtkLevel
-.got_stats
-	ld a, [hl]
-	add 2
-	cp MAX_STAT_LEVEL + 1
-	jr nc, .cap_attack
-	ld [hl], a
-	jr .special_attack
-.cap_attack
-	ld [hl], MAX_STAT_LEVEL
-	jr .special_attack
-.special_attack
-	ld de, 3
-	add hl, de
-	ld a, [hl]
-	add 2
-	cp MAX_STAT_LEVEL + 1
-	jr nc, .cap_special_attack
-	ld [hl], a
-	jr .recalculate
-.cap_special_attack
-	ld [hl], MAX_STAT_LEVEL
-.recalculate
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .calc_player
-	farcall CalcEnemyStats
-	jr .consume
-.calc_player
-	farcall CalcPlayerStats
-.consume
 	farcall SwitchTurnCore
 	farcall ConsumeHeldItem
 	farcall SwitchTurnCore
 	ld a, [wNamedObjectIndex]
-	farcall GetItemName
+	call GetItemName
 	ld hl, BattleText_UsersStringBuffer1Activated
-	farcall StdBattleTextbox
+	call StdBattleTextbox
+	farcall ApplyWeaknessPolicyStatBoosts
 .restore_turn
 	pop af
 	ldh [hBattleTurn], a
@@ -7502,62 +7508,51 @@ HandleWhiteHerb:
 	farcall StdBattleTextbox
 	ret
 
-ActivateDreamBerry:
-	ldh a, [hBattleTurn]
-	push af
-	farcall SwitchTurnCore
+
+PrepareDreamBerryHealAnimation:
 	farcall ItemRecoveryAnim
-	farcall GetMaxHP
-	xor a
-	ldh [hMultiplicand + 0], a
-	ld a, b
-	ldh [hMultiplicand + 1], a
-	ld a, c
-	ldh [hMultiplicand + 2], a
-	ld a, 3
-	ldh [hMultiplier], a
-	call Multiply
-	ldh a, [hProduct + 0]
-	ldh [hDividend + 0], a
-	ldh a, [hProduct + 1]
-	ldh [hDividend + 1], a
-	ldh a, [hProduct + 2]
-	ldh [hDividend + 2], a
-	ldh a, [hProduct + 3]
-	ldh [hDividend + 3], a
-	ld a, 4
-	ldh [hDivisor], a
-	ld b, 4
-	call Divide
-	ldh a, [hQuotient + 2]
-	ld b, a
-	ldh a, [hQuotient + 3]
-	ld c, a
-	farcall RestoreHP
-	ld hl, wBattleMonStatus
+	farcall SwitchTurnCore
+	ld a, BATTLE_VARS_SUBSTATUS5
+	call GetBattleVarAddr
+	res SUBSTATUS_TOXIC, [hl]
+	ld a, BATTLE_VARS_STATUS
+	call GetBattleVarAddr
+	ld [hl], REST_SLEEP_TURNS + 1
 	ldh a, [hBattleTurn]
 	and a
-	jr z, .set_sleep
-	ld hl, wEnemyMonStatus
-.set_sleep
-	ld a, 3
+	jr nz, .enemy_stats
+	farcall CalcPlayerStats
+	jr .fill_hp
+.enemy_stats
+	farcall CalcEnemyStats
+.fill_hp
+	ld hl, wBattleMonHP
+	ld de, wBattleMonMaxHP
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .copy_hp
+	ld hl, wEnemyMonHP
+	ld de, wEnemyMonMaxHP
+.copy_hp
+	push hl
+	ld a, [hli]
+	ld [wHPBuffer2 + 1], a
+	ld a, [hl]
+	ld [wHPBuffer2], a
+	pop hl
+	ld a, [de]
+	ld [wHPBuffer1 + 1], a
+	ld [wHPBuffer3 + 1], a
+	inc de
+	ld a, [de]
+	ld [wHPBuffer1], a
+	ld [wHPBuffer3], a
+	ld a, [wHPBuffer1 + 1]
+	ld [hli], a
+	ld a, [wHPBuffer1]
 	ld [hl], a
 	farcall UpdateUserInParty
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .update_player_hud
-	farcall UpdateEnemyHUD
-	jr .consume
-.update_player_hud
-	farcall UpdatePlayerHUD
-.consume
 	farcall SwitchTurnCore
-	farcall ConsumeHeldItem
-	farcall SwitchTurnCore
-	pop af
-	ldh [hBattleTurn], a
-	ld hl, FellAsleepText
-	farcall StdBattleTextbox
 	ret
 
 BattleCommand_TailwindCore:

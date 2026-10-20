@@ -4743,6 +4743,11 @@ HandleHPHealingItem:
 	inc de
 	ld a, [wHPBuffer3]
 	ld [de], a
+	jr .animate_hp_bar
+.activate_dream_berry
+	farcall PrepareDreamBerryHealAnimation
+
+.animate_hp_bar
 	ldh a, [hBattleTurn]
 	ld [wWhichHPBar], a
 	and a
@@ -4753,8 +4758,7 @@ HandleHPHealingItem:
 .got_hp_bar_coords
 	ld [wWhichHPBar], a
 	predef AnimateHPBar
-.activate_dream_berry
-	farcall ActivateDreamBerry
+	call UseOpponentItem
 	ret
 
 UseOpponentItem:
