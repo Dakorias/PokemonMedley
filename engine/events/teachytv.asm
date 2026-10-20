@@ -3,10 +3,13 @@ TeachyTv:
 	ld hl, MoveReminderWhichMonText
 	call PrintText
 
+	.choose_pokemon
 	; Loads the party menu to select a Pokémon. Relative jump
-	; to the ".cancel" local jump if the player leaves
-	; the party menu without selecting anything.
-	farcall SelectMonFromParty
+	; to the shutdown text if the player leaves the party menu.
+	farcall SelectMonFromPartyNoMapReturn
+	push af
+	farcall FadeOutToWhite
+	pop af
 	jr c, .cancel
 
 	; Checks if the current selection is an egg. Relative jump to
@@ -28,10 +31,9 @@ TeachyTv:
 	jr z, .no_moves_to_learn
 
 	; Generates the Move Reminder's menu. Relative jump to the
-	; ".exit_menu" local jump if the player leaves
-	; the menu and continue if they do not.
+	; party menu again if the player leaves without selecting.
 	call ChooseMoveToLearn
-	jr c, .exit_menu
+	jr c, .choose_pokemon
 
 	; If the player selects a move, load the move's name and copy
 	; it for later. This is used for displaying the move's
@@ -42,7 +44,6 @@ TeachyTv:
 	call CopyName1
 
 ; Begins the process of learning a move.
-
 	; The "LearnMove" label sets the value of the "b" register to "1"
 	; when a move is successfully learned and sets it to "0" if
 	; cancelled at any point in the move learning process.
@@ -53,17 +54,13 @@ TeachyTv:
 	ld a, b
 	dec a
 	jr z, .move_learned
-; This code falls through into the ".exit_menu" local jump.
-
-; Exits the menu and goes back to the
-; map with a speech text box open.
-.exit_menu
-	call ReturnToMapWithSpeechTextbox
-; This code falls through into the ".cancel" local jump.
+	jr .choose_pokemon
 
 ; Loads and prints the "MoveReminderCancelText" text.
 ; This ends the dialogue.
 .cancel
+	ld a, 2
+	ld [wItemEffectSucceeded], a
 	ld hl, MoveReminderCancelText
 	jp PrintText
 
@@ -71,36 +68,38 @@ TeachyTv:
 ; This ends the dialogue.
 .is_an_egg
 	ld hl, MoveReminderEggText
-	jp PrintText
+	call PrintText
+	jr .choose_pokemon
 
 ; Loads and prints the "MoveReminderNotaMonText" text.
 ; This ends the dialogue.
 .not_a_pokemon
 	ld hl, MoveReminderNotaMonText
-	jp PrintText
+	call PrintText
+	jr .choose_pokemon
 
 ; Loads and prints the "MoveReminderNoMovesText" text.
 ; This ends the dialogue.
 .no_moves_to_learn
 	ld hl, MoveReminderNoMovesText
-	jp PrintText
+	call PrintText
+	jr .choose_pokemon
 
 ; Exits the menu and goes back to the map with a
 ; speech text box open and then loads and prints
 ; the "MoveReminderMoveLearnedText" text.
 ; This ends the dialogue.
 .move_learned
-	call ReturnToMapWithSpeechTextbox
 	ld hl, MoveReminderMoveLearnedText
-	jp PrintText
+	call PrintText
+	jr .choose_pokemon
 
 ; Checks for moves that can be learned and returns
 ; a zero flag if there are none.
 GetRemindableMoves:
 
-	; The "wd002" wram label is being used to store
-	; the moves for placement in the move list.
-	ld hl, wd002
+	; Store move records in dedicated WRAM instead of shared scratch space.
+	ld hl, wTeachyTvMoveList
 	xor a
 	ld [hli], a
 	ld [hl], $ff
@@ -120,8 +119,7 @@ GetRemindableMoves:
 	ld [wCurPartyLevel], a
 
 	; The "b" register will contain the number of
-	; moves in the move list and "wd002 + 1"
-	; is where the move list begins.
+	; moves in the list and the records begin after its count byte.
 	; Retrieves the currently selected Pokémon's evolution
 	; and attack address from the "EvosAttacksPointers"
 	; table that is located in another bank. This is the
@@ -137,7 +135,7 @@ GetRemindableMoves:
 	ldh [hTemp], a
 	call SkipEvolutions
 	ld b, 0
-	ld de, wd002 + 1
+	ld de, wTeachyTvMoveList + 1
 	push bc
 
 ; Loops through the move list until it reaches
@@ -150,9 +148,13 @@ GetRemindableMoves:
 ; if the Pokémon's level is higher, it will
 ; attempt to add the move to the move list.
 .loop_moves
+	push de
 	call GetNextEvoAttackByte
 	and a
-	jr z, .done
+	jr nz, .got_move_level
+	pop de
+	jr .done
+.got_move_level
 	ld c, a
 	ld a, [wCurPartyLevel]
 	cp c
@@ -162,7 +164,10 @@ GetRemindableMoves:
 	call GetNextEvoAttackByte
 	ld d, a
 	pop af
-	jr c, .loop_moves
+	jr nc, .check_move
+	pop de
+	jr .loop_moves
+.check_move
 	push hl
 	push bc
 	push de
@@ -179,9 +184,13 @@ GetRemindableMoves:
 	; move will be added to the move list.
 	ld c, a
 	call CheckAlreadyInList
-	jr c, .loop_moves
+	jr c, .skip_move
 	call CheckPokemonAlreadyKnowsMove
-	jr c, .loop_moves
+	jr c, .skip_move
+	ld a, b
+	cp 239
+	jr nc, .skip_move
+	pop de
 	ld a, c
 	ld [de], a
 	inc de
@@ -191,14 +200,17 @@ GetRemindableMoves:
 	inc b
 	push bc
 	jr .loop_moves
+.skip_move
+	pop de
+	jr .loop_moves
 
 ; Adds all the possible moves the currently
-; selected Pokémon can learn into "wd002".
+; selected Pokémon can learn into the dedicated move list.
 ; Which is the move list.
 .done
 	pop bc
 	ld a, b
-	ld [wd002], a
+	ld [wTeachyTvMoveList], a
 	and a
 	ret
 
@@ -207,14 +219,15 @@ GetRemindableMoves:
 ; duplicate entries in the move list.
 CheckAlreadyInList:
 	push hl
-	ld hl, wd002 + 1
+	ld hl, wTeachyTvMoveList + 1
 .loop
 	ld a, [hli]
-	inc a
+	cp -1
 	jr z, .nope
-	dec a
 	cp c
-	jr nz, .loop
+	jr z, .found
+	jr .loop
+.found
 	pop hl
 	scf
 	ret
@@ -252,7 +265,6 @@ CheckPokemonAlreadyKnowsMove:
 ; The number of items is stored in "wd002"
 ; The list of items is stored in "wd002 + 1"
 ChooseMoveToLearn:
-	farcall BlankScreen
 	ld hl, .MenuHeader
 	call CopyMenuHeader
 	xor a
@@ -339,7 +351,7 @@ ChooseMoveToLearn:
 ; details will be displayed.
 
 ; This menu is populated with an item and three functions.
-; The item is "wd002".
+	; The item list is stored in wTeachyTvMoveList.
 ; Function 1 is the ".print_move_name" local jump.
 ; Function 2 is the ".print_pp" local jump.
 ; Function 3 is the ".print_move_details" local jump.
@@ -347,14 +359,14 @@ ChooseMoveToLearn:
 	db SCROLLINGMENU_DISPLAY_ARROWS | SCROLLINGMENU_ENABLE_FUNCTION3
 	db 4, SCREEN_WIDTH + 2
 	db SCROLLINGMENU_ITEMS_NORMAL
-	dba  wd002
+	dbw 0, wTeachyTvMoveList
 	dba .print_move_name
 	dba .print_pp
 	dba .print_move_details
 
 ; This prints the move's name in the menu.
 ; This is purely visual as the actual
-; entry is stored in "wd002".
+	; entry is stored in wTeachyTvMoveList.
 .print_move_name
 	push de
 	ld a, [wMenuSelection]
@@ -373,15 +385,11 @@ ChooseMoveToLearn:
 	ld a, [wMenuSelection]
 	inc a
 	ret z
-	dec a
 	push de
-
 	ld a, [wMenuSelection]
-	ld bc, MOVE_LENGTH
-	ld hl, (Moves + MOVE_PP) - MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, a
+	ld a, MOVE_PP
+	call GetMoveAttribute
 	ld [wBuffer1], a
 	ld hl, wStringBuffer1 + 9
 	ld de, wBuffer1
@@ -471,11 +479,9 @@ ChooseMoveToLearn:
 ; This prints the move's attack number.
 .print_move_attack
 	ld a, [wMenuSelection]
-	ld bc, MOVE_LENGTH
-	ld hl, (Moves + MOVE_POWER) - MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, a
+	ld a, MOVE_POWER
+	call GetMoveAttribute
 	cp 2
 	jr c, .print_move_null_attack
 	ld [wBuffer1], a
@@ -569,8 +575,4 @@ MoveReminderMoveLearnedText:
 	text "Done! Your #MON"
 	line "remembered the"
 	cont "move."
-
-	para "<PLAYER> turned off"
-	line "the TEACHY TV."
-
 	done

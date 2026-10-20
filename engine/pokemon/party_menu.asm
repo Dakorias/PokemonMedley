@@ -1,4 +1,9 @@
 SelectMonFromParty:
+	call SelectMonFromPartyNoMapReturn
+	call ReturnToMapWithSpeechTextbox
+	ret
+
+SelectMonFromPartyNoMapReturn:
 	call DisableSpriteUpdates
 	xor a
 	ld [wPartyMenuActionText], a
@@ -8,7 +13,6 @@ SelectMonFromParty:
 	call SetDefaultBGPAndOBP
 	call DelayFrame
 	call PartyMenuSelect
-	call ReturnToMapWithSpeechTextbox
 	ret
 
 SelectTradeOrDayCareMon:

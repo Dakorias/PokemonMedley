@@ -489,7 +489,13 @@ StartMenu_Pack:
 
 .used_item
 	call ExitAllMenus
+	ld a, [wItemEffectSucceeded]
+	cp 2
+	jr z, .used_item_without_script
 	ld a, 4
+	ret
+.used_item_without_script
+	ld a, 5
 	ret
 
 StartMenu_Pokemon:

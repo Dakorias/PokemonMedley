@@ -28,6 +28,7 @@ RegistrationCenterOfficerScript:
 	verbosegiveitem CANDY_BAG
 	verbosegiveitem EXP_SHARE
 	verbosegiveitem TOWN_MAP
+	verbosegiveitem TEACHY_TV
 	writetext RegistrationGoodLuck
 	waitbutton
 	closetext

@@ -327,6 +327,10 @@ SECTION UNION "Miscellaneous", WRAM0
 wBoxPartialData:: ds 480
 wBoxPartialDataEnd::
 
+SECTION UNION "Miscellaneous", WRAM0
+; Teachy TV's scrolling move list (count, 239 two-byte records, sentinel).
+wTeachyTvMoveList:: ds 480
+
 
 SECTION UNION "Miscellaneous", WRAM0
 
@@ -2183,7 +2187,6 @@ wd032:: ds 1
 wd033:: ds 1
 wd034:: ds 2
 wd036:: ds 2
-
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
