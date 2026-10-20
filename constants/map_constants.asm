@@ -107,7 +107,7 @@ ENDM
 	endgroup
 
 	newgroup SECOND_ISLAND																				; 8
-	map_const TREELINE_PORT,															 18, 15 ; 1
+	map_const TREELINE_PORT,															 20, 18 ; 1
 	map_const TREELINE_PORT_INSIDE,												  8,  6 ; 2
 	map_const FOREST_PARK,															   20, 20 ; 3
 	map_const NORTH_FOREST_PATH,													 10, 20 ; 1

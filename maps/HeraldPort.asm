@@ -113,8 +113,25 @@ HeraldPort_MapScripts:
 
 	Sailor1Script:
 		faceplayer
+		checkflag ENGINE_CRUSHBADGE
+		iffalse .NoBadge
+		opentext
+		writetext SailorTreelineTravelQuestionText
+		yesorno
+		iffalse .NoTrip
+		closetext
+		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
+		applymovement PLAYER, PlayerBoardsShipMovement
+		playsound SFX_ENTER_DOOR
+		warp TREELINE_PORT_INSIDE, 9, 9
+	.NoBadge
 		opentext
 		writetext SailorBlocksPortText
+		waitbutton
+		closetext
+		end
+	.NoTrip
+		writetext SailorTreelineTravelDeclinedText
 		waitbutton
 		closetext
 		end
@@ -154,6 +171,11 @@ HeraldPort_MapScripts:
 		step DOWN
 		step DOWN
 		step RIGHT
+		turn_head UP
+		step_end
+
+	PlayerBoardsShipMovement:
+		step UP
 		turn_head UP
 		step_end
 
@@ -311,6 +333,21 @@ HeraldPort_MapScripts:
 
 		para "Please come back"
 		line "later."
+		done
+
+	SailorTreelineTravelQuestionText:
+		text "The boat is ready"
+		line "to leave for"
+		cont "TREELINE PORT."
+
+		para "Would you like to"
+		line "board?"
+		done
+
+	SailorTreelineTravelDeclinedText:
+		text "All right. Let me"
+		line "know when you're"
+		cont "ready to go."
 		done
 
 	Sailor2Text:

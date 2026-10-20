@@ -23,7 +23,6 @@ INCLUDE "maps/HeraldLab.asm"
 INCLUDE "maps/HeraldPokecenter.asm"
 INCLUDE "maps/HeraldGym.asm"
 INCLUDE "maps/HeraldHouse.asm"
-INCLUDE "maps/HeraldPort.asm"
 INCLUDE "maps/CraggyBeach.asm"
 
 SECTION "Map Scripts 4", ROMX
@@ -73,6 +72,7 @@ INCLUDE "maps/WestForestPath.asm"
 INCLUDE "maps/MontaneTown.asm"
 
 SECTION "Map Scripts 7", ROMX
+INCLUDE "maps/HeraldPort.asm"
 
 
 SECTION "Map Scripts 8", ROMX

@@ -163,7 +163,7 @@ TreelinePort_Blocks:
 	INCBIN "maps/TreelinePort.ablk"
 
 TreelinePortInside_Blocks:
-	INCBIN "maps/IslandPort2.ablk"
+	INCBIN "maps/IslandPort.ablk"
 
 ForestPark_Blocks:
 	INCBIN "maps/ForestPark.ablk"
