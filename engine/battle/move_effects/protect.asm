@@ -35,7 +35,7 @@ BattleCommand_ProtectCore:
 	farcall AnimateCurrentMove
 
 	ld hl, ProtectedItselfText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 
 ProtectChance:
 	ld de, wPlayerProtectCount
@@ -103,7 +103,7 @@ ApplyProtectContactRetaliation:
 	farcall CheckContactMove
 	ret c
 	ld a, BATTLE_VARS_SUBSTATUS2_OPP
-	farcall GetBattleVar
+	call GetBattleVar
 	bit SUBSTATUS_SPIKY_SHIELD, a
 	jr nz, .spiky_shield
 	bit SUBSTATUS_BANEFUL_BUNKER, a
@@ -124,7 +124,7 @@ ApplyProtectContactRetaliation:
 	pop af
 	ldh [hBattleTurn], a
 	ld a, BATTLE_VARS_STATUS
-	farcall GetBattleVarAddr
+	call GetBattleVarAddr
 	ld a, [hl]
 	and ALL_STATUS
 	ret nz
@@ -146,11 +146,11 @@ ApplyProtectContactRetaliation:
 	cp STEEL
 	ret z
 	ld a, BATTLE_VARS_STATUS
-	farcall GetBattleVarAddr
+	call GetBattleVarAddr
 	set PSN, [hl]
 	farcall UpdateUserInParty
 	ld hl, WasPoisonedText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	farcall RefreshBattleHuds
 	ret
 .spiky_shield

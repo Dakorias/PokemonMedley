@@ -403,7 +403,7 @@ HandleBattleMoveTimers:
 	farcall UpdatePlayerHUD
 	farcall SetEnemyTurn
 	ld hl, FellAsleepText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	farcall UseHeldStatusHealingItem
 	jr .restore_player_turn
 .restore_player_turn
@@ -431,7 +431,7 @@ HandleBattleMoveTimers:
 	farcall UpdateEnemyHUD
 	farcall SetPlayerTurn
 	ld hl, FellAsleepText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	farcall UseHeldStatusHealingItem
 	jr .restore_enemy_turn
 .restore_enemy_turn

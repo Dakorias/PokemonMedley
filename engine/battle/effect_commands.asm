@@ -7282,7 +7282,7 @@ CheckTauntCore:
 	jr z, .not_taunted
 	push hl
 	ld a, BATTLE_VARS_MOVE_EFFECT
-	farcall GetBattleVar
+	call GetBattleVar
 	pop hl
 	cp EFFECT_FUTURE_SIGHT
 	jr z, .blocked
@@ -7320,7 +7320,7 @@ CheckChoiceLockCore:
 	ret z
 	push hl
 	ld a, BATTLE_VARS_MOVE
-	farcall GetBattleVar
+	call GetBattleVar
 	ld b, a
 	pop hl
 	ld a, [hl]
@@ -7505,7 +7505,7 @@ HandleWhiteHerb:
 	ld a, [wNamedObjectIndex]
 	farcall GetItemName
 	ld hl, BattleText_UsersStringBuffer1Activated
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	ret
 
 
@@ -7570,7 +7570,7 @@ BattleCommand_TailwindCore:
 	farcall RecalculateBattleSpeeds
 	farcall AnimateCurrentMove
 	ld hl, TailwindBlewText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	ret
 .failed
 	farcall AnimateFailedMove
@@ -7597,7 +7597,7 @@ BattleCommand_TauntCore:
 	ld [hl], a
 	farcall AnimateCurrentMove
 	ld hl, FellForTauntText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	ret
 .fail
 	farcall AnimateFailedMove
@@ -7622,7 +7622,7 @@ BattleCommand_YawnCore:
 	ld [hl], a
 	farcall AnimateCurrentMove
 	ld hl, GrewDrowsyText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	ret
 .fail
 	farcall AnimateFailedMove
@@ -7641,7 +7641,7 @@ BattleCommand_AquaRingCore:
 	set 7, [hl]
 	farcall AnimateCurrentMove
 	ld hl, SurroundedByWaterText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	ret
 .fail
 	farcall AnimateFailedMove
@@ -7656,7 +7656,7 @@ BattleCommand_FangHitCore:
 	cp 26
 	jr nc, .flinch_chance
 	ld a, BATTLE_VARS_MOVE_TYPE
-	farcall GetBattleVar
+	call GetBattleVar
 	cp ELECTRIC
 	jr nz, .burn_chance
 	farcall BattleCommand_ParalyzeTarget
@@ -7678,7 +7678,7 @@ BattleCommand_FangHitCore:
 	ret nz
 	farcall EndRechargeOpp
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
-	farcall GetBattleVarAddr
+	call GetBattleVarAddr
 	set SUBSTATUS_FLINCHED, [hl]
 	ret
 

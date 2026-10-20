@@ -33,9 +33,9 @@ BattleCommand_KnockOffCore:
 	xor a
 	ld [hl], a
 	ld hl, KnockOffText
-	farcall StdBattleTextbox
+	call StdBattleTextbox
 	ld a, MON_ITEM
-	farcall OpponentPartyAttr
+	call OpponentPartyAttr
 	ret z
 	xor a
 	ld [hl], a
