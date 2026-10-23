@@ -157,7 +157,7 @@ _OakTimeWokeUpText::
 	text "<……><……><……><……><……><……>"
 	line "<……><……><……><……><……><……>"
 
-	para "OAK: Alright then,"
+	para "CAVENDISH: Alright"
 	line "we are about to"
 
 	para "arrive at HERALD"
@@ -519,7 +519,7 @@ _MobileTradeCameBackText::
 
 _OPT_IntroText1::
 	text_start
-	line "MARY: PROF.OAK'S"
+	line "MARY: CAVENDISH'S"
 	done
 
 _OPT_IntroText2::
@@ -534,7 +534,7 @@ _OPT_IntroText3::
 
 _OPT_OakText1::
 	text_start
-	line "OAK: @"
+	line "CAVENDISH: @"
 	text_ram wMonOrItemNameBuffer
 	text_end
 
@@ -977,7 +977,7 @@ _RocketRadioText1::
 
 _RocketRadioText2::
 	text_start
-	line "TEAM ROCKET!"
+	line "TEAM HELIX!"
 	done
 
 _RocketRadioText3::
@@ -1002,7 +1002,7 @@ _RocketRadioText6::
 
 _RocketRadioText7::
 	text_start
-	line "GIOVANNI! @"
+	line "ADAM VOSS! @"
 	text_pause
 	text "Can you"
 	done

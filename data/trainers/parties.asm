@@ -860,6 +860,30 @@ BlaireGroup:
 
 	next_list_item ; BLAIRE2 (1)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
+	db  12
+	dw EKANS
+	db  10
+	dw HOUNDOUR
+	db -1 ; end
+
+	next_list_item ; BLAIRE2 (2)
+	db "BLAIRE@", TRAINERTYPE_NORMAL
+	db  12
+	dw YANMA
+	db  10
+	dw HOUNDOUR
+	db -1 ; end
+
+	next_list_item ; BLAIRE2 (3)
+	db "BLAIRE@", TRAINERTYPE_NORMAL
+	db  12
+	dw BALTOY
+	db  10
+	dw HOUNDOUR
+	db -1 ; end
+
+	next_list_item ; BLAIRE3 (1)
+	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  16
 	dw ROCKRUFF
 	db  15
@@ -868,7 +892,7 @@ BlaireGroup:
 	dw EKANS
 	db -1 ; end
 
-	next_list_item ; BLAIRE2 (2)
+	next_list_item ; BLAIRE3 (2)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  16
 	dw ROCKRUFF
@@ -878,7 +902,7 @@ BlaireGroup:
 	dw YANMA
 	db -1 ; end
 
-	next_list_item ; BLAIRE2 (3)
+	next_list_item ; BLAIRE3 (3)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  16
 	dw ROCKRUFF

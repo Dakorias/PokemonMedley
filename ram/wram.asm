@@ -2102,7 +2102,7 @@ ENDU
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
-; prof. oak's pc
+; Prof. Cavendish's PC
 wTempPokedexSeenCount:: db
 wTempPokedexCaughtCount:: db
 
@@ -3150,11 +3150,12 @@ wHeraldLabSceneID::									db
 wHeraldPortSceneID::								db
 wHeraldRouteSceneID::								db
 wBeachRouteSceneID::								db
+wFirstGymBeachSceneID::									db
 wMountainGymSceneID::								db
 wMountainGymBreakSceneID::					db
 wMountainGymArenaSceneID::					db
 
-	ds 105
+	ds 104
 
 ; fight counts
 wJackFightCount::    db

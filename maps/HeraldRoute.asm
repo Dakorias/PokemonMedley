@@ -1,4 +1,6 @@
 	object_const_def
+	const HERALD_ROUTE_BLAIRE
+	const HERALD_ROUTE_PERCY
 	const HERALD_ROUTE_YOUNGSTER1
 	const HERALD_ROUTE_YOUNGSTER2
 	const HERALD_ROUTE_LASS1
@@ -15,12 +17,20 @@
 
 HeraldRoute_MapScripts:
 	def_scene_scripts
+	scene_script HeraldRouteBlaire, SCENE_HERALD_ROUTE_BLAIRE
 	scene_script HeraldRouteRockets, SCENE_HERALD_ROUTE_ROCKETS
+	scene_script HeraldRouteAfterRegistration, SCENE_HERALD_ROUTE_REGISTRATION
 	scene_script HeraldRouteNoop1, SCENE_HERALD_ROUTE_NOOP1
 
 	def_callbacks
 
+	HeraldRouteBlaire:
+		end
+
 	HeraldRouteRockets:
+		end
+
+	HeraldRouteAfterRegistration:
 		end
 
 	HeraldRouteNoop1:
@@ -145,6 +155,52 @@ BlockingRocket4Script:
 	applymovement HERALD_ROUTE_ROCKET2, RocketGoesBack2
 	end
 
+BlaireRunsIntoPlayerScript:
+	applymovement HERALD_ROUTE_BLAIRE, HeraldRouteBlaireWalksToPlayer
+	opentext
+	writetext HeraldRouteBlaireText1
+	waitbutton
+	closetext
+	turnobject HERALD_ROUTE_BLAIRE, LEFT
+	pause 4
+	opentext
+	writetext HeraldRouteBlaireText2
+	waitbutton
+	closetext
+	turnobject HERALD_ROUTE_BLAIRE, RIGHT
+	pause 4
+	opentext
+	writetext HeraldRouteBlaireText3
+	waitbutton
+	closetext
+	applymovement PLAYER, PlayerStepDownHeraldRoute
+	pause 4
+	applymovement HERALD_ROUTE_BLAIRE, HeraldRouteBlaireWalksFromPlayer
+	disappear HERALD_ROUTE_BLAIRE
+	setscene SCENE_HERALD_ROUTE_ROCKETS
+	end
+
+HeraldRoutePercyRunsIntoPlayerScript:
+	disappear HERALD_ROUTE_PERCY
+	moveobject HERALD_ROUTE_PERCY, 32, 7
+	appear HERALD_ROUTE_PERCY
+	turnobject PLAYER, RIGHT
+	showemote EMOTE_SHOCK, PLAYER, 15
+	applymovement HERALD_ROUTE_PERCY, HeraldRoutePercyRunsToPlayer
+	turnobject PLAYER, DOWN
+	opentext
+	writetext HeraldRoutePercyTalksToPlayer
+	waitbutton
+	closetext
+	pause 5
+	applymovement HERALD_ROUTE_PERCY, HeraldRoutePercyRunsFromPlayer
+	playsound SFX_JUMP_OVER_LEDGE
+	applymovement HERALD_ROUTE_PERCY, HeraldRoutePercyJumpsDown
+	applymovement HERALD_ROUTE_PERCY, HeraldRoutePercyRunsFromPlayer2
+	disappear HERALD_ROUTE_PERCY
+	setscene SCENE_HERALD_ROUTE_ROCKETS
+	end
+
 HeraldRouteGrottoEntryScript:
 	opentext
 	writetext HeraldRouteGrottoEntryText
@@ -208,6 +264,58 @@ RocketPushesPlayerBack:
 	step_sleep 8
 	step_end
 
+HeraldRouteBlaireWalksToPlayer:
+	step DOWN
+	step DOWN
+	step DOWN
+	step DOWN
+	step DOWN
+	step RIGHT
+	step_end
+
+PlayerStepDownHeraldRoute:
+	step DOWN
+	turn_head UP
+	step_end
+
+HeraldRouteBlaireWalksFromPlayer:
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step_end
+
+HeraldRoutePercyRunsToPlayer:
+	big_step LEFT
+	big_step LEFT
+	big_step LEFT
+	big_step LEFT
+	big_step LEFT
+	big_step LEFT
+	turn_head UP
+	step_end
+
+HeraldRoutePercyRunsFromPlayer:
+	big_step DOWN
+	big_step DOWN
+	step_end
+
+HeraldRoutePercyJumpsDown:
+	jump_step DOWN
+	step_end
+
+HeraldRoutePercyRunsFromPlayer2:
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	step_end
+
 RocketPushPlayerBackPosition1:
 	big_step UP
 	big_step LEFT
@@ -229,6 +337,42 @@ RocketGoesBack2:
 	big_step DOWN
 	big_step LEFT
 	step_end
+
+	HeraldRouteBlaireText1:
+		text "Oh, hey <PLAYER>,"
+		line "I see you're out"
+		cont "exploring too."
+		para "Are you catching"
+		line "any #MON?"
+		done
+
+	HeraldRouteBlaireText2:
+		text "If not, then you"
+		line "really should be."
+		para "Especially since"
+		line "there seem to be"
+		cont "some places that"
+		para "have much rarer"
+		line "#MON, even in"
+		cont" the same route."
+		done
+
+	HeraldRouteBlaireText3:
+		text "Anyways, I'll see"
+		line "you later. I'm"
+		para "going to keep"
+		line "looking around for"
+		cont "now. Excuse me."
+		done
+
+HeraldRoutePercyTalksToPlayer:
+	text "<PLAYER>! Come on!"
+	line "Blaire is already"
+	cont "with the professor"
+	para "now. He said he's"
+	line "got something for"
+	cont "all of us!"
+	done
 
 YoungsterKevinSeenText:
 	text "Hey, I haven't"
@@ -449,6 +593,8 @@ HeraldRoute_MapEvents:
 	def_coord_events
 	coord_event 36, 2, SCENE_HERALD_ROUTE_ROCKETS, BlockingRocket3Script
 	coord_event 39, 2, SCENE_HERALD_ROUTE_ROCKETS, BlockingRocket4Script
+	coord_event 6, 16, SCENE_HERALD_ROUTE_BLAIRE, BlaireRunsIntoPlayerScript
+	coord_event 26, 6, SCENE_HERALD_ROUTE_REGISTRATION, HeraldRoutePercyRunsIntoPlayerScript
 
 	def_bg_events
 	bg_event 5,  3, BGEVENT_READ, HeraldRouteGrottoEntryScript
@@ -457,6 +603,8 @@ HeraldRoute_MapEvents:
 	bg_event 22,  6, BGEVENT_READ, RegistrationCenterSignScript
 
 	def_object_events
+	object_event 4,  11, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_HERALD_ROUTE_BLAIRE
+	object_event 0,  23, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
 	object_event 31,  12, SPRITE_YOUNGSTER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_TRAINER, 3, TrainerYoungsterKevin, -1
 	object_event 17, 14, SPRITE_YOUNGSTER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_TRAINER, 3, TrainerBugCatcherJames, -1
 	object_event 11, 11, SPRITE_LASS, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_TRAINER, 4, TrainerLassAlexis, EVENT_LASS_BATTLE_HERALD_ROUTE

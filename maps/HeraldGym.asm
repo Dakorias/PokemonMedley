@@ -35,7 +35,7 @@ HeraldGym_MapScripts:
 		playsound SFX_GET_BADGE
 		waitsfx
 		setflag ENGINE_ANCHORBADGE
-		setmapscene HERALD_COVE, SCENE_HERALD_COVE_OAK_ROBBED
+		setmapscene HERALD_COVE, SCENE_HERALD_COVE_CAVENDISH_ROBBED
 		takeitem EDWARD_COIN
 		readvar VAR_BADGES
 	.FightDone:
@@ -54,8 +54,6 @@ HeraldGym_MapScripts:
 		writetext EdwardGivesGymChallenge
 		waitbutton
 		closetext
-		setmapscene HERALD_COVE, SCENE_HERALD_COVE_GYM_CHALLENGE
-		clearevent EVENT_GYM_TRAINERS_IN_HERALD_COVE
 		end
 
 	.No
@@ -74,6 +72,11 @@ HeraldGym_MapScripts:
 		closetext
 		setmapscene HERALD_LAB, SCENE_HERALD_LAB_POKEDEX
 		end
+
+	PlayerShouldJoinConference:
+		text "Sign up for the"
+		line "MONEGO CONFERENCE!"
+		done
 
 	EdwardGoOutside:
 		writetext EdwardGoOutsideText
@@ -101,9 +104,9 @@ HeraldGym_MapScripts:
 		done
 
 	EdwardExplainsGymChallenge:
-		text "<PLAYER>! I see you"
-		line "have an I.D. CARD"
-		cont "now."
+		text "<PLAYER>! I see"
+		line "you have an I.D."
+		cont "CARD now."
 
 		para "So that means you"
 		line "must be here to"
@@ -206,4 +209,4 @@ HeraldGym_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  4,  2, SPRITE_EDWARD, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, EdwardGymScript, EVENT_EDWARD_MISSING_FROM_GYM
+	object_event  4,  2, SPRITE_EDWARD, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, EdwardGymScript, -1

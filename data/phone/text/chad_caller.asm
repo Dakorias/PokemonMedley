@@ -15,7 +15,7 @@ ChadObservingWildText:
 	line "become a #MON"
 
 	para "researcher like"
-	line "PROF.OAK soon."
+	line "CAVENDISH soon."
 	done
 
 ChadDefeatedMonText:
@@ -72,7 +72,7 @@ ChadHangUpText:
 ChadBlueGossipText:
 	text "Do you know BLUE?"
 
-	para "He's PROF.OAK's"
+	para "He's CAVENDISH's"
 	line "grandson and a"
 
 	para "former #MON"
@@ -83,7 +83,7 @@ ChadBlueGossipText:
 	done
 
 ChadDaisyGossipText:
-	text "PROF.OAK has a"
+	text "CAVENDISH has a"
 	line "granddaughter"
 	cont "named DAISY."
 
@@ -100,14 +100,14 @@ ChadProfElmGossipText:
 
 	para "He used to be an"
 	line "assistant to the"
-	cont "great PROF.OAK!"
+	cont "great CAVENDISH!"
 
 	para "That is so cool!"
 	line "I envy him!"
 	done
 
 ChadProfOaksDreamGossipText:
-	text "PROF.OAK's dream"
+	text "CAVENDISH's dream"
 	line "is to compile a"
 
 	para "comprehensive"
@@ -122,7 +122,7 @@ ChadKurtGossipText:
 	text "Do you know KURT,"
 	line "the BALL creator?"
 
-	para "He and PROF.OAK go"
+	para "He and CAVENDISH go"
 	line "back a long way."
 
 	para "I guess great"
@@ -138,7 +138,7 @@ ChadLeagueGossipText:
 	para "trainers who wish"
 	line "to become CHAMP."
 
-	para "PROF.OAK acts as"
+	para "CAVENDISH acts as"
 	line "an advisor to the"
 
 	para "#MON LEAGUE's"
@@ -149,7 +149,7 @@ ChadLeagueGossipText:
 	done
 
 ChadPokemonTalkGossipText:
-	text "PROF.OAK'S #MON"
+	text "CAVENDISH'S #MON"
 	line "TALK is a popular"
 	cont "radio show, right?"
 
@@ -168,7 +168,7 @@ ChadPokemonTalkGossipText:
 	done
 
 ChadProfOakTrainerGossipText:
-	text "PROF.OAK used to"
+	text "CAVENDISH used to"
 	line "be a trainer a"
 	cont "long time ago."
 
@@ -186,7 +186,7 @@ ChadProfOakTrainerGossipText:
 	done
 
 ChadDaisyTeaGossipText:
-	text "PROF.OAK has a"
+	text "CAVENDISH has a"
 	line "granddaughter"
 	cont "named DAISY."
 
@@ -200,12 +200,12 @@ ChadDaisyTeaGossipText:
 	line "join her for tea"
 
 	para "and chat about"
-	line "PROF.OAK."
+	line "CAVENDISH."
 	done
 
 ChadProfOakTravelingGossipText:
 	text "Did you know?"
-	line "PROF.OAK traveled"
+	line "CAVENDISH traveled"
 
 	para "all over the world"
 	line "when he was young."
@@ -225,7 +225,7 @@ ChadProfOakTravelingGossipText:
 
 ChadGoingToStudyHardText:
 	text "I'm going to study"
-	line "hard so PROF.OAK"
+	line "hard so CAVENDISH"
 
 	para "will make me his"
 	line "assistant!"

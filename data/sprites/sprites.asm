@@ -11,7 +11,7 @@ OverworldSprites:
 	overworld_sprite ChrisBikeSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite GameboyKidSpriteGFX, 12, STANDING_SPRITE, PAL_OW_GREEN
 	overworld_sprite RivalSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
-	overworld_sprite OakSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
+	overworld_sprite ProfessorCavendishSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
 	overworld_sprite RedSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite BlueSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite BillSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
@@ -114,7 +114,7 @@ OverworldSprites:
 	overworld_sprite MainBoySpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
 	overworld_sprite MainGirlRunSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite MainBoyRunSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BLUE
-	overworld_sprite GiovanniHatSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
+	overworld_sprite AdamVossSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
 	overworld_sprite EdwardSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite HarrisonSpriteGFX, 12, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite CottoneeSpriteGFX, 4, STILL_SPRITE, PAL_OW_GREEN

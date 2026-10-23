@@ -1025,7 +1025,7 @@ EdgeWarpScript:
 	reloadend MAPSETUP_CONNECTION
 
 ChangeDirectionScript:
-	callasm UnfreezeAllObjects
+	deactivatefacing 3
 	callasm EnableWildEncounters
 	end
 

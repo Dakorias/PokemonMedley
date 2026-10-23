@@ -1,23 +1,26 @@
 	object_const_def
-	const HERALD_LAB_OAK
+	const HERALD_LAB_CAVENDISH
 	const HERALD_LAB_PERCY
 	const HERALD_LAB_BLAIRE
 	const HERALD_LAB_POKE_BALL_1
 	const HERALD_LAB_POKE_BALL_2
 	const HERALD_LAB_POKE_BALL_3
 
+
 HeraldLab_MapScripts:
 	def_scene_scripts
-	scene_script HeraldLabMeetOakScene, SCENE_HERALD_LAB_MEET_OAK
+	scene_script HeraldLabMeetCavendishScene, SCENE_HERALD_LAB_MEET_CAVENDISH
 	scene_script HeraldLabCantLeave, SCENE_HERALD_LAB_CANT_LEAVE
 	scene_script HeraldLabRivalFightScene, SCENE_HERALD_LAB_RIVAL_FIGHT
 	scene_script HeraldLabGetPokedexScene, SCENE_HERALD_LAB_POKEDEX
 	scene_script HeraldLabNoop1Scene, SCENE_HERALD_LAB_NOOP1
 
 	def_callbacks
+	callback MAPCALLBACK_OBJECTS, CavendishMoveCallback
+	callback MAPCALLBACK_OBJECTS, RivalsMoveCallback
 
-	HeraldLabMeetOakScene:
-		sdefer PlayerTalkToOakScript
+	HeraldLabMeetCavendishScene:
+		sdefer PlayerTalkToCavendishScript
 		end
 
 	HeraldLabCantLeave:
@@ -27,53 +30,106 @@ HeraldLab_MapScripts:
 		end
 
 	HeraldLabGetPokedexScene:
+		sdefer PlayerGetsPokedexScript
 		end
 
 	HeraldLabNoop1Scene:
 		end
 
+	CavendishMoveCallback:
+		checkscene
+		ifequal SCENE_HERALD_LAB_MEET_CAVENDISH, .NoSkipCavendish
+		endcallback
+		
+	.NoSkipCavendish:
+		moveobject HERALD_LAB_CAVENDISH, 4, 12
+		endcallback
 
-	PlayerTalkToOakScript:
+	RivalsMoveCallback:
+		checkscene
+		ifequal SCENE_HERALD_LAB_POKEDEX, .NoSkip
+		endcallback
+
+	.NoSkip:
+		moveobject HERALD_LAB_BLAIRE, 3, 9
+		moveobject HERALD_LAB_PERCY, 5, 9
+		appear HERALD_LAB_BLAIRE
+		appear HERALD_LAB_PERCY
+		endcallback
+
+	PlayerTalkToCavendishScript:
+		clearevent EVENT_GOT_EKANS_FROM_CAVENDISH
+		clearevent EVENT_GOT_YANMA_FROM_CAVENDISH
+		clearevent EVENT_GOT_BALTOY_FROM_CAVENDISH
+		clearevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
+		clearevent EVENT_EKANS_POKEBALL_IN_CAVENDISHS_LAB
+		clearevent EVENT_YANMA_POKEBALL_IN_CAVENDISHS_LAB
+		clearevent EVENT_BALTOY_POKEBALL_IN_CAVENDISHS_LAB
+		appear HERALD_LAB_POKE_BALL_1
+		appear HERALD_LAB_POKE_BALL_2
+		appear HERALD_LAB_POKE_BALL_3
 		disappear HERALD_LAB_PERCY
-		disappear HERALD_LAB_BLAIRE
-		applymovement PLAYER, PlayerWalksToOakMovement
+		follow HERALD_LAB_CAVENDISH, PLAYER
+		applymovement HERALD_LAB_CAVENDISH, CavendishWalksToDeskMovement
+		stopfollow
+		pause 4
+		turnobject HERALD_LAB_CAVENDISH, LEFT
+		pause 15
+		turnobject HERALD_LAB_CAVENDISH, UP
+		pause 15
+		turnobject HERALD_LAB_CAVENDISH, LEFT
 		opentext
-		writetext OakWelcomesPlayer
+		writetext CavendishWelcomesPlayer
 		waitbutton
 		closetext
-		turnobject PLAYER, DOWN
-		pause 15
-		moveobject HERALD_LAB_PERCY, 4, 8
-		moveobject HERALD_LAB_BLAIRE, 5, 8
-		appear HERALD_LAB_PERCY
 		playsound SFX_ENTER_DOOR
-		applymovement HERALD_LAB_PERCY, PercyRunsToOakLabMovement
 		pause 5
-		appear HERALD_LAB_BLAIRE
-		playsound SFX_ENTER_DOOR
-		applymovement HERALD_LAB_BLAIRE, BlaireWalksToOakLabMovement
+		turnobject PLAYER, DOWN
+		moveobject HERALD_LAB_PERCY, 0, 7
+		appear HERALD_LAB_PERCY
+		applymovement HERALD_LAB_PERCY, PercyRunsToCavendishLabMovement
+		pause 5
+		opentext
+		writetext PercyEntersLabText
+		waitbutton
+		closetext
 		pause 10
+		turnobject PLAYER, RIGHT
+		opentext
+		writetext CavendishTalksAboutPokemonText
+		waitbutton
+		closetext
+		pause 5
+		applymovement HERALD_LAB_CAVENDISH, CavendishWalksToPokemonMovement
+		opentext
+		writetext CavendishOffersPokemonText
+		waitbutton
+		closetext
+		pause 4
+		turnobject HERALD_LAB_BLAIRE, DOWN
 		turnobject PLAYER, UP
 		opentext
-		writetext RivalsEnterLabText
+		writetext BlaireTurnsToPlayerText
 		waitbutton
 		closetext
-		pause 10
+		pause 8
+		turnobject HERALD_LAB_PERCY, UP
+		turnobject PLAYER, DOWN
 		opentext
-		writetext OakTalksAboutPokemonText
+		writetext PercyTurnsToPlayerText
 		waitbutton
 		closetext
-		pause 5
-		applymovement HERALD_LAB_OAK, OakWalksToPokemonMovement
+		pause 4
+		turnobject PLAYER, RIGHT
 		opentext
-		writetext OakOffersPokemonText
+		writetext CavendishPlayerChooseText
 		waitbutton
 		closetext
 		setscene SCENE_HERALD_LAB_CANT_LEAVE
 		end
 
 	EkansPokeballScript:
-		checkevent EVENT_GOT_A_POKEMON_FROM_OAK
+		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue LookAtPokeBallScript
 		refreshscreen
 		pokepic EKANS
@@ -85,7 +141,7 @@ HeraldLab_MapScripts:
 		yesorno
 		iffalse DidntChooseStarterScript
 		disappear HERALD_LAB_POKE_BALL_1
-		setevent EVENT_GOT_EKANS_FROM_OAK
+		setevent EVENT_GOT_EKANS_FROM_CAVENDISH
 		getmonname STRING_BUFFER_3, EKANS
 		writetext GetStarterText
 		playsound SFX_CAUGHT_MON
@@ -122,7 +178,7 @@ HeraldLab_MapScripts:
 		sjump AfterPokemonScript
 
 	YanmaPokeballScript:
-		checkevent EVENT_GOT_A_POKEMON_FROM_OAK
+		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue LookAtPokeBallScript
 		refreshscreen
 		pokepic YANMA
@@ -134,7 +190,7 @@ HeraldLab_MapScripts:
 		yesorno
 		iffalse DidntChooseStarterScript
 		disappear HERALD_LAB_POKE_BALL_2
-		setevent EVENT_GOT_YANMA_FROM_OAK
+		setevent EVENT_GOT_YANMA_FROM_CAVENDISH
 		getmonname STRING_BUFFER_3, YANMA
 		writetext GetStarterText
 		playsound SFX_CAUGHT_MON
@@ -171,7 +227,7 @@ HeraldLab_MapScripts:
 		sjump AfterPokemonScript
 
 	BaltoyPokeballScript:
-		checkevent EVENT_GOT_A_POKEMON_FROM_OAK
+		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue LookAtPokeBallScript
 		refreshscreen
 		pokepic BALTOY
@@ -183,7 +239,7 @@ HeraldLab_MapScripts:
 		yesorno
 		iffalse DidntChooseStarterScript
 		disappear HERALD_LAB_POKE_BALL_3
-		setevent EVENT_GOT_BALTOY_FROM_OAK
+		setevent EVENT_GOT_BALTOY_FROM_CAVENDISH
 		getmonname STRING_BUFFER_3, BALTOY
 		writetext GetStarterText
 		playsound SFX_CAUGHT_MON
@@ -220,29 +276,38 @@ HeraldLab_MapScripts:
 		sjump AfterPokemonScript
 
 	AfterPokemonScript:
-		turnobject HERALD_LAB_OAK, RIGHT
+		turnobject HERALD_LAB_CAVENDISH, LEFT
 		pause 20
-		turnobject PLAYER, LEFT
+		turnobject PLAYER, RIGHT
 		pause 2
-		turnobject HERALD_LAB_BLAIRE, LEFT
+		turnobject HERALD_LAB_BLAIRE, RIGHT
 		pause 2
-		turnobject HERALD_LAB_PERCY, LEFT
+		turnobject HERALD_LAB_PERCY, RIGHT
 		opentext
-		writetext OakLeavingText
+		writetext CavendishLeavingText
 		waitbutton
 		closetext
-		setevent EVENT_GOT_A_POKEMON_FROM_OAK
-		checkevent EVENT_GOT_EKANS_FROM_OAK
+		setevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
+		checkevent EVENT_GOT_EKANS_FROM_CAVENDISH
 		iftrue .PercyEkansExit
-		applymovement HERALD_LAB_PERCY, PercyLeavesLabLeftMovement
+		checkevent EVENT_GOT_YANMA_FROM_CAVENDISH
+		iftrue .PercyEkansExit
+		applymovement HERALD_LAB_PERCY, PercyLeavesLabYanmaMovement
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
-		setevent EVENT_EDWARD_MISSING_FROM_GYM
+		moveobject HERALD_LAB_CAVENDISH, 7, 2
 		end
 
 	.PercyEkansExit:
-		applymovement HERALD_LAB_PERCY, PercyLeavesLabRightMovement
+		applymovement HERALD_LAB_PERCY, PercyLeavesLabBaltoyMovement
+		playsound SFX_EXIT_BUILDING
+		disappear HERALD_LAB_PERCY
+		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
+		end
+
+	.PercyYanmaExit:
+		applymovement HERALD_LAB_PERCY, PercyLeavesLabEkansMovement
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
@@ -250,7 +315,7 @@ HeraldLab_MapScripts:
 
 	BlaireFightLeftScript:
 		disappear HERALD_LAB_BLAIRE
-		moveobject HERALD_LAB_BLAIRE, 5, 4
+		moveobject HERALD_LAB_BLAIRE, 5, 8
 		appear HERALD_LAB_BLAIRE
 		opentext
 		writetext RivalBlaireCallOutText
@@ -266,7 +331,7 @@ HeraldLab_MapScripts:
 
 	BlaireFightRightScript:
 		disappear HERALD_LAB_BLAIRE
-		moveobject HERALD_LAB_BLAIRE, 4, 4
+		moveobject HERALD_LAB_BLAIRE, 4, 8
 		appear HERALD_LAB_BLAIRE
 		opentext
 		writetext RivalBlaireCallOutText
@@ -285,9 +350,9 @@ HeraldLab_MapScripts:
 		writetext RivalBlaireFightText
 		waitbutton
 		closetext
-		checkevent EVENT_GOT_EKANS_FROM_OAK
+		checkevent EVENT_GOT_EKANS_FROM_CAVENDISH
 		iftrue .Ekans
-		checkevent EVENT_GOT_YANMA_FROM_OAK
+		checkevent EVENT_GOT_YANMA_FROM_CAVENDISH
 		iftrue .Yanma
 		winlosstext BlaireWinLabText, BlaireLossLabText
 		setlasttalked HERALD_LAB_BLAIRE
@@ -361,14 +426,6 @@ HeraldLab_MapScripts:
 		applymovement PLAYER, CantLeaveMovement
 		end
 
-	LabTryToLeaveRightScript:
-		opentext
-		writetext LabTryToLeaveRightText
-		waitbutton
-		closetext
-		applymovement PLAYER, CantLeaveRightMovement
-		end
-
 	DidntChooseStarterScript:
 		opentext
 		writetext DidntChooseStarterText
@@ -376,72 +433,99 @@ HeraldLab_MapScripts:
 		closetext
 		end
 
-	PlayerWalkToOakLeftScript:
-		applymovement PLAYER, PlayerWalkToOakLeft
-		sjump PlayerGetsPokedexScript
-
-	PlayerWalkToOakRightScript:
-		applymovement PLAYER, PlayerWalkToOakRight
 
 	PlayerGetsPokedexScript:
+		applymovement PLAYER, PlayerWalksToGetPokedex
+		pause 6
+		turnobject HERALD_LAB_CAVENDISH, RIGHT
+		pause 6
+		turnobject HERALD_LAB_CAVENDISH, LEFT
+		pause 6
+		turnobject HERALD_LAB_CAVENDISH, DOWN
 		opentext
-		writetext OakTakesMapText
-		waitbutton
-		writetext PlayerGivesMapToOak
+		writetext CavendishGivesOutPokedex1
 		waitbutton
 		closetext
-		takeitem SEALED_MAP
-		playsound SFX_ENTER_DOOR
-		pause 12
-		turnobject PLAYER, DOWN
-		showemote EMOTE_SHOCK, PLAYER, 15
-		moveobject HERALD_LAB_PERCY, 4, 8
-		moveobject HERALD_LAB_BLAIRE, 5, 8
-		appear HERALD_LAB_PERCY
-		applymovement HERALD_LAB_PERCY, PercyRunsToOakLabMovement
-		pause 5
-		appear HERALD_LAB_BLAIRE
-		playsound SFX_ENTER_DOOR
-		applymovement HERALD_LAB_BLAIRE, BlaireWalksToOakLabMovement
-		pause 10
-		turnobject PLAYER, UP
+		pause 4
 		opentext
-		writetext RivalsTalkToOakAgain
+		writetext PercyTalksToCavendish1
 		waitbutton
-		writetext OakGivesOutPokedex
+		closetext
+		pause 4
+		opentext
+		writetext BlaireTalksToCavendish1
 		waitbutton
+		closetext
 		pause 5
+		opentext
+		writetext CavendishGivesOutPokedex2
+		waitbutton
+		closetext
+		pause 4
+		applymovement HERALD_LAB_CAVENDISH, CavendishWalksToPokedexMovement
+		pause 4
+		applymovement HERALD_LAB_CAVENDISH, CavendishWalksFromPokedexMovement
+		opentext
 		writetext PlayerReceivesPokedex
 		playsound SFX_KEY_ITEM
 		waitsfx
 		setflag ENGINE_POKEDEX
-		writetext OakTalksToGroup
 		waitbutton
-		writetext OakGoRegisterForConference
+		closetext
+		pause 2
+		opentext
+		writetext PercyTalksToCavendish2
+		waitbutton
+		writetext BlaireTalksToCavendish2
+		waitbutton
+		closetext
+		pause 3
+		opentext
+		writetext CavendishGivesOutPokedex3
+		waitbutton
+		closetext
+		pause 3
+		opentext
+		writetext CavendishPhoneNumberText
+		waitbutton
+		addcellnum PHONE_CAVENDISH
+		playsound SFX_REGISTER_PHONE_NUMBER
+		writetext CavendishPhoneRegisteredText
+		waitbutton
+		closetext
+		pause 4
+		turnobject HERALD_LAB_BLAIRE, RIGHT
+		turnobject PLAYER, LEFT
+		opentext
+		writetext BlaireTalksToCavendish3
+		waitbutton
+		closetext
+		applymovement HERALD_LAB_BLAIRE, BlaireLeavesLabPokedex
+		playsound SFX_EXIT_BUILDING
+		disappear HERALD_LAB_BLAIRE
+		pause 10
+		turnobject HERALD_LAB_PERCY, LEFT
+		turnobject PLAYER, RIGHT
+		opentext
+		writetext PercyTalksToCavendish3
 		waitbutton
 		closetext
 		applymovement HERALD_LAB_PERCY, PercyLeavesLabPokedex
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
-		pause 10
-		applymovement HERALD_LAB_BLAIRE, BlaireLeavesLabPokedex
-		playsound SFX_EXIT_BUILDING
-		disappear HERALD_LAB_BLAIRE
 		setscene SCENE_HERALD_LAB_NOOP1
-		setevent EVENT_LASS_AT_HERALD_ROUTE
-		clearevent EVENT_LASS_BATTLE_HERALD_ROUTE
 		end
 
-	ProfOakScript:
+	ProfCavendishScript:
 		faceplayer
 		opentext
-		checkevent EVENT_BEAT_ROCKET_THEIVES
-		iftrue OakScriptCheckPokedex
+		checkflag ENGINE_POKEDEX
+		iftrue CavendishScriptCheckPokedex
 		checkevent EVENT_GOT_MAP_FROM_EDWARD
-		iftrue OakScriptTakesMap
-		checkevent EVENT_GOT_A_POKEMON_FROM_OAK
-		iftrue OakScriptAfterPokemon
-		writetext OakPickPokemonText
+		iftrue CavendishScriptAfterMap
+		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
+		iftrue CavendishScriptAfterPokemon
+		writetext CavendishPickPokemonText
 		waitbutton
 		closetext
 		end
@@ -457,36 +541,31 @@ HeraldLab_MapScripts:
 	RivalBlaireLabScript:
 		faceplayer
 		opentext
-		checkevent EVENT_GOT_A_POKEMON_FROM_OAK
+		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue BlaireScriptAfterPokemon
 		writetext BlairePickPokemonText
 		waitbutton
 		closetext
 		end
 
-	OakScriptCheckPokedex:
-		writetext OakLabDexCheckText
+	CavendishScriptCheckPokedex:
+		writetext CavendishLabDexCheckText
 		waitbutton
 		special ProfOaksPCBoot
-		writetext OakLabGoodbyeText
+		writetext CavendishLabGoodbyeText
 		waitbutton
 		closetext
 		end
 
-	OakScriptTakesMap:
-		checkitem SEALED_MAP
-		iffalse .Skip
-		end
-
-	.Skip
-		writetext OakGoRegister
+	CavendishScriptAfterMap:
+		writetext CavendishGoRegister
 		waitbutton
 		closetext
 		end
 
 
-	OakScriptAfterPokemon:
-		writetext OakTextAfterPokemon
+	CavendishScriptAfterPokemon:
+		writetext CavendishTextAfterPokemon
 		waitbutton
 		closetext
 		end
@@ -499,7 +578,7 @@ HeraldLab_MapScripts:
 
 	HeraldLabHealingMachine:
 	opentext
-	checkevent EVENT_GOT_A_POKEMON_FROM_OAK
+	checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 	iftrue .CanHeal
 	writetext HeraldLabHealingMachineText1
 	waitbutton
@@ -533,48 +612,72 @@ HeraldLabHealingMachine_HealParty:
 	HeraldLabDoorScript:
 		jumptext HeraldLabDoorText
 
-	PlayerWalksToOakMovement:
+	CavendishWalksToDeskMovement:
 		step UP
 		step UP
 		step UP
-		step RIGHT
+		step UP
+		step LEFT
+		step LEFT
+		step LEFT
+		step LEFT
 		step UP
 		step UP
-		step UP
-		step_end
-
-	PercyRunsToOakLabMovement:
-		big_step UP
-		big_step UP
-		big_step UP
-		big_step UP
-		big_step UP
-		step_end
-
-	BlaireWalksToOakLabMovement:
 		step UP
 		step UP
 		step UP
 		step UP
 		step RIGHT
+		step RIGHT
+		step RIGHT
+		step_end
+
+	PercyRunsToCavendishLabMovement:
+		big_step UP
+		big_step UP
+		big_step UP
+		big_step UP
+		big_step RIGHT
+		big_step RIGHT
+		step_end
+
+	BlaireWalksToCavendishLabMovement:
+		step UP
+		step UP
+		step UP
+		step UP
+		step RIGHT
 		step UP
 		step_end
 
-	OakWalksToPokemonMovement:
-		step UP
-		turn_head DOWN
+	CavendishWalksToPokemonMovement:
+		step RIGHT
+		step RIGHT
+		step RIGHT
+		step RIGHT
+		turn_head LEFT
 		step_end
 
 	BlaireEkansMovement:
-		step UP
+		step DOWN
+		step RIGHT
+		step RIGHT
 		step_end
 
 	BlaireYanmaMovement:
+		step DOWN
+		step RIGHT
+		step DOWN
+		step RIGHT
 		step RIGHT
 		step UP
 		step_end
 
 	BlaireBaltoyMovement:
+		step DOWN
+		step RIGHT
+		step RIGHT
+		step DOWN
 		step RIGHT
 		step RIGHT
 		step UP
@@ -601,25 +704,32 @@ HeraldLabHealingMachine_HealParty:
 		step UP
 		step_end
 
-	PercyLeavesLabLeftMovement:
+	PercyLeavesLabBaltoyMovement:
 		big_step DOWN
 		big_step LEFT
 		big_step LEFT
-		big_step DOWN
+		big_step LEFT
+		big_step LEFT
+		big_step LEFT
+		big_step LEFT
 		big_step DOWN
 		big_step DOWN
 		big_step DOWN
 		step_end
 
-	PercyLeavesLabRightMovement:
+	PercyLeavesLabYanmaMovement:
 		big_step DOWN
 		big_step LEFT
 		big_step LEFT
 		big_step LEFT
-		big_step DOWN
-		big_step DOWN
-		big_step DOWN
-		big_step DOWN
+		big_step LEFT
+		step_end
+
+	PercyLeavesLabEkansMovement:
+		big_step LEFT
+		big_step LEFT
+		big_step LEFT
+		big_step LEFT
 		step_end
 
 	BlaireWalksToFightMovement:
@@ -631,23 +741,26 @@ HeraldLabHealingMachine_HealParty:
 		step_end
 
 	CantLeaveMovement:
+		step RIGHT
+		step_end
+
+	PlayerWalksToGetPokedex:
+		step UP
+		step UP
+		step UP
 		step UP
 		step_end
 
-	CantLeaveRightMovement:
-		step LEFT
-		step_end
-
-	PlayerWalkToOakLeft:
-		step UP
-		step UP
+	CavendishWalksToPokedexMovement:
+		step RIGHT
 		step RIGHT
 		turn_head UP
 		step_end
 
-	PlayerWalkToOakRight:
-		step UP
-		step UP
+	CavendishWalksFromPokedexMovement:
+		step LEFT
+		step LEFT
+		turn_head DOWN
 		step_end
 
 	PercyLeavesLabPokedex:
@@ -667,78 +780,83 @@ HeraldLabHealingMachine_HealParty:
 		step DOWN
 		step_end
 
-	OakWelcomesPlayer:
-		text "OAK: <PLAYER>, as"
-		line "an aide of mine"
-		cont "on the islands, I"
-
-		para "will need you to"
-		line "visit different"
-
-		para "areas around the"
-		line "region. For that"
-		cont "you'll need..."
+	CavendishWelcomesPlayer:
+		text "CAVENDISH: Hmm."
+		line "We seem to be"
+		cont "missing one."
 		done
 
-	RivalsEnterLabText:
+	PercyEntersLabText:
 		text "PERCY: Sorry for"
-		line "being late! It's"
+		line "being late. It's"
 		cont "just so nice here!"
 
-		para "BLAIRE: He wanted"
-		line "to talk to every-"
-		cont "one before coming."
+		para "I wanted to see"
+		line "the town before"
+		cont "we settled in!"
 		done
 
-	OakTalksAboutPokemonText:
-		text "OAK: Good, we can"
-		line "get started then."
+	CavendishTalksAboutPokemonText:
+		text "CAVENDISH: Good,"
+		line "we can get started"
+		cont "then."
 
-		para "I'll need all of"
-		line "you to travel the"
-		cont "region for me."
-
-		para "These islands are"
-		line "filled with rare"
-
-		para "#MON, and ripe"
-		line "for discovery!"
-
-		para "A lot of this area"
-		line "is still un-"
-		cont "explored."
-
-		para "It's too much for"
-		line "me alone, so I'll"
-		cont "need your help!"
+		para "You three are here"
+		line "to help me with"
+		cont "the exploration of"
+		para "these islands. The"
+		line "MONEGO ISLANDS"
+		cont "have not been open"
+		para "to visit for a"
+		line "long time, but"
+		cont "they've re-opened"
+		para "now, and we're"
+		line "going to take full"
+		cont "advantage."
 		done
 
-	OakOffersPokemonText:
-		text "I brought with me"
-		line "3 #MON."
+	CavendishOffersPokemonText:
+		text "In order to travel"
+		line "and explore the"
+		cont "secrets in this"
+		para "region, you'll"
+		line "need your own"
+		cont "#MON."
+		para "These are the"
+		line "three that I have"
+		cont "decided to bring"
+		para "along for you, and"
+		line "I want each of"
+		cont "you to pick one."
+		para "Now, who wants"
+		line "to go first?"
+		done
 
-		para "They are fairly"
-		line "common in where"
-		cont "we come from, but"
+	BlaireTurnsToPlayerText:
+		text "<PLAYER>, you can"
+		line "go first. I'm fine"
+		cont "to wait, any of"
+		para "them will do for"
+		line "me."
+		done
 
-		para "they are very rare"
-		line "on these islands."
+	PercyTurnsToPlayerText:
+		text "Same! I'm just"
+		line "excited to have"
+		cont "a #MON at all!"
+		done
 
-		para "One for each of"
-		line "you. They will be"
-		cont "your new partner!"
-
-		para "I also left some-"
-		line "thing else on the"
-		cont "table for you."
-
-		para "Go on, <PLAYER>!"
-		line "You can be first!"
+	CavendishPlayerChooseText:
+		text "Well <PLAYER>,"
+		line "I suppose you can"
+		cont "go first then."
+		para "Come choose your"
+		line "new partner!"
 		done
 
 	BlaireWantsNextPokemon:
-		text "BLAIRE: I want the"
-		line "next #MON!"
+		text "BLAIRE: I'll take"
+		line "this one then."
 		done
 
 	BlaireGetsStarterText:
@@ -761,30 +879,33 @@ HeraldLabHealingMachine_HealParty:
 		text "!"
 		done
 
-	OakLeavingText:
-		text "OAK: Now you have"
-		line "your new partner!"
-
-		para "Take some time to"
-		line "get to know them."
-
-		para "Go battle or play"
+	CavendishLeavingText:
+		text "CAVENDISH: These"
+		line "will be your"
+		cont "companions while"
+		para "we stay here. I"
+		line "would advise you"
+		cont "to get to know"
+		para "them, spend time"
 		line "with them, and"
-
-		para "start to form a"
-		line "bond with them."
-
-		para "<PLAYER>, would you"
-		line "run and grab that"
-		cont "map from EDWARD?"
-
-		para "He would at his"
-		line "home over in"
-		cont "HERALD BAY."
-
-		para "PERCY: I'm gonna go"
-		line "play with my new"
-		cont "#MON!"
+		cont "learn from them."
+		para "Our stay here is"
+		line "not a vacation,"
+		cont "so the sooner you"
+		para "can get"
+		line "comfortable the"
+		cont "better. Now, the"
+		para "first thing that"
+		line "I want you all to"
+		cont "do is head to"
+		para "EDWARD's House"
+		line "here in HERALD"
+		cont "BAY. He has a map"
+		para "that we need. Go"
+		line "fetch it for us,"
+		cont "and I will explain"
+		para "why we need it"
+		line "when we have it."
 		done
 
 	RivalBlaireCallOutText:
@@ -792,55 +913,64 @@ HeraldLabHealingMachine_HealParty:
 		done
 
 	RivalBlaireFightText:
-		text "<PLAYER>, right?"
-		line "PERCY's gone now,"
-
-		para "but I want to test"
-		line "my new #MON!"
-
-		para "You'll be my first"
-		line "victory!"
+		text "<PLAYER>, we need"
+		line "to learn more"
+		cont "about our #MON,"
+		para "and I think the"
+		line "best way to start"
+		cont "is to have a"
+		cont "battle with you,"
+		para "right now. Let's"
+		line "go."
 		done
 
 	BlaireWinLabText:
-		text "Aw, no fair! You"
-		line "got to pick first!"
+		text "You're good for"
+		line "someone that's"
+		cont "never had a"
+		cont "#MON before."
 		done
 
 	BlaireLossLabText:
-		text "Yeah! I knew I was"
-		line "better than you!"
+		text "Looks like my"
+		line "partner is pretty"
+		cont "strong, huh?"
 		done
 
 	RivalBlaireYouWonText:
-		text "...Whatever. I'll"
-		line "win later anyway."
+		text "It looks like I'm"
+		line "going to have to"
+		cont "get stronger then."
+		para "Thanks for the"
+		line "battle <PLAYER>."
 		done
 
 	RivalBlaireYouLostText:
-		text "You should go bat-"
-		line "tle some more, you"
-		cont "need the practice."
+		text "Good battle"
+		line "<PLAYER>, that was"
+		cont "great practice for"
+		cont "us. Thanks."
 		done
 
 	TakeEkansText:
-		text "OAK: Do you want"
-		line "EKANS? It's the"
-		cont "SNAKE #MON!"
+		text "CAVENDISH: Do"
+		line "you want EKANS?"
+		cont "It's the SNAKE"
+		cont "#MON!"
 		done
 
 	TakeYanmaText:
-		text "OAK: Do you want"
-		line "YANMA? It's the"
-
-		para "CLEAR WING"
-		line "#MON!"
+		text "CAVENDISH: Do"
+		line "you want YANMA?"
+		cont "It's the CLEAR"
+		cont "WING #MON!"
 		done
 
 	TakeBaltoyText:
-		text "OAK: Do you want"
-		line "BALTOY? It's the"
-		cont "CLAYDOLL #MON!"
+		text "CAVENDISH: Do"
+		line "you want BALTOY?"
+		cont "It's the CLAYDOLL"
+		cont "#MON!"
 		done
 
 	LookAtPokeBallText:
@@ -850,7 +980,7 @@ HeraldLabHealingMachine_HealParty:
 	DidntChooseStarterText:
 		text "Take your time."
 		line "It's an important"
-		cont "decision!"
+		cont "decision."
 		done
 
 	LabTryToLeaveText:
@@ -859,9 +989,8 @@ HeraldLabHealingMachine_HealParty:
 		done
 
 	LabTryToLeaveRightText:
-		text "Wait! Don't go"
-		line "over there yet!"
-		cont "It's not ready!"
+		text "Wait! You haven't"
+		line "picked just yet!"
 		done
 
 	GetStarterText:
@@ -871,10 +1000,10 @@ HeraldLabHealingMachine_HealParty:
 		text "!"
 		done
 
-	OakPickPokemonText:
+	CavendishPickPokemonText:
 		text "Pick carefully."
 		line "This is a big dec-"
-		cont "ision!"
+		cont "ision."
 		done
 
 	PercyPickPokemonText:
@@ -884,66 +1013,81 @@ HeraldLabHealingMachine_HealParty:
 		done
 
 	BlairePickPokemonText:
-		text "Would you hurry?"
-		line "You know we're"
-		cont "waiting on you."
+		text "Whichever partner"
+		line "I get will be"
+		cont "fine, just choose"
+		cont "quickly please."
 		done
 
-	OakTextAfterPokemon:
+	CavendishTextAfterPokemon:
 		text "Bring that map"
 		line "back as soon as"
-		cont "you can!"
+		cont "you can. We need"
+		para "it for our"
+		line "research."
 		done
 
 	BlaireTextAfterPokemon:
-		text "Finally, I'm a"
-		line "real trainer. I"
-
-		para "bet I'm better"
-		line "than you are."
+		text "I'm glad we have a"
+		line "#MON now, it"
+		cont "should make"
+		para "traveling around"
+		line "much easier."
 		done
 
-	OakTakesMapText:
-		text "<PLAYER>! You have"
-		line "the map? Great!"
-		cont "May I see it?"
+	CavendishGoRegister:
+		text "Hey <PLAYER>,"
+		line "what are you doing"
+		cont "back here? I"
+		para "assumed that you"
+		line "would be getting"
+		cont "signed up for the"
+		cont "CONFERENCE."
+		para "PERCY already"
+		line "delivered the map"
+		cont "to me, so you need"
+		para "to get signed up"
+		line "when you can."
+		cont "I have something"
+		para "for you all when"
+		line "you return!"
 		done
 
-	PlayerGivesMapToOak:
-		text "<PLAYER> hands the"
-		line "SEALED MAP to"
-		cont "PROF. OAK!"
+	CavendishGivesOutPokedex1:
+		text "CAVENDISH: Ah,"
+		line "good! You're all"
+		cont "here now, and you"
+		para "all seem to be"
+		line "getting along"
+		cont "well with your"
+		para "#MON! That's"
+		line "great!"
 		done
 
-	OakGoRegister:
-		text "Go get signed up!"
-		line "I'm going to be"
-		cont "here with the map."
+	PercyTalksToCavendish1:
+		text "PERCY: My new"
+		line "partner has been"
+		cont "great so far!"
+		para "I love being a"
+		line "trainer!"
 		done
 
-	RivalsTalkToOakAgain:
-		text "PERCY: PROF. OAK!"
-		line "My new partner is"
-		cont "a lot of fun!"
-
-		para "We just ran all"
-		line "over town!"
-
-		para "BLAIRE: It's fine."
-		line "It's strong, so it"
-		cont "will do I guess."
+	BlaireTalksToCavendish1:
+		text "BLAIRE: I see a"
+		line "lot of potential"
+		cont "in mine. We'll"
+		para "do well in the"
+		line "CONFERENCE, I"
+		cont "just know it."
 		done
 
-	OakGivesOutPokedex:
-		text "OAK: Ah good! I"
-		line "was going to call"
-		cont "you two back."
-
-		para "I have something"
-		line "special for you."
-
-		para "This will help our"
-		line "research greatly!"
+	CavendishGivesOutPokedex2:
+		text "CAVENDISH: Now,"
+		line "as for why I"
+		cont "called you all"
+		para "here again, I"
+		line "have a gift for"
+		cont "you."
 		done
 
 	PlayerReceivesPokedex:
@@ -951,64 +1095,89 @@ HeraldLabHealingMachine_HealParty:
 		line "#DEX!"
 		done
 
-	OakTalksToGroup:
-		text "BLAIRE: #DEX?"
-		line "Why do we need"
-		cont "this?"
+	PercyTalksToCavendish2:
+		text "PERCY: #DEX?"
+		line "What's a #DEX?"
+		done
 
-	  para "OAK: This device"
-		line "records #MON"
-		cont "you have seen or"
+	BlaireTalksToCavendish2:
+		text "BLAIRE: I know"
+		line "what this is. It's"
+		cont "an encyclopedia."
+		para "It's meant to hold"
+		line "all kinds of data"
+		cont "about #MON!"
+		para "But ours seem"
+		line "blank?"
+		done
 
-		para "caught! Its a..."
-		line "PERCY: Hi-Tech"
-		cont "encyclopedia!"
+	CavendishGivesOutPokedex3:
+		text "CAVENDISH: That's"
+		line "right, and it's"
+		cont "why I need you"
+		para "three here with"
+		line "me. The MONEGO"
+		cont "ISLANDS have been"
+		para "closed for so long"
+		line "and we don't know"
+		cont "what #MON live"
+		para "here now. So, I"
+		line "need you three to"
+		para "travel to the far"
+		line "ends of this"
+		cont "region. Discover"
+		cont "all there is to"
+		para "know about the"
+		line "#MON here. I'll"
+		cont "advise you along"
+		cont "the way, but this"
+		para "is mostly on you,"
+		line "as I can't travel"
+		cont "like I used to."
+		para "So get going!"
+		line "Adventure awaits"
+		cont "you now!"
+		done
 
-		para "I know! I've seen"
-		line "this before!"
+	CavendishPhoneNumberText:
+		text "Also, I trust you"
+		line "all remembered to"
+		cont "bring your"
+		para "#GEARs with"
+		line "you. Here's my"
+		para "number, I'll"
+		line "register it in"
+		cont "your #GEAR."
+		done
 
-		para "Some really strong"
-		line "trainers had them"
+	CavendishPhoneRegisteredText:
+		text "My number is"
+		line "registered. Call"
+		cont "if you need help."
+		done
 
-		para "when they came by"
-		line "my hometown!"
+	BlaireTalksToCavendish3:
+		text "BLAIRE: I'm going"
+		line "to challenge"
+		cont "EDWARD now. I've"
+		para "caught a few"
+		line "#MON nearby."
+		cont "I think my team"
+		para "is ready for"
+		line "him."
+		done
+
+	PercyTalksToCavendish3:
+		text "PERCY: I might"
+		line "need to invest in"
+		cont "some # BALLS."
+		para "I haven't caught"
+		line "anything just yet!"
 		done
 
 	PlayerReceivesPokeballs:
 		text "<PLAYER> received"
 		line "5 # BALLS!"
-		done
-
-	OakGoRegisterForConference:
-		text "OAK: Now, as you"
-		line "know by now, there"
-
-		para "is a BATTLE"
-		line "CONFERENCE taking"
-
-		para "place here at the"
-		line "islands."
-
-		para "I want you all to"
-		line "participate."
-
-		para "It would be a good"
-		line "chance for you to"
-		cont "travel the region!"
-
-		para "PERCY: I saw where"
-		line "to go, it's on that"
-		cont "route on the hill!"
-
-		para "I'll go right now!"
-
-		para "BLAIRE: I guess"
-		line "I'll go too. It'd"
-		cont "be a good chance"
-
-		para "to get stronger."
-		line "<PLAYER>, you'd"
-		cont "better come too."
 		done
 
 	HeraldLabBookshelfText:
@@ -1036,14 +1205,14 @@ HeraldLabHealingMachine_HealParty:
 		line "heal your #MON?"
 		done
 
-	OakLabDexCheckText:
+	CavendishLabDexCheckText:
 		text "How is your #-"
 		line "DEX coming?"
 
 		para "Let's see…"
 		done
 
-	OakLabGoodbyeText:
+	CavendishLabGoodbyeText:
 		text "If you're in the"
 		line "area, I hope you"
 		cont "come visit again."
@@ -1053,38 +1222,29 @@ HeraldLab_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events
-	warp_event 4,  9, HERALD_COVE, 2
-	warp_event 5,  9, HERALD_COVE, 2
+	warp_event  4, 13, HERALD_COVE, 2
+	warp_event  5, 13, HERALD_COVE, 2
 
 	def_coord_events
-	coord_event 4,  6, SCENE_HERALD_LAB_CANT_LEAVE, LabTryToLeaveScript
-	coord_event 5,  6, SCENE_HERALD_LAB_CANT_LEAVE, LabTryToLeaveScript
-	coord_event 9,  2, SCENE_HERALD_LAB_CANT_LEAVE, LabTryToLeaveRightScript
-	coord_event 9,  3, SCENE_HERALD_LAB_CANT_LEAVE, LabTryToLeaveRightScript
-	coord_event 9,  2, SCENE_HERALD_LAB_RIVAL_FIGHT, LabTryToLeaveRightScript
-	coord_event 9,  3, SCENE_HERALD_LAB_RIVAL_FIGHT, LabTryToLeaveRightScript
-	coord_event 4,  9, SCENE_HERALD_LAB_RIVAL_FIGHT, BlaireFightLeftScript
-	coord_event 5,  9, SCENE_HERALD_LAB_RIVAL_FIGHT, BlaireFightRightScript
-	coord_event 4,  5, SCENE_HERALD_LAB_POKEDEX, PlayerWalkToOakLeftScript
-	coord_event 5,  5, SCENE_HERALD_LAB_POKEDEX, PlayerWalkToOakRightScript
+	coord_event  1,  4, SCENE_HERALD_LAB_CANT_LEAVE, LabTryToLeaveScript
+	coord_event  1,  2, SCENE_HERALD_LAB_CANT_LEAVE, LabTryToLeaveScript
+	coord_event  4, 13, SCENE_HERALD_LAB_RIVAL_FIGHT, BlaireFightLeftScript
+	coord_event  5, 13, SCENE_HERALD_LAB_RIVAL_FIGHT, BlaireFightRightScript
 
 	def_bg_events
-	bg_event  2,  1, BGEVENT_READ, HeraldLabHealingMachine
-	bg_event  0,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  1,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  2,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  3,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  6,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  7,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  8,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  9,  7, BGEVENT_READ, HeraldLabBookshelfScript
-	bg_event  9,  1, BGEVENT_READ, HeraldLabTrashCanScript
-	bg_event 12,  0, BGEVENT_READ, HeraldLabDoorScript
+	bg_event  6,  7, BGEVENT_READ, HeraldLabHealingMachine
+	bg_event  7, 11, BGEVENT_READ, HeraldLabBookshelfScript
+	bg_event  6, 11, BGEVENT_READ, HeraldLabBookshelfScript
+	bg_event  1, 11, BGEVENT_READ, HeraldLabBookshelfScript
+	bg_event  0, 11, BGEVENT_READ, HeraldLabBookshelfScript
+	bg_event  8, 11, BGEVENT_READ, HeraldLabBookshelfScript
+	bg_event  9, 11, BGEVENT_READ, HeraldLabBookshelfScript
+	bg_event  4,  6, BGEVENT_READ, HeraldLabDoorScript
 
 	def_object_events
-	object_event  5, 	 2, SPRITE_OAK, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ProfOakScript, EVENT_OAK_MISSING_FROM_LAB
-	object_event  13,  1, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RivalPercyLabScript, EVENT_RIVAL_HERALD_LAB
-	object_event  13,  1, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, RivalBlaireLabScript, EVENT_RIVAL_HERALD_LAB
-	object_event  6, 	 1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, EkansPokeballScript, EVENT_EKANS_POKEBALL_IN_OAKS_LAB
-	object_event  7, 	 1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, YanmaPokeballScript, EVENT_YANMA_POKEBALL_IN_OAKS_LAB
-	object_event  8, 	 1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BaltoyPokeballScript, EVENT_BALTOY_POKEBALL_IN_OAKS_LAB
+	object_event  4,  8, SPRITE_PROFESSOR_CAVENDISH, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ProfCavendishScript, EVENT_CAVENDISH_MISSING_FROM_LAB
+	object_event  9,  0, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RivalPercyLabScript, EVENT_RIVAL_HERALD_LAB
+	object_event  2,  1, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, RivalBlaireLabScript, EVENT_RIVAL_HERALD_LAB
+	object_event  4,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, EkansPokeballScript, EVENT_EKANS_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  5,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, YanmaPokeballScript, EVENT_YANMA_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  6,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BaltoyPokeballScript, EVENT_BALTOY_POKEBALL_IN_CAVENDISHS_LAB

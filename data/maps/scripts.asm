@@ -24,6 +24,8 @@ INCLUDE "maps/HeraldPokecenter.asm"
 INCLUDE "maps/HeraldGym.asm"
 INCLUDE "maps/HeraldHouse.asm"
 INCLUDE "maps/CraggyBeach.asm"
+INCLUDE "maps/FirstGymBeach.asm"
+INCLUDE "maps/EdwardsHouse.asm"
 
 SECTION "Map Scripts 4", ROMX
 
@@ -31,7 +33,6 @@ INCLUDE "maps/PlayersHouse1F.asm"
 INCLUDE "maps/PlayersHouse2F.asm"
 INCLUDE "maps/HeraldRoute.asm"
 INCLUDE "maps/HeraldBay.asm"
-INCLUDE "maps/HeraldBayHouse.asm"
 INCLUDE "maps/RegistrationCenter.asm"
 INCLUDE "maps/HeraldGrotto.asm"
 INCLUDE "maps/IndigoPlateauPokecenter1F.asm"
@@ -76,6 +77,7 @@ INCLUDE "maps/HeraldPort.asm"
 
 
 SECTION "Map Scripts 8", ROMX
+INCLUDE "maps/NSGate.asm"
 
 
 SECTION "Map Scripts 9", ROMX

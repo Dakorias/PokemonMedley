@@ -359,8 +359,8 @@ CraggyBeach_MapScripts:
 		done
 
 	OakandPlayerFightRocketsText:
-		text "OAK: Well, it"
-		line "wouldnt be fair"
+		text "CAVENDISH: Well,"
+		line "it wouldnt be fair"
 
 		para "without me, would"
 		line "it?"
@@ -500,7 +500,7 @@ CraggyBeach_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events
-	warp_event  5,  3, CRAGGY_COAST, 1
+	warp_event  5,  3, NS_GATE, 1
 	warp_event  4, 32, BERRY_FOREST, 1
 	warp_event  4, 33, BERRY_FOREST, 2
 	warp_event 19, 44, BEACH_GROTTO, 1
@@ -521,7 +521,7 @@ CraggyBeach_MapEvents:
 	object_event 11, 24, SPRITE_LASS, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 2, TrainerLassNicole, -1
 	object_event 11, 74, SPRITE_ROCKET, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_BEAT_ROCKET_THEIVES
 	object_event 12, 74, SPRITE_ROCKET, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_BEAT_ROCKET_THEIVES
-	object_event 27, 79, SPRITE_OAK, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_BEAT_ROCKET_THEIVES
+		object_event 27, 79, SPRITE_PROFESSOR_CAVENDISH, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_BEAT_ROCKET_THEIVES
 	object_event 20, 55, SPRITE_LASS, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, BeachLass2Script, -1
 	object_event 19, 47, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, BeachCooltrainerF1Script, -1
 	object_event 18, 27, SPRITE_LASS, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, BeachLass3Script, -1

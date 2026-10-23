@@ -40,7 +40,10 @@ HeraldRoute_Blocks:
 HeraldBay_Blocks:
 	INCBIN "maps/HeraldBay.ablk"
 
-HeraldBayHouse_Blocks:
+FirstGymBeach_Blocks:
+	INCBIN "maps/FirstGymBeach.ablk"
+
+EdwardsHouse_Blocks:
 	INCBIN "maps/House.ablk"
 
 HeraldLab_Blocks:
@@ -176,5 +179,12 @@ WestForestPath_Blocks:
 
 MontaneTown_Blocks:
 	INCBIN "maps/MontaneTown.ablk"
+
+ENDSECTION
+
+SECTION "Map Blocks NSGate", ROMX
+
+NSGate_Blocks:
+	INCBIN "maps/NSGate.ablk"
 
 ENDSECTION

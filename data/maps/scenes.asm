@@ -30,6 +30,7 @@ MapScenes::
 	scene_var HERALD_LAB, 					        wHeraldLabSceneID
 	scene_var HERALD_ROUTE, 								wHeraldRouteSceneID
 	scene_var CRAGGY_BEACH,									wBeachRouteSceneID
+	scene_var FIRST_GYM_BEACH,							wFirstGymBeachSceneID
 	scene_var MOUNTAIN_GYM,									wMountainGymSceneID
 	scene_var MOUNTAIN_GYM_BREAK,									wMountainGymBreakSceneID
 	scene_var MOUNTAIN_GYM_ARENA,									wMountainGymArenaSceneID

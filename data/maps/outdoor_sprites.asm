@@ -46,14 +46,14 @@ IndigoGroupSprites:
 		db 0 ; end
 
 HeraldCoveGroupSprites:
-	; HeraldCove, HeraldRoute, HeraldBay, RuggedCliffGrotto
+	; HeraldCove, HeraldRoute, HeraldBay, CraggyBeach, FirstGymBeach, RuggedCliffGrotto
 		db SPRITE_COOLTRAINER_F
 		db SPRITE_LASS
 		db SPRITE_ROCKET
-		db SPRITE_OAK
+		db SPRITE_PROFESSOR_CAVENDISH
 		db SPRITE_YOUNGSTER
 		db SPRITE_EDWARD
-		db SPRITE_GIOVANNI_HAT
+		db SPRITE_ADAM_VOSS
 		db SPRITE_GOOD_RIVAL
 		db SPRITE_BAD_RIVAL
 		; 9 of 9 walking sprites
@@ -71,7 +71,7 @@ HeraldCoveGroupSprites:
 		db 0 ; end
 
 CraggyCoastGroupSprites:
-	; CraggyBeach, CraggyCoast, ScenicBluff, RuggedCliff, Mt. Monego
+	; CraggyCoast, ScenicBluff, RuggedCliff, Mt. Monego
 		db SPRITE_TEACHER
 		db SPRITE_LASS
 		db SPRITE_KENJI
@@ -90,7 +90,7 @@ CraggyCoastGroupSprites:
 		db SPRITE_GRAMPS
 		db SPRITE_GRANNY
 		db SPRITE_BLUE
-		db SPRITE_GIOVANNI_HAT
+		db SPRITE_ADAM_VOSS
 		db SPRITE_FRUIT_TREE
 		db 0 ; end
 

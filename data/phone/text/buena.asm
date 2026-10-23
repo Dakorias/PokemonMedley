@@ -201,7 +201,7 @@ BuenaPhoneProfessorOakText:
 	line "in to my program!"
 
 	para "Oh! Here comes"
-	line "PROF.OAK again!"
+	line "CAVENDISH again!"
 
 	para "I'm going to chat"
 	line "him up again!"

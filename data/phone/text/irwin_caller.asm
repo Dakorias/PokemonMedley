@@ -57,7 +57,7 @@ IrwinRocketHideoutGossipText:
 	line "movie hero, even!"
 
 	para "But um… What was"
-	line "TEAM ROCKET?"
+	line "TEAM HELIX?"
 	done
 
 IrwinRadioTowerGossipText:

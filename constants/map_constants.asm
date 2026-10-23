@@ -67,7 +67,7 @@ ENDM
 	newgroup HERALD_COVE                                          ;  5
 	map_const HERALD_COVE,								    20, 12 ; 1
 	map_const HERALD_ROUTE,									30, 12 ; 2
-	map_const HERALD_LAB,							       	7,  5 ;  3
+	map_const HERALD_LAB,							       	5,  7 ;  3
 	map_const HERALD_POKECENTER,				 			7,  4 ;  4
 	map_const HERALD_GYM,							       	5,  4 ;  5
 	map_const HERALD_HOUSE,									5,  4 ;  6
@@ -77,9 +77,10 @@ ENDM
 	map_const REGISTRATION_CENTER,							5,  5 ; 10
 	map_const HERALD_GROTTO,								4,  8 ; 11
 	map_const HERALD_BAY,									29, 20 ; 12
-	map_const HERALD_BAY_HOUSE,								5,  4  ; 13
+	map_const EDWARDS_HOUSE,									5,  4  ; 13
 	map_const CRAGGY_BEACH,									14, 40 ; 14
-	map_const RUGGED_CLIFF_GROTTO, 							12, 11 ; 15
+	map_const RUGGED_CLIFF_GROTTO,							12, 11 ; 15
+	map_const FIRST_GYM_BEACH, 16, 16 ; 16
 	endgroup
 
 	newgroup CRAGGY_COAST																					; 6
@@ -98,6 +99,7 @@ ENDM
 	map_const RUGGED_CLIFF_POKECENTER,				 							7,  4 ; 13
 	map_const MOUNTAIN_GYM_BREAK,														6,  5 ; 14
 	map_const MOUNTAIN_GYM_ARENA, 													6,  7 ; 15
+	map_const NS_GATE, 5, 4 ; 16
 	endgroup
 
 	newgroup BERRY_FOREST																					; 7

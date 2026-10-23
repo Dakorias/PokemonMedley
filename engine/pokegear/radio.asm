@@ -3,7 +3,7 @@ PlayRadioShow:
 	ld a, [wCurRadioLine]
 	cp POKE_FLUTE_RADIO
 	jr nc, .ok
-; If Team Rocket is not occupying the radio tower, we don't need to be here.
+; If Team Helix is not occupying the radio tower, we don't need to be here.
 	ld a, [wStatusFlags2]
 	bit STATUSFLAGS2_ROCKETS_IN_RADIO_TOWER_F, a
 	jr z, .ok
@@ -11,7 +11,7 @@ PlayRadioShow:
 	call IsInJohto
 	and a
 	jr nz, .ok
-; Team Rocket broadcasts on all stations.
+; Team Helix broadcasts on all stations.
 	ld a, ROCKET_RADIO
 	ld [wCurRadioLine], a
 .ok

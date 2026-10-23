@@ -2,7 +2,7 @@
 	const REGISTRATION_CENTER_OFFICER
 	const REGISTRATION_CENTER_COOLTRAINERF
 	const REGISTRATION_CENTER_SAILOR
-	const REGISTRATION_CENTER_GIOVANNI_HAT
+	const REGISTRATION_CENTER_ADAM_VOSS
 
 RegistrationCenter_MapScripts:
 	def_scene_scripts
@@ -10,8 +10,8 @@ RegistrationCenter_MapScripts:
 	def_callbacks
 
 RegistrationCenterOfficerScript:
-	disappear REGISTRATION_CENTER_GIOVANNI_HAT
-	moveobject REGISTRATION_CENTER_GIOVANNI_HAT, 4, 9
+	disappear REGISTRATION_CENTER_ADAM_VOSS
+	moveobject REGISTRATION_CENTER_ADAM_VOSS, 4, 9
 	faceplayer
 	opentext
 	checkitem ID_CARD
@@ -35,37 +35,38 @@ RegistrationCenterOfficerScript:
 	pause 5
 	playsound SFX_ENTER_DOOR
 	showemote EMOTE_SHOCK, REGISTRATION_CENTER_OFFICER, 15
-	appear REGISTRATION_CENTER_GIOVANNI_HAT
+	appear REGISTRATION_CENTER_ADAM_VOSS
 	turnobject PLAYER, DOWN
-	applymovement REGISTRATION_CENTER_GIOVANNI_HAT, GiovanniWalksToPlayer
+	applymovement REGISTRATION_CENTER_ADAM_VOSS, AdamVossWalksToPlayer
 	opentext
-	writetext GiovanniStandAside
+	writetext AdamVossStandAside
 	waitbutton
 	closetext
 	applymovement PLAYER, PlayerMovesAside
-	applymovement REGISTRATION_CENTER_GIOVANNI_HAT, GiovanniWalksToCounter
+	applymovement REGISTRATION_CENTER_ADAM_VOSS, AdamVossWalksToCounter
 	opentext
-	writetext GiovanniTalksToOfficer
+	writetext AdamVossTalksToOfficer
 	waitbutton
 	closetext
 	pause 10
-	turnobject REGISTRATION_CENTER_GIOVANNI_HAT, RIGHT
+	turnobject REGISTRATION_CENTER_ADAM_VOSS, RIGHT
 	opentext
-	writetext GiovanniTalksToPlayer
+	writetext AdamVossTalksToPlayer
 	waitbutton
 	closetext
 	pause 5
 	turnobject PLAYER, DOWN
-	applymovement REGISTRATION_CENTER_GIOVANNI_HAT, GiovanniWalksToExit
+	applymovement REGISTRATION_CENTER_ADAM_VOSS, AdamVossWalksToExit
 	playsound SFX_EXIT_BUILDING
-	disappear REGISTRATION_CENTER_GIOVANNI_HAT
+	disappear REGISTRATION_CENTER_ADAM_VOSS
 	pause 5
 	applymovement PLAYER, PlayerWalksBackToCounter
 	opentext
-	writetext OfficerTalksAboutGiovanni
+	writetext OfficerTalksAboutAdamVoss
 	waitbutton
 	closetext
-	setevent EVENT_MET_GIOVANNI_AT_REGISTRATION
+	setevent EVENT_MET_ADAM_VOSS_AT_REGISTRATION
+	setscene SCENE_HERALD_ROUTE_REGISTRATION
 	end
 
 .No
@@ -86,7 +87,7 @@ RegistrationCenterCooltrainerFScript:
 RegistrationCenterSailorScript:
 	jumptextfaceplayer RegistrationCenterSailorText
 
-GiovanniWalksToPlayer:
+AdamVossWalksToPlayer:
 	step UP
 	step UP
 	step UP
@@ -98,11 +99,11 @@ PlayerMovesAside:
 	turn_head LEFT
 	step_end
 
-GiovanniWalksToCounter:
+AdamVossWalksToCounter:
 	step UP
 	step_end
 
-GiovanniWalksToExit:
+AdamVossWalksToExit:
 	step DOWN
 	step DOWN
 	step DOWN
@@ -127,9 +128,10 @@ ComeBackLater:
 	done
 
 RegistrationSignUp:
-	text "Great! PROF. OAK"
-	line "called ahead with"
-	cont "your details."
+	text "Great! PROF."
+	line "CAVENDISH called"
+	cont "ahead with your"
+	cont "details."
 
 	para "Your I.D. CARD is"
 	line "already made and"
@@ -151,12 +153,12 @@ RegistrationGoodLuck:
 	line "and good luck!"
 	done
 
-GiovanniStandAside:
+AdamVossStandAside:
 	text "Excuse me. Stand"
 	line "aside please."
 	done
 
-GiovanniTalksToOfficer:
+AdamVossTalksToOfficer:
 	text "I've just spoken"
 	line "with the head org-"
 	cont "aniser."
@@ -174,7 +176,7 @@ GiovanniTalksToOfficer:
 	cont "turns out."
 	done
 
-GiovanniTalksToPlayer:
+AdamVossTalksToPlayer:
 	text "Ah, I see you've"
 	line "just registered."
 
@@ -193,9 +195,10 @@ GiovanniTalksToPlayer:
 	line "seeing you again."
 	done
 
-OfficerTalksAboutGiovanni:
-	text "That was the main"
-	line "benefactor for our"
+OfficerTalksAboutAdamVoss:
+	text "That's ADAM VOSS!"
+	line "He's the main"
+	cont "benefactor for our"
 	cont "tournament!"
 
 	para "Without him, we"
@@ -251,4 +254,4 @@ RegistrationCenter_MapEvents:
 	object_event  4,  2, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterOfficerScript, -1
 	object_event  7,  6, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterCooltrainerFScript, -1
 	object_event  1,  5, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterSailorScript, -1
-	object_event  4, -3, SPRITE_GIOVANNI_HAT, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MET_GIOVANNI_AT_REGISTRATION
+	object_event  4, -3, SPRITE_ADAM_VOSS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MET_ADAM_VOSS_AT_REGISTRATION

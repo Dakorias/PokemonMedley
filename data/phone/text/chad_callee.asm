@@ -62,7 +62,7 @@ ChadGenericText:
 	text "How are your"
 	line "#MON doing?"
 
-	para "You know PROF.OAK,"
+	para "You know CAVENDISH,"
 	line "so of course your"
 	cont "#MON are fine!"
 

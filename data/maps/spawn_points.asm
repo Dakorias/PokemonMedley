@@ -15,6 +15,10 @@ SpawnPoints:
 	spawn TREELINE_PORT,				21,  8
 	spawn MONTANE_TOWN, 				9, 24
 	spawn NONE,                         6,  2
+	spawn HERALD_POKECENTER,            6,  6
+	spawn CRAGGY_COAST_POKECENTER,      6,  6
+	spawn RUGGED_CLIFF_POKECENTER,      6,  6
+	spawn INDIGO_PLATEAU_POKECENTER_1F, 5, 12
 
 	spawn N_A,                          -1, -1
 

@@ -71,3 +71,10 @@ GetWhiteoutSpawn:
 .yes
 	ld [wDefaultSpawnpoint], a
 	ret
+
+SetLastPokecenterSpawn:
+	ld a, [wMapGroup]
+	ld [wLastSpawnMapGroup], a
+	ld a, [wMapNumber]
+	ld [wLastSpawnMapNumber], a
+	ret

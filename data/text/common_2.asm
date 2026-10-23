@@ -626,8 +626,9 @@ _ThrewAwayText::
 	prompt
 
 _OakThisIsntTheTimeText::
-	text "OAK: <PLAYER>!"
-	line "This isn't the"
+	text "CAVENDISH:"
+	line "<PLAYER>!"
+	cont "This isn't the"
 	cont "time to use that!"
 	prompt
 
@@ -1146,7 +1147,7 @@ _PokecenterPlayersPCText::
 	prompt
 
 _PokecenterOaksPCText::
-	text "PROF.OAK's PC"
+	text "CAVENDISH's PC"
 	line "accessed."
 
 	para "#DEX Rating"
@@ -1175,7 +1176,7 @@ _OakPCText3::
 	text_ram wStringBuffer4
 	text " #MON owned"
 
-	para "PROF.OAK's"
+	para "CAVENDISH's"
 	line "Rating:"
 	done
 
@@ -1386,8 +1387,9 @@ _ItemsTooImportantText::
 	prompt
 
 _ItemsOakWarningText::
-	text "OAK: <PLAYER>!"
-	line "This isn't the"
+	text "CAVENDISH:"
+	line "<PLAYER>!"
+	cont "This isn't the"
 	cont "time to use that!"
 	done
 

@@ -49,4 +49,5 @@ PhoneContacts:
 	phone TRAINER_NONE, PHONE_00,              N_A,                       0,       UnusedPhoneScript,        0,       UnusedPhoneScript
 	phone TRAINER_NONE, PHONE_00,              N_A,                       0,       UnusedPhoneScript,        0,       UnusedPhoneScript
 	phone TRAINER_NONE, PHONECONTACT_BUENA,    NONE,                      ANYTIME, BuenaPhoneCalleeScript,   ANYTIME, BuenaPhoneCallerScript
+	phone TRAINER_NONE, PHONECONTACT_CAVENDISH, HERALD_LAB,                 ANYTIME, CavendishPhoneCalleeScript, ANYTIME, CavendishPhoneCallerScript
 	assert_table_length NUM_PHONE_CONTACTS + 1

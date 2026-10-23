@@ -109,13 +109,16 @@ ENDM
 	map_attributes HeraldBay, HERALD_BAY, $35, NORTH
 	connection north, HeraldRoute, HERALD_ROUTE, 0
 
-	map_attributes CraggyBeach, CRAGGY_BEACH, $35, NORTH | SOUTH
-	connection north, CraggyCoast, CRAGGY_COAST, 0
+	map_attributes CraggyBeach, CRAGGY_BEACH, $35, SOUTH
 	connection south, HeraldRoute, HERALD_ROUTE, -13
+	map_attributes FirstGymBeach, FIRST_GYM_BEACH, $35, 0
 
 	map_attributes CraggyCoast, CRAGGY_COAST, $35, NORTH | SOUTH
 	connection north, ScenicBluff, SCENIC_BLUFF, 5
-	connection south, CraggyBeach, CRAGGY_BEACH, 0
+	connection south, NSGate, NS_GATE, 0
+
+map_attributes NSGate, NS_GATE, $00, NORTH
+	connection north, CraggyCoast, CRAGGY_COAST, 0
 
 	map_attributes ScenicBluff, SCENIC_BLUFF, $35, SOUTH
 	connection south, CraggyCoast, CRAGGY_COAST, -5
@@ -133,7 +136,7 @@ ENDM
 	map_attributes HeraldPokecenter, HERALD_POKECENTER, $00, 0
 	map_attributes HeraldGym, HERALD_GYM, $00, 0
 	map_attributes HeraldHouse, HERALD_HOUSE, $00, 0
-	map_attributes HeraldBayHouse, HERALD_HOUSE, $00, 0
+	map_attributes EdwardsHouse, EDWARDS_HOUSE, $00, 0
 	map_attributes HeraldPort, HERALD_PORT, $00, 0
 	map_attributes RegistrationCenter, REGISTRATION_CENTER, $00, 0
 	map_attributes HeraldGrotto, HERALD_GROTTO, $05, 0
