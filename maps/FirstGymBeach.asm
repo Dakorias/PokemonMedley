@@ -170,27 +170,27 @@ FirstGymBeach_MapScripts:
 		writetext FirstGymBlaireChallengesPlayer
 		waitbutton
 		closetext
-		checkevent EVENT_GOT_EKANS_FROM_OAK
-		iftrue .Baltoy
-		checkevent EVENT_GOT_YANMA_FROM_OAK
-		iftrue .Ekans
+		checkevent EVENT_GOT_TRAPINCH_FROM_OAK
+		iftrue .Aron
+		checkevent EVENT_GOT_TOGEPI_FROM_OAK
+		iftrue .Trapinch
 		winlosstext FirstGymBlaireWinText, 0
 		setlasttalked FIRST_GYM_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_YANMA
+		loadtrainer BLAIRE, BLAIRE_2_TOGEPI
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
-	.Baltoy:
+	.Aron:
 		winlosstext FirstGymBlaireWinText, 0
 		setlasttalked FIRST_GYM_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_BALTOY
+		loadtrainer BLAIRE, BLAIRE_2_ARON
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
-	.Ekans:
+	.Trapinch:
 		winlosstext FirstGymBlaireWinText, 0
 		setlasttalked FIRST_GYM_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_EKANS
+		loadtrainer BLAIRE, BLAIRE_2_TRAPINCH
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
@@ -232,27 +232,27 @@ FirstGymBeach_MapScripts:
 		writetext FirstGymPercyChallengesPlayer
 		waitbutton
 		closetext
-		checkevent EVENT_GOT_EKANS_FROM_OAK
-		iftrue .Baltoy
-		checkevent EVENT_GOT_YANMA_FROM_OAK
-		iftrue .Ekans
+		checkevent EVENT_GOT_TRAPINCH_FROM_OAK
+		iftrue .Aron
+		checkevent EVENT_GOT_TOGEPI_FROM_OAK
+		iftrue .Trapinch
 		winlosstext FirstGymPercyWinText, 0
 		setlasttalked FIRST_GYM_PERCY
-		loadtrainer PERCY, PERCY_1_YANMA
+		loadtrainer PERCY, PERCY_1_TOGEPI
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterPercyBattle
-	.Baltoy:
+	.Aron:
 		winlosstext FirstGymPercyWinText, 0
 		setlasttalked FIRST_GYM_PERCY
-		loadtrainer PERCY, PERCY_1_BALTOY
+		loadtrainer PERCY, PERCY_1_ARON
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterPercyBattle
-	.Ekans:
+	.Trapinch:
 		winlosstext FirstGymPercyWinText, 0
 		setlasttalked FIRST_GYM_PERCY
-		loadtrainer PERCY, PERCY_1_EKANS
+		loadtrainer PERCY, PERCY_1_TRAPINCH
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterPercyBattle

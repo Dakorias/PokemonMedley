@@ -1415,12 +1415,13 @@ GliscorEvosAttacks:
 TrapinchEvosAttacks:
 	dbbw EVOLVE_LEVEL, 30, VIBRAVA
 	db 0 ; no more evolutions
-	dbw 1, BITE
-	dbw 4, SAND_ATTACK
-	dbw 7, MUD_SLAP
+	dbw 1, TACKLE
+	dbw 4, LEER
+	dbw 6, BITE
+	dbw 8, MUD_SLAP
 	dbw 11, FAINT_ATTACK
 	dbw 14, SAND_TOMB
-	dbw 16, BULLDOZE
+	dbw 17, BULLDOZE
 	dbw 20, ROCK_TOMB
 	dbw 24, DIG
 	dbw 27, SANDSTORM
@@ -2718,12 +2719,11 @@ AronEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, HARDEN
-	dbw 3, MUD_SLAP
-	dbw 7, HEADBUTT
-	dbw 11, METAL_CLAW
+	dbw 6, MUD_SLAP
+	dbw 8, METAL_CLAW
+	dbw 11, HEADBUTT
 	dbw 15, ROCK_TOMB
-	dbw 18, ROAR
-	dbw 22, POUND ; Replace with Metal Sound when implemented
+	dbw 21, ROAR
 	dbw 25, TAKE_DOWN
 	dbw 29, ROCK_BLAST
 	dbw 33, IRON_HEAD
@@ -2739,12 +2739,11 @@ LaironEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, HARDEN
-	dbw 1, MUD_SLAP
-	dbw 7, HEADBUTT
-	dbw 11, METAL_CLAW
+	dbw 6, MUD_SLAP
+	dbw 8, METAL_CLAW
+	dbw 14, HEADBUTT
 	dbw 15, ROCK_TOMB
-	dbw 18, ROAR
-	dbw 22, POUND ; Replace with Metal Sound when implemented
+	dbw 21, ROAR
 	dbw 25, TAKE_DOWN
 	dbw 29, ROCK_BLAST
 	dbw 33, IRON_HEAD
@@ -2759,12 +2758,11 @@ AggronEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, HARDEN
-	dbw 1, MUD_SLAP
-	dbw 1, HEADBUTT
-	dbw 11, METAL_CLAW
+	dbw 6, MUD_SLAP
+	dbw 8, METAL_CLAW
+	dbw 11, HEADBUTT
 	dbw 15, ROCK_TOMB
-	dbw 18, ROAR
-	dbw 22, POUND ; Replace with Metal Sound when implemented
+	dbw 21, ROAR
 	dbw 25, TAKE_DOWN
 	dbw 29, ROCK_BLAST
 	dbw 33, IRON_HEAD
@@ -2910,9 +2908,9 @@ TogepiEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, POUND
 	dbw 1, GROWL
-	dbw 4, SWEET_KISS
-	dbw 7, CHARM
-	dbw 11, FAIRY_WIND
+	dbw 6, SWEET_KISS
+	dbw 8, FAIRY_WIND
+	dbw 11, CHARM
 	dbw 14, ENCORE
 	dbw 18, METRONOME
 	dbw 21, SAFEGUARD
@@ -2930,9 +2928,9 @@ TogeticEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, POUND
 	dbw 1, GROWL
-	dbw 1, SWEET_KISS
-	dbw 7, CHARM
-	dbw 11, FAIRY_WIND
+	dbw 6, SWEET_KISS
+	dbw 8, FAIRY_WIND
+	dbw 11, CHARM
 	dbw 14, ENCORE
 	dbw 18, METRONOME
 	dbw 21, SAFEGUARD
@@ -2950,9 +2948,9 @@ TogekissEvosAttacks:
 	dbw 1, EXTREMESPEED ; Relearner
 	dbw 1, POUND
 	dbw 1, GROWL
-	dbw 1, SWEET_KISS
-	dbw 1, CHARM
-	dbw 11, FAIRY_WIND
+	dbw 6, SWEET_KISS
+	dbw 8, FAIRY_WIND
+	dbw 11, CHARM
 	dbw 14, ENCORE
 	dbw 18, METRONOME
 	dbw 21, SAFEGUARD

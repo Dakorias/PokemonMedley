@@ -31,6 +31,7 @@ HeraldRoute_MapScripts:
 		end
 
 	HeraldRouteAfterRegistration:
+		sdefer HeraldRoutePercyRunsIntoPlayerScript
 		end
 
 	HeraldRouteNoop1:
@@ -281,6 +282,8 @@ PlayerStepDownHeraldRoute:
 HeraldRouteBlaireWalksFromPlayer:
 	step RIGHT
 	step RIGHT
+	step DOWN
+	step DOWN
 	step RIGHT
 	step RIGHT
 	step RIGHT

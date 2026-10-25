@@ -143,6 +143,8 @@ HeraldBayEdwardScript:
 	closetext
 	pause 5
 	applymovement HERALD_BAY_BLAIRE, HeraldBayBlaireWalksFromPlayer
+	disappear HERALD_BAY_BLAIRE
+	disappear HERALD_BAY_PERCY
 	setscene SCENE_HERALD_ROUTE_ROCKETS
 	setevent EVENT_HERALD_ROUTE_BLAIRE
 	setevent EVENT_HERALD_BAY_PERCY

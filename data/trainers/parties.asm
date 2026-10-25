@@ -447,11 +447,13 @@ LassGroup:
 	db -1 ; end
 
 	next_list_item ; LASS (1)
-	db "LANEY@", TRAINERTYPE_NORMAL
+	db "LANEY@", TRAINERTYPE_MOVES
 	db 5
 	dw COTTONEE
+	dw COTTON_SPORE, ABSORB, GROWTH, NO_MOVE
 	db 7
 	dw EEVEE
+	dw TACKLE, TAIL_WHIP, SAND_ATTACK, GROWL
 	db -1 ; end
 
 	next_list_item ; LASS (2)
@@ -843,25 +845,25 @@ BlaireGroup:
 	next_list_item ; BLAIRE1 (1)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  5
-	dw EKANS
+	dw TRAPINCH
 	db -1 ; end
 
 	next_list_item ; BLAIRE1 (2)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  5
-	dw YANMA
+	dw TOGEPI
 	db -1 ; end
 
 	next_list_item ; BLAIRE1 (3)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  5
-	dw BALTOY
+	dw ARON
 	db -1 ; end
 
 	next_list_item ; BLAIRE2 (1)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  12
-	dw EKANS
+	dw TRAPINCH
 	db  10
 	dw HOUNDOUR
 	db -1 ; end
@@ -869,7 +871,7 @@ BlaireGroup:
 	next_list_item ; BLAIRE2 (2)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  12
-	dw YANMA
+	dw TOGEPI
 	db  10
 	dw HOUNDOUR
 	db -1 ; end
@@ -877,7 +879,7 @@ BlaireGroup:
 	next_list_item ; BLAIRE2 (3)
 	db "BLAIRE@", TRAINERTYPE_NORMAL
 	db  12
-	dw BALTOY
+	dw ARON
 	db  10
 	dw HOUNDOUR
 	db -1 ; end
@@ -889,7 +891,7 @@ BlaireGroup:
 	db  15
 	dw HOUNDOUR
 	db  18
-	dw EKANS
+	dw TRAPINCH
 	db -1 ; end
 
 	next_list_item ; BLAIRE3 (2)
@@ -899,7 +901,7 @@ BlaireGroup:
 	db  15
 	dw HOUNDOUR
 	db  18
-	dw YANMA
+	dw TOGEPI
 	db -1 ; end
 
 	next_list_item ; BLAIRE3 (3)
@@ -909,7 +911,7 @@ BlaireGroup:
 	db  15
 	dw HOUNDOUR
 	db  18
-	dw BALTOY
+	dw ARON
 	db -1 ; end
 
 	end_list_items
@@ -920,7 +922,7 @@ PercyGroup:
 	db 10
 	dw LOTAD
 	db 11
-	dw EKANS
+	dw TRAPINCH
 	db -1 ; end
 
 	next_list_item ; PERCY1 (2)
@@ -928,7 +930,7 @@ PercyGroup:
 	db 10
 	dw LOTAD
 	db 11
-	dw YANMA
+	dw TOGEPI
 	db -1 ; end
 
 	next_list_item ; PERCY1 (3)
@@ -936,7 +938,7 @@ PercyGroup:
 	db 10
 	dw LOTAD
 	db 11
-	dw BALTOY
+	dw ARON
 	db -1 ; end
 
 	next_list_item ; PERCY2 (1)
@@ -946,7 +948,7 @@ PercyGroup:
 	db 15
 	dw LOMBRE
 	db 17
-	dw EKANS
+	dw TRAPINCH
 	db -1 ; end
 
 	next_list_item ; PERCY2 (2)
@@ -956,7 +958,7 @@ PercyGroup:
 	db 15
 	dw LOMBRE
 	db 17
-	dw YANMA
+	dw TOGEPI
 	db -1 ; end
 
 	next_list_item ; PERCY2 (3)
@@ -966,7 +968,7 @@ PercyGroup:
 	db 15
 	dw LOMBRE
 	db 17
-	dw BALTOY
+	dw ARON
 	db -1 ; end
 
 	end_list_items
@@ -1036,11 +1038,13 @@ TouristGroup:
 
 SurvivalistGroup:
 	next_list_item ; PERRY (1)
-	db "PERRY@", TRAINERTYPE_NORMAL
+	db "PERRY@", TRAINERTYPE_MOVES
 	db 6
 	dw BUNEARY
+	dw SPLASH, POUND, DEFENSE_CURL, CHARM
 	db 6
 	dw FLETCHLING
+	dw TACKLE, GROWL, PECK, NO_MOVE
 	db -1 ; end
 
 	next_list_item ; JOHN (1)

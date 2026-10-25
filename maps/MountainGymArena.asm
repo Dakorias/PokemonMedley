@@ -49,29 +49,29 @@ MountainGymArenaEscort:
 		writetext Blaire2ndGymChallenge
 		waitbutton
 		closetext
-		checkevent EVENT_GOT_EKANS_FROM_OAK
-		iftrue .BlaireYanma
-		checkevent EVENT_GOT_YANMA_FROM_OAK
-		iftrue .BlaireBaltoy
+		checkevent EVENT_GOT_TRAPINCH_FROM_OAK
+		iftrue .BlaireTogepi
+		checkevent EVENT_GOT_TOGEPI_FROM_OAK
+		iftrue .BlaireAron
 		winlosstext Blaire2GymWinText, 0
 		setlasttalked MOUNTAIN_GYM_ARENA_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_EKANS
+		loadtrainer BLAIRE, BLAIRE_2_TRAPINCH
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
 
-		.BlaireYanma
+		.BlaireTogepi
 		winlosstext Blaire2GymWinText, 0
 		setlasttalked MOUNTAIN_GYM_ARENA_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_YANMA
+		loadtrainer BLAIRE, BLAIRE_2_TOGEPI
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
 
-		.BlaireBaltoy
+		.BlaireAron
 		winlosstext Blaire2GymWinText, 0
 		setlasttalked MOUNTAIN_GYM_ARENA_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_BALTOY
+		loadtrainer BLAIRE, BLAIRE_2_ARON
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
@@ -114,29 +114,29 @@ MountainGymArenaEscort:
 	writetext Percy2ndGymChallenge
 	waitbutton
 	closetext
-	checkevent EVENT_GOT_EKANS_FROM_OAK
-	iftrue .PercyYanma
-	checkevent EVENT_GOT_YANMA_FROM_OAK
-	iftrue .PercyBaltoy
+	checkevent EVENT_GOT_TRAPINCH_FROM_OAK
+	iftrue .PercyTogepi
+	checkevent EVENT_GOT_TOGEPI_FROM_OAK
+	iftrue .PercyAron
 	winlosstext Percy2GymWinText, 0
 	setlasttalked MOUNTAIN_GYM_ARENA_PERCY
-	loadtrainer PERCY, PERCY_2_EKANS
+	loadtrainer PERCY, PERCY_2_TRAPINCH
 	startbattle
 	reloadmapafterbattle
 	sjump .AfterPercyBattle
 
-	.PercyYanma
+	.PercyTogepi
 	winlosstext Percy2GymWinText, 0
 	setlasttalked MOUNTAIN_GYM_ARENA_PERCY
-	loadtrainer PERCY, PERCY_2_YANMA
+	loadtrainer PERCY, PERCY_2_TOGEPI
 	startbattle
 	reloadmapafterbattle
 	sjump .AfterPercyBattle
 
-	.PercyBaltoy
+	.PercyAron
 	winlosstext Percy2GymWinText, 0
 	setlasttalked MOUNTAIN_GYM_ARENA_PERCY
-	loadtrainer PERCY, PERCY_2_BALTOY
+	loadtrainer PERCY, PERCY_2_ARON
 	startbattle
 	reloadmapafterbattle
 	sjump .AfterPercyBattle
@@ -174,9 +174,9 @@ MountainGymArenaEscort:
 		writetext BlackBelt2ndGymChallenge
 		waitbutton
 		closetext
-		checkevent EVENT_GOT_EKANS_FROM_OAK
+		checkevent EVENT_GOT_TRAPINCH_FROM_OAK
 		iftrue .BlackBelt1
-		checkevent EVENT_GOT_YANMA_FROM_OAK
+		checkevent EVENT_GOT_TOGEPI_FROM_OAK
 		iftrue .BlackBelt2
 		winlosstext BlackBeltGymWinText, 0
 		setlasttalked MOUNTAIN_GYM_ARENA_BLACK_BELT1

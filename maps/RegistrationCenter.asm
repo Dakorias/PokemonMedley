@@ -67,6 +67,7 @@ RegistrationCenterOfficerScript:
 	closetext
 	setevent EVENT_MET_ADAM_VOSS_AT_REGISTRATION
 	setscene SCENE_HERALD_ROUTE_REGISTRATION
+	setscene SCENE_HERALD_LAB_POKEDEX
 	end
 
 .No

@@ -39,6 +39,7 @@ HeraldLab_MapScripts:
 	CavendishMoveCallback:
 		checkscene
 		ifequal SCENE_HERALD_LAB_MEET_CAVENDISH, .NoSkipCavendish
+		ifequal SCENE_HERALD_LAB_RIVAL_FIGHT, .NoSkipCavendish
 		endcallback
 		
 	.NoSkipCavendish:
@@ -58,13 +59,13 @@ HeraldLab_MapScripts:
 		endcallback
 
 	PlayerTalkToCavendishScript:
-		clearevent EVENT_GOT_EKANS_FROM_CAVENDISH
-		clearevent EVENT_GOT_YANMA_FROM_CAVENDISH
-		clearevent EVENT_GOT_BALTOY_FROM_CAVENDISH
+		clearevent EVENT_GOT_TRAPINCH_FROM_CAVENDISH
+		clearevent EVENT_GOT_TOGEPI_FROM_CAVENDISH
+		clearevent EVENT_GOT_ARON_FROM_CAVENDISH
 		clearevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
-		clearevent EVENT_EKANS_POKEBALL_IN_CAVENDISHS_LAB
-		clearevent EVENT_YANMA_POKEBALL_IN_CAVENDISHS_LAB
-		clearevent EVENT_BALTOY_POKEBALL_IN_CAVENDISHS_LAB
+		clearevent EVENT_TRAPINCH_POKEBALL_IN_CAVENDISHS_LAB
+		clearevent EVENT_TOGEPI_POKEBALL_IN_CAVENDISHS_LAB
+		clearevent EVENT_ARON_POKEBALL_IN_CAVENDISHS_LAB
 		appear HERALD_LAB_POKE_BALL_1
 		appear HERALD_LAB_POKE_BALL_2
 		appear HERALD_LAB_POKE_BALL_3
@@ -95,6 +96,7 @@ HeraldLab_MapScripts:
 		closetext
 		pause 10
 		turnobject PLAYER, RIGHT
+		turnobject HERALD_LAB_BLAIRE, RIGHT
 		opentext
 		writetext CavendishTalksAboutPokemonText
 		waitbutton
@@ -128,48 +130,48 @@ HeraldLab_MapScripts:
 		setscene SCENE_HERALD_LAB_CANT_LEAVE
 		end
 
-	EkansPokeballScript:
+	TrapinchPokeballScript:
 		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue LookAtPokeBallScript
 		refreshscreen
-		pokepic EKANS
-		cry EKANS
+		pokepic TRAPINCH
+		cry TRAPINCH
 		waitbutton
 		closepokepic
 		opentext
-		writetext TakeEkansText
+		writetext TakeTrapinchText
 		yesorno
 		iffalse DidntChooseStarterScript
 		disappear HERALD_LAB_POKE_BALL_1
-		setevent EVENT_GOT_EKANS_FROM_CAVENDISH
-		getmonname STRING_BUFFER_3, EKANS
+		setevent EVENT_GOT_TRAPINCH_FROM_CAVENDISH
+		getmonname STRING_BUFFER_3, TRAPINCH
 		writetext GetStarterText
 		playsound SFX_CAUGHT_MON
 		waitsfx
 		promptbutton
-		givepoke EKANS, 5, BERRY
+		givepoke TRAPINCH, 5, BERRY
 		writetext PlayerReceivesPokeballs
 		giveitem POKE_BALL, 5
 		playsound SFX_ITEM
 		waitbutton
 		closetext
-		applymovement HERALD_LAB_BLAIRE, BlaireYanmaMovement
+		applymovement HERALD_LAB_BLAIRE, BlaireTogepiMovement
 		opentext
 		writetext BlaireWantsNextPokemon
 		waitbutton
 		disappear HERALD_LAB_POKE_BALL_2
-		getmonname STRING_BUFFER_3, YANMA
+		getmonname STRING_BUFFER_3, TOGEPI
 		writetext BlaireGetsStarterText
 		playsound SFX_CAUGHT_MON
 		waitbutton
 		closetext
 		pause 30
-		applymovement HERALD_LAB_PERCY, PercyBaltoyMovement
+		applymovement HERALD_LAB_PERCY, PercyAronMovement
 		opentext
 		writetext PercyWantsNextPokemon
 		waitbutton
 		disappear HERALD_LAB_POKE_BALL_3
-		getmonname STRING_BUFFER_3, BALTOY
+		getmonname STRING_BUFFER_3, ARON
 		writetext PercyGetsStarterText
 		playsound SFX_CAUGHT_MON
 		waitbutton
@@ -177,48 +179,48 @@ HeraldLab_MapScripts:
 		pause 20
 		sjump AfterPokemonScript
 
-	YanmaPokeballScript:
+	TogepiPokeballScript:
 		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue LookAtPokeBallScript
 		refreshscreen
-		pokepic YANMA
-		cry YANMA
+		pokepic TOGEPI
+		cry TOGEPI
 		waitbutton
 		closepokepic
 		opentext
-		writetext TakeYanmaText
+		writetext TakeTogepiText
 		yesorno
 		iffalse DidntChooseStarterScript
 		disappear HERALD_LAB_POKE_BALL_2
-		setevent EVENT_GOT_YANMA_FROM_CAVENDISH
-		getmonname STRING_BUFFER_3, YANMA
+		setevent EVENT_GOT_TOGEPI_FROM_CAVENDISH
+		getmonname STRING_BUFFER_3, TOGEPI
 		writetext GetStarterText
 		playsound SFX_CAUGHT_MON
 		waitsfx
 		promptbutton
-		givepoke YANMA, 5, BERRY
+		givepoke TOGEPI, 5, BERRY
 		writetext PlayerReceivesPokeballs
 		giveitem POKE_BALL, 5
 		playsound SFX_ITEM
 		waitbutton
 		closetext
-		applymovement HERALD_LAB_BLAIRE, BlaireBaltoyMovement
+		applymovement HERALD_LAB_BLAIRE, BlaireAronMovement
 		opentext
 		writetext BlaireWantsNextPokemon
 		waitbutton
 		disappear HERALD_LAB_POKE_BALL_3
-		getmonname STRING_BUFFER_3, BALTOY
+		getmonname STRING_BUFFER_3, ARON
 		writetext BlaireGetsStarterText
 		playsound SFX_CAUGHT_MON
 		waitbutton
 		closetext
 		pause 30
-		applymovement HERALD_LAB_PERCY, PercyEkansMovement
+		applymovement HERALD_LAB_PERCY, PercyTrapinchMovement
 		opentext
 		writetext PercyWantsNextPokemon
 		waitbutton
 		disappear HERALD_LAB_POKE_BALL_1
-		getmonname STRING_BUFFER_3, EKANS
+		getmonname STRING_BUFFER_3, TRAPINCH
 		writetext PercyGetsStarterText
 		playsound SFX_CAUGHT_MON
 		waitbutton
@@ -226,48 +228,48 @@ HeraldLab_MapScripts:
 		pause 20
 		sjump AfterPokemonScript
 
-	BaltoyPokeballScript:
+	AronPokeballScript:
 		checkevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
 		iftrue LookAtPokeBallScript
 		refreshscreen
-		pokepic BALTOY
-		cry BALTOY
+		pokepic ARON
+		cry ARON
 		waitbutton
 		closepokepic
 		opentext
-		writetext TakeBaltoyText
+		writetext TakeAronText
 		yesorno
 		iffalse DidntChooseStarterScript
 		disappear HERALD_LAB_POKE_BALL_3
-		setevent EVENT_GOT_BALTOY_FROM_CAVENDISH
-		getmonname STRING_BUFFER_3, BALTOY
+		setevent EVENT_GOT_ARON_FROM_CAVENDISH
+		getmonname STRING_BUFFER_3, ARON
 		writetext GetStarterText
 		playsound SFX_CAUGHT_MON
 		waitsfx
 		promptbutton
-		givepoke BALTOY, 5, BERRY
+		givepoke ARON, 5, BERRY
 		writetext PlayerReceivesPokeballs
 		giveitem POKE_BALL, 5
 		playsound SFX_ITEM
 		waitbutton
 		closetext
-		applymovement HERALD_LAB_BLAIRE, BlaireEkansMovement
+		applymovement HERALD_LAB_BLAIRE, BlaireTrapinchMovement
 		opentext
 		writetext BlaireWantsNextPokemon
 		waitbutton
 		disappear HERALD_LAB_POKE_BALL_1
-		getmonname STRING_BUFFER_3, EKANS
+		getmonname STRING_BUFFER_3, TRAPINCH
 		writetext BlaireGetsStarterText
 		playsound SFX_CAUGHT_MON
 		waitbutton
 		closetext
 		pause 30
-		applymovement HERALD_LAB_PERCY, PercyYanmaMovement
+		applymovement HERALD_LAB_PERCY, PercyTogepiMovement
 		opentext
 		writetext PercyWantsNextPokemon
 		waitbutton
 		disappear HERALD_LAB_POKE_BALL_2
-		getmonname STRING_BUFFER_3, YANMA
+		getmonname STRING_BUFFER_3, TOGEPI
 		writetext PercyGetsStarterText
 		playsound SFX_CAUGHT_MON
 		waitbutton
@@ -288,26 +290,26 @@ HeraldLab_MapScripts:
 		waitbutton
 		closetext
 		setevent EVENT_GOT_A_POKEMON_FROM_CAVENDISH
-		checkevent EVENT_GOT_EKANS_FROM_CAVENDISH
-		iftrue .PercyEkansExit
-		checkevent EVENT_GOT_YANMA_FROM_CAVENDISH
-		iftrue .PercyEkansExit
-		applymovement HERALD_LAB_PERCY, PercyLeavesLabYanmaMovement
+		checkevent EVENT_GOT_TRAPINCH_FROM_CAVENDISH
+		iftrue .PercyTrapinchExit
+		checkevent EVENT_GOT_TOGEPI_FROM_CAVENDISH
+		iftrue .PercyTrapinchExit
+		applymovement HERALD_LAB_PERCY, PercyLeavesLabTogepiMovement
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
 		moveobject HERALD_LAB_CAVENDISH, 7, 2
 		end
 
-	.PercyEkansExit:
-		applymovement HERALD_LAB_PERCY, PercyLeavesLabBaltoyMovement
+	.PercyTrapinchExit:
+		applymovement HERALD_LAB_PERCY, PercyLeavesLabAronMovement
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
 		end
 
-	.PercyYanmaExit:
-		applymovement HERALD_LAB_PERCY, PercyLeavesLabEkansMovement
+	.PercyTogepiExit:
+		applymovement HERALD_LAB_PERCY, PercyLeavesLabTrapinchMovement
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
@@ -350,13 +352,13 @@ HeraldLab_MapScripts:
 		writetext RivalBlaireFightText
 		waitbutton
 		closetext
-		checkevent EVENT_GOT_EKANS_FROM_CAVENDISH
-		iftrue .Ekans
-		checkevent EVENT_GOT_YANMA_FROM_CAVENDISH
-		iftrue .Yanma
+		checkevent EVENT_GOT_TRAPINCH_FROM_CAVENDISH
+		iftrue .Trapinch
+		checkevent EVENT_GOT_TOGEPI_FROM_CAVENDISH
+		iftrue .Togepi
 		winlosstext BlaireWinLabText, BlaireLossLabText
 		setlasttalked HERALD_LAB_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_1_EKANS
+		loadtrainer BLAIRE, BLAIRE_1_TRAPINCH
 		loadvar VAR_BATTLETYPE, BATTLETYPE_CANLOSE
 		startbattle
 		dontrestartmapmusic
@@ -364,10 +366,10 @@ HeraldLab_MapScripts:
 		iftrue .AfterVictorious
 		sjump .AfterYourDefeat
 
-	.Ekans:
+	.Trapinch:
 		winlosstext BlaireWinLabText, BlaireLossLabText
 		setlasttalked HERALD_LAB_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_1_YANMA
+		loadtrainer BLAIRE, BLAIRE_1_TOGEPI
 		loadvar VAR_BATTLETYPE, BATTLETYPE_CANLOSE
 		startbattle
 		dontrestartmapmusic
@@ -375,10 +377,10 @@ HeraldLab_MapScripts:
 		iftrue .AfterVictorious
 		sjump .AfterYourDefeat
 
-	.Yanma:
+	.Togepi:
 		winlosstext BlaireWinLabText, BlaireLossLabText
 		setlasttalked HERALD_LAB_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_1_BALTOY
+		loadtrainer BLAIRE, BLAIRE_1_ARON
 		loadvar VAR_BATTLETYPE, BATTLETYPE_CANLOSE
 		startbattle
 		dontrestartmapmusic
@@ -658,24 +660,14 @@ HeraldLabHealingMachine_HealParty:
 		turn_head LEFT
 		step_end
 
-	BlaireEkansMovement:
+	BlaireTrapinchMovement:
 		step DOWN
 		step RIGHT
 		step RIGHT
 		step_end
 
-	BlaireYanmaMovement:
+	BlaireTogepiMovement:
 		step DOWN
-		step RIGHT
-		step DOWN
-		step RIGHT
-		step RIGHT
-		step UP
-		step_end
-
-	BlaireBaltoyMovement:
-		step DOWN
-		step RIGHT
 		step RIGHT
 		step DOWN
 		step RIGHT
@@ -683,20 +675,30 @@ HeraldLabHealingMachine_HealParty:
 		step UP
 		step_end
 
-	PercyEkansMovement:
+	BlaireAronMovement:
+		step DOWN
+		step RIGHT
+		step RIGHT
+		step DOWN
 		step RIGHT
 		step RIGHT
 		step UP
 		step_end
 
-	PercyYanmaMovement:
+	PercyTrapinchMovement:
+		step RIGHT
+		step RIGHT
+		step UP
+		step_end
+
+	PercyTogepiMovement:
 		step RIGHT
 		step RIGHT
 		step RIGHT
 		step UP
 		step_end
 
-	PercyBaltoyMovement:
+	PercyAronMovement:
 		step RIGHT
 		step RIGHT
 		step RIGHT
@@ -704,7 +706,7 @@ HeraldLabHealingMachine_HealParty:
 		step UP
 		step_end
 
-	PercyLeavesLabBaltoyMovement:
+	PercyLeavesLabAronMovement:
 		big_step DOWN
 		big_step LEFT
 		big_step LEFT
@@ -717,7 +719,7 @@ HeraldLabHealingMachine_HealParty:
 		big_step DOWN
 		step_end
 
-	PercyLeavesLabYanmaMovement:
+	PercyLeavesLabTogepiMovement:
 		big_step DOWN
 		big_step LEFT
 		big_step LEFT
@@ -725,7 +727,7 @@ HeraldLabHealingMachine_HealParty:
 		big_step LEFT
 		step_end
 
-	PercyLeavesLabEkansMovement:
+	PercyLeavesLabTrapinchMovement:
 		big_step LEFT
 		big_step LEFT
 		big_step LEFT
@@ -952,25 +954,25 @@ HeraldLabHealingMachine_HealParty:
 		cont "us. Thanks."
 		done
 
-	TakeEkansText:
+	TakeTrapinchText:
 		text "CAVENDISH: Do"
-		line "you want EKANS?"
-		cont "It's the SNAKE"
+		line "you want TRAPINCH?"
+		cont "It's the ANT PIT"
 		cont "#MON!"
 		done
 
-	TakeYanmaText:
+	TakeTogepiText:
 		text "CAVENDISH: Do"
-		line "you want YANMA?"
-		cont "It's the CLEAR"
-		cont "WING #MON!"
+		line "you want TOGEPI?"
+		cont "It's the SPIKE"
+		cont "BALL #MON!"
 		done
 
-	TakeBaltoyText:
+	TakeAronText:
 		text "CAVENDISH: Do"
-		line "you want BALTOY?"
-		cont "It's the CLAYDOLL"
-		cont "#MON!"
+		line "you want ARON?"
+		cont "It's the IRON"
+		cont "ARMOR #MON!"
 		done
 
 	LookAtPokeBallText:
@@ -1245,6 +1247,6 @@ HeraldLab_MapEvents:
 	object_event  4,  8, SPRITE_PROFESSOR_CAVENDISH, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ProfCavendishScript, EVENT_CAVENDISH_MISSING_FROM_LAB
 	object_event  9,  0, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RivalPercyLabScript, EVENT_RIVAL_HERALD_LAB
 	object_event  2,  1, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, RivalBlaireLabScript, EVENT_RIVAL_HERALD_LAB
-	object_event  4,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, EkansPokeballScript, EVENT_EKANS_POKEBALL_IN_CAVENDISHS_LAB
-	object_event  5,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, YanmaPokeballScript, EVENT_YANMA_POKEBALL_IN_CAVENDISHS_LAB
-	object_event  6,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BaltoyPokeballScript, EVENT_BALTOY_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  4,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, TrapinchPokeballScript, EVENT_TRAPINCH_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  5,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, TogepiPokeballScript, EVENT_TOGEPI_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  6,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, AronPokeballScript, EVENT_ARON_POKEBALL_IN_CAVENDISHS_LAB
