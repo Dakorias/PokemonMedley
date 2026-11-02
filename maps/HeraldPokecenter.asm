@@ -65,6 +65,6 @@ HeraldPokecenter_MapEvents:
 	bg_event 1,  1, BGEVENT_READ, HeraldPCBookshelfScript
 
 	def_object_events
-	object_event  6,  1, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, HeraldPCNurseScript, -1
-	object_event  2,  4, SPRITE_LASS, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, HeraldPCLassScript, -1
-	object_event  9,  5, SPRITE_GRANNY, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, HeraldPCGrannyScript, -1
+	object_event  6,  1, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, HeraldPCNurseScript, -1
+	object_event  2,  4, SPRITE_LASS, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, HeraldPCLassScript, -1
+	object_event  9,  5, SPRITE_GRANNY, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, COLOR_BROWN, OBJECTTYPE_SCRIPT, 0, HeraldPCGrannyScript, -1

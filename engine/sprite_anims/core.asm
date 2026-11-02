@@ -358,6 +358,19 @@ GetSpriteOAMAttr:
 	ld a, [hl]
 	and ~(PRIORITY | Y_FLIP | X_FLIP)
 	or b
+	push af
+	ld a, [wCurSpriteOAMFlags]
+	bit 3, a
+	jr z, .default_palette
+	and PALETTE_MASK
+	ld b, a
+	pop af
+	and ~PALETTE_MASK
+	or b
+	ret
+
+.default_palette
+	pop af
 	ret
 
 InitSpriteAnimBuffer:
@@ -454,6 +467,17 @@ GetSpriteAnimFrame:
 	and Y_FLIP << 1 | X_FLIP << 1 ; The << 1 is compensated in the "oamframe" macro
 	srl a
 	ld [wCurSpriteOAMFlags], a
+	push hl
+	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
+	add hl, bc
+	ld a, [hl]
+	cp SPRITE_ANIM_FUNC_PLAYER_COLOR
+	jr nz, .not_player_icon
+	ld a, [wCurSpriteOAMFlags]
+	or (1 << 3) | PAL_PLAYER_UI
+	ld [wCurSpriteOAMFlags], a
+.not_player_icon
+	pop hl
 	pop af
 	ret
 

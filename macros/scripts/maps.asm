@@ -114,11 +114,12 @@ MACRO object_event
 ;  * if h1 == h2, the object_event will always appear
 ;  * if h1 == -1, h2 is treated as a time-of-day value:
 ;    a combo of MORN, DAY, and/or NITE, or -1 to always appear
-;\9: palette: a PAL_NPC_* constant, or 0 for sprite default
+;\9: color: a COLOR_* constant, or 0 for the color of the sprite
 ;\<10>: function: a OBJECTTYPE_* constant
 ;\<11>: sight range: applies to OBJECTTYPE_TRAINER
 ;\<12>: script pointer
 ;\<13>: event flag: an EVENT_* constant, or -1 to always appear
+;  * skins and colors are assigned in data/maps/object_colors.asm
 	db \3, \2 + 4, \1 + 4, \4
 	dn \6, \5
 	db \7, \8

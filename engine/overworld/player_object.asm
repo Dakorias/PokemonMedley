@@ -29,16 +29,7 @@ SpawnPlayer:
 	call GetMapObject
 	ld hl, MAPOBJECT_PALETTE
 	add hl, bc
-	ln e, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT
-	ld a, [wPlayerSpriteSetupFlags]
-	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
-	jr nz, .ok
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .ok
-	ln e, PAL_NPC_RED, OBJECTTYPE_SCRIPT
-
-.ok
+	ln e, 0, OBJECTTYPE_SCRIPT
 	ld [hl], e
 	ld a, PLAYER_OBJECT
 	ldh [hMapObjectIndex], a
@@ -184,20 +175,9 @@ CopyMapObjectToObjectStruct:
 	call GetSpriteVTile
 	ld [wTempObjectCopySpriteVTile], a
 
-	ld a, [hl]
-	call GetSpritePalette
+	call GetObjectColorSlot
 	ld [wTempObjectCopyPalette], a
 
-	ld hl, MAPOBJECT_PALETTE
-	add hl, bc
-	ld a, [hl]
-	and MAPOBJECT_PALETTE_MASK
-	jr z, .skip_color_override
-	swap a
-	and PALETTE_MASK
-	ld [wTempObjectCopyPalette], a
-
-.skip_color_override
 	ld hl, MAPOBJECT_MOVEMENT
 	add hl, bc
 	ld a, [hl]

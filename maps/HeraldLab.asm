@@ -39,11 +39,16 @@ HeraldLab_MapScripts:
 	CavendishMoveCallback:
 		checkscene
 		ifequal SCENE_HERALD_LAB_MEET_CAVENDISH, .NoSkipCavendish
-		ifequal SCENE_HERALD_LAB_RIVAL_FIGHT, .NoSkipCavendish
+		ifequal SCENE_HERALD_LAB_RIVAL_FIGHT, .NoSkipCavendish2
 		endcallback
 		
 	.NoSkipCavendish:
 		moveobject HERALD_LAB_CAVENDISH, 4, 12
+		endcallback
+
+	.NoSkipCavendish2:
+		moveobject HERALD_LAB_CAVENDISH, 7, 2
+		moveobject HERALD_LAB_BLAIRE, 5, 2
 		endcallback
 
 	RivalsMoveCallback:
@@ -306,6 +311,7 @@ HeraldLab_MapScripts:
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
+		moveobject HERALD_LAB_CAVENDISH, 7, 2
 		end
 
 	.PercyTogepiExit:
@@ -313,6 +319,7 @@ HeraldLab_MapScripts:
 		playsound SFX_EXIT_BUILDING
 		disappear HERALD_LAB_PERCY
 		setscene SCENE_HERALD_LAB_RIVAL_FIGHT
+		moveobject HERALD_LAB_CAVENDISH, 7, 2
 		end
 
 	BlaireFightLeftScript:
@@ -437,6 +444,13 @@ HeraldLab_MapScripts:
 
 
 	PlayerGetsPokedexScript:
+		disappear HERALD_LAB_BLAIRE
+		disappear HERALD_LAB_PERCY
+		moveobject HERALD_LAB_BLAIRE, 3, 9
+		moveobject HERALD_LAB_PERCY, 5, 9
+		turnobject HERALD_LAB_BLAIRE, UP
+		appear HERALD_LAB_BLAIRE
+		appear HERALD_LAB_PERCY
 		applymovement PLAYER, PlayerWalksToGetPokedex
 		pause 6
 		turnobject HERALD_LAB_CAVENDISH, RIGHT
@@ -490,9 +504,11 @@ HeraldLab_MapScripts:
 		opentext
 		writetext CavendishPhoneNumberText
 		waitbutton
+		closetext
 		addcellnum PHONE_CAVENDISH
-		playsound SFX_REGISTER_PHONE_NUMBER
+		opentext
 		writetext CavendishPhoneRegisteredText
+		playsound SFX_REGISTER_PHONE_NUMBER
 		waitbutton
 		closetext
 		pause 4
@@ -1153,9 +1169,9 @@ HeraldLabHealingMachine_HealParty:
 		done
 
 	CavendishPhoneRegisteredText:
-		text "My number is"
-		line "registered. Call"
-		cont "if you need help."
+		text "<PLAYER> got PROF."
+		line "CAVENDISH's phone"
+		cont "number."
 		done
 
 	BlaireTalksToCavendish3:
@@ -1244,9 +1260,9 @@ HeraldLab_MapEvents:
 	bg_event  4,  6, BGEVENT_READ, HeraldLabDoorScript
 
 	def_object_events
-	object_event  4,  8, SPRITE_PROFESSOR_CAVENDISH, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ProfCavendishScript, EVENT_CAVENDISH_MISSING_FROM_LAB
-	object_event  9,  0, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RivalPercyLabScript, EVENT_RIVAL_HERALD_LAB
-	object_event  2,  1, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, RivalBlaireLabScript, EVENT_RIVAL_HERALD_LAB
-	object_event  4,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, TrapinchPokeballScript, EVENT_TRAPINCH_POKEBALL_IN_CAVENDISHS_LAB
-	object_event  5,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, TogepiPokeballScript, EVENT_TOGEPI_POKEBALL_IN_CAVENDISHS_LAB
-	object_event  6,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, AronPokeballScript, EVENT_ARON_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  4,  8, SPRITE_PROFESSOR_CAVENDISH, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_BROWN, OBJECTTYPE_SCRIPT, 0, ProfCavendishScript, EVENT_CAVENDISH_MISSING_FROM_LAB
+	object_event  9,  0, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, COLOR_GREEN, OBJECTTYPE_SCRIPT, 0, RivalPercyLabScript, EVENT_RIVAL_HERALD_LAB
+	object_event  2,  1, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_PURPLE, OBJECTTYPE_SCRIPT, 0, RivalBlaireLabScript, EVENT_RIVAL_HERALD_LAB
+	object_event  4,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, TrapinchPokeballScript, EVENT_TRAPINCH_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  5,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, TogepiPokeballScript, EVENT_TOGEPI_POKEBALL_IN_CAVENDISHS_LAB
+	object_event  6,  1, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, AronPokeballScript, EVENT_ARON_POKEBALL_IN_CAVENDISHS_LAB

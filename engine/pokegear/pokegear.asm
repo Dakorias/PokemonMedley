@@ -655,12 +655,7 @@ PokegearMap_ContinueMap:
 PokegearMap_InitPlayerIcon:
 	push af
 	depixel 0, 0
-	ld b, SPRITE_ANIM_OBJ_RED_WALK
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .got_gender
-	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
-.got_gender
+	ld b, SPRITE_ANIM_OBJ_PLAYER_COLOR_RED
 	ld a, b
 	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_TILE_ID
@@ -2535,13 +2530,7 @@ Pokedex_GetArea:
 	ld [hli], a ; tile id
 	inc de
 	push bc
-	ld c, PAL_OW_RED
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .male
-	assert PAL_OW_RED + 1 == PAL_OW_BLUE
-	inc c
-.male
+	ld c, PAL_PLAYER_UI
 	ld a, c
 	ld [hli], a ; attributes
 	pop bc
@@ -2720,7 +2709,7 @@ TownMapMon:
 	farcall GetSpeciesIcon
 ; Animation/palette
 	depixel 0, 0
-	ld a, SPRITE_ANIM_OBJ_PARTY_MON
+	ld b, SPRITE_ANIM_OBJ_PARTY_MON
 	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_TILE_ID
 	add hl, bc
@@ -2749,12 +2738,7 @@ TownMapPlayerIcon:
 	call Request2bpp
 ; Animation/palette
 	depixel 0, 0
-	ld b, SPRITE_ANIM_OBJ_RED_WALK ; Male
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .got_gender
-	ld b, SPRITE_ANIM_OBJ_BLUE_WALK ; Female
-.got_gender
+	ld b, SPRITE_ANIM_OBJ_PLAYER_COLOR_RED
 	ld a, b
 	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_TILE_ID

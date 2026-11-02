@@ -2,8 +2,8 @@
 	const FIRST_GYM_YOUNGSTER1
 	const FIRST_GYM_LASS1
 	const FIRST_GYM_SAILOR
-	const FIRST_GYM_BLAIRE
 	const FIRST_GYM_PERCY
+	const FIRST_GYM_BLAIRE
 	const FIRST_GYM_EDWARD
 
 
@@ -92,8 +92,14 @@ FirstGymBeach_MapScripts:
 		applymovement FIRST_GYM_EDWARD, FirstGymEdwardWalksToBattleSpot
 		pause 3
 		applymovement PLAYER, FirstGymPlayerWalksToBattleSpot
-	.StartBattle
+		sjump .StartBattle
+
+	.GoAround
+		applymovement FIRST_GYM_EDWARD, FirstGymEdwardWalksAroundPlayer
 		pause 4
+		applymovement PLAYER, FirstGymPlayerWalksToBattleSpot2
+
+	.StartBattle
 		opentext
 		writetext FirstGymEdwardGymBattleIntro2
 		waitbutton
@@ -131,12 +137,6 @@ FirstGymBeach_MapScripts:
 		pause 15
 		warp HERALD_BAY, 17, 36
 		end
-
-	.GoAround
-		applymovement FIRST_GYM_EDWARD, FirstGymEdwardWalksAroundPlayer
-		pause 4
-		applymovement PLAYER, FirstGymPlayerWalksToBattleSpot2
-		sjump .StartBattle
 
 	FirstGymBlaireBattle:
 		checkitem EDWARD_COIN
@@ -222,7 +222,7 @@ FirstGymBeach_MapScripts:
 		iftrue .SkipPercy
 		setevent EVENT_BATTLE_PERCY_BEACH
 		disappear FIRST_GYM_PERCY
-		moveobject FIRST_GYM_PERCY, 17, 14
+		moveobject FIRST_GYM_PERCY, 14, 16
 		appear FIRST_GYM_PERCY
 		applymovement FIRST_GYM_PERCY, FirstGymPercyRunsToPlayer
 		showemote EMOTE_SHOCK, PLAYER, 15
@@ -261,7 +261,6 @@ FirstGymBeach_MapScripts:
 		writetext FirstGymPercyAfterBattleText
 		waitbutton
 		closetext
-		giveitem EDWARD_COIN
 		applymovement FIRST_GYM_PERCY, FirstGymPercyLeavesAfterFight
 		disappear FIRST_GYM_PERCY
 		end
@@ -436,7 +435,7 @@ FirstGymBeach_MapScripts:
 			para "takes the coin and"
 			line "shows they're the"
 			cont "strongest of us"
-			cont"three. Let's go."
+			cont "three. Let's go."
 			done
 			
 		FirstGymBlaireWinText:
@@ -505,8 +504,8 @@ FirstGymBeach_MapScripts:
 			line "to the other"
 			cont "trainers too."
 			para "Ask them after you"
-			line "beat them in battle."
-			cont "Good luck!"
+			line "beat them in"
+			cont "battle. Good luck!"
 			done
 
 		FirstGymTravelBackYesOrNoText:
@@ -528,7 +527,7 @@ FirstGymBeach_MapScripts:
 			done
 
 		FirstGymEdwardGymBattleIntro2:
-			para "I am EDWARD, I'm"
+			text "I am EDWARD, I'm"
 			line "the best sailor in"
 			cont "the region, I love"
 
@@ -586,9 +585,9 @@ FirstGymBeach_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  23, 10, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 1, TrainerYoungsterAlex, -1
-	object_event  8,  11, SPRITE_LASS, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 1, TrainerLassCandice, -1
-	object_event  22, 25, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 2, Sailor1ScriptGym, -1
-	object_event 31, 31, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
-	object_event 31, 31, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
-	object_event 12, 24, SPRITE_EDWARD, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, FirstGymEdwardScript, -1
+	object_event  23, 10, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_TRAINER, 1, TrainerYoungsterAlex, -1
+	object_event  8,  11, SPRITE_LASS, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_TRAINER, 1, TrainerLassCandice, -1
+	object_event  22, 25, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_TRAINER, 2, Sailor1ScriptGym, -1
+	object_event 31, 31, SPRITE_GOOD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_GREEN, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
+	object_event 31, 31, SPRITE_BAD_RIVAL, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_PURPLE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
+	object_event 12, 24, SPRITE_EDWARD, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, FirstGymEdwardScript, -1

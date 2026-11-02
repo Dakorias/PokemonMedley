@@ -270,10 +270,13 @@ wCurAnimXOffset:: db
 wCurAnimYOffset:: db
 wGlobalAnimYOffset:: db
 wGlobalAnimXOffset:: db
-
 wSpriteAnimDataEnd::
 
-	ds 11
+; Skin/color pair given to each assignable object palette (0: free, $ff: fixed), see engine/gfx/color.asm
+wColorSlotPairs:: ds NUM_COLOR_SLOTS
+; Skin and color of the last pair resolved, laid out as a two-color palette
+wColorPairPalette:: ds 2 * PAL_COLOR_SIZE
+	ds 11 - NUM_COLOR_SLOTS - 2 * PAL_COLOR_SIZE
 
 ; mobile data
 wc3cc:: ds 1
@@ -2963,6 +2966,7 @@ wd475:: ds 1
 wd476:: ds 1
 wd477:: ds 1
 wd478:: ds 1
+wPlayerColor:: db
 wCrystalDataEnd::
 
 wd479:: ds 2
@@ -3155,7 +3159,7 @@ wMountainGymSceneID::								db
 wMountainGymBreakSceneID::					db
 wMountainGymArenaSceneID::					db
 
-	ds 104
+	ds 103
 
 ; fight counts
 wJackFightCount::    db

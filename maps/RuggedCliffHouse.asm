@@ -71,4 +71,4 @@ RuggedCliffHouse_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  3, SPRITE_POKEFAN_M, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RuggedCliffHousePokefanM, -1
+	object_event  3,  3, SPRITE_POKEFAN_M, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_BROWN, OBJECTTYPE_SCRIPT, 0, RuggedCliffHousePokefanM, -1

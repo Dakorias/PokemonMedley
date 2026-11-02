@@ -1,12 +1,12 @@
 ; Functions handling map objects.
 
-GetSpritePalette::
+GetSpriteColor::
 	push hl
 	push de
 	push bc
 	ld c, a
 
-	farcall _GetSpritePalette
+	farcall _GetSpriteColor
 
 	ld a, c
 	pop bc

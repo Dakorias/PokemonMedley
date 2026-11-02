@@ -37,5 +37,5 @@ BillsOlderSistersHouse_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  2,  3, SPRITE_POKEFAN_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, BillsOlderSisterScript, -1
-	object_event  6,  4, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 1, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BillsOlderSistersHouseYoungsterScript, -1
+	object_event  2,  3, SPRITE_POKEFAN_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, BillsOlderSisterScript, -1
+	object_event  6,  4, SPRITE_YOUNGSTER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 1, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, BillsOlderSistersHouseYoungsterScript, -1

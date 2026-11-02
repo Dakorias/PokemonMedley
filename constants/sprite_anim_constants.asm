@@ -85,6 +85,8 @@ DEF NUM_SPRITEANIMDICT_ENTRIES EQU 10
 	const SPRITE_ANIM_OBJ_PC_MODE                   ; 2f
 	const SPRITE_ANIM_OBJ_PC_MODE2                  ; 30
 	const SPRITE_ANIM_OBJ_PC_PACK                   ; 31
+	const SPRITE_ANIM_OBJ_PLAYER_COLOR_RED          ; 32
+	const SPRITE_ANIM_OBJ_PLAYER_COLOR_BLUE         ; 33
 DEF NUM_SPRITE_ANIM_OBJS EQU const_value
 
 ; DoSpriteAnimFrame.Jumptable indexes (see engine/sprite_anims/functions.asm)
@@ -128,6 +130,7 @@ DEF NUM_SPRITE_ANIM_OBJS EQU const_value
 	const SPRITE_ANIM_FUNC_PC_QUICK                  ; 24
 	const SPRITE_ANIM_FUNC_PC_MODE                   ; 25
 	const SPRITE_ANIM_FUNC_PC_PACK                   ; 26
+	const SPRITE_ANIM_FUNC_PLAYER_COLOR              ; 27
 DEF NUM_SPRITE_ANIM_FUNCS EQU const_value
 
 ; SpriteAnimFrameData indexes (see data/sprite_anims/framesets.asm)

@@ -66,6 +66,9 @@ NewGame:
 	call PlayerProfileSetup
 	call OakSpeech
 	call InitializeWorld
+	ld hl, wPokegearFlags
+	set POKEGEAR_OBTAINED_F, [hl]
+	set POKEGEAR_MAP_CARD_F, [hl]
 
 	ld a, LANDMARK_HERALD_COVE
 	ld [wPrevLandmark], a
@@ -416,6 +419,7 @@ ConfirmContinue:
 	ret
 
 .PressA:
+	and a
 	ret
 
 Continue_CheckRTC_RestartClock:
@@ -673,13 +677,19 @@ OakSpeech:
 	ld [wCurPartySpecies], a
 	farcall DrawIntroPlayerPic
 
-	ld b, SCGB_TRAINER_OR_MON_FRONTPIC_PALS
+	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	call Intro_RotatePalettesLeftFrontpic
 
+.CreateCharacter:
 	ld hl, OakText6
 	call PrintText
 	call NamePlayer
+	call SelectPlayerColors
+	ld hl, ConfirmPlayerText
+	call PrintText
+	call YesNoBox
+	jr c, .CreateCharacter
 	ld hl, OakText7
 	call PrintText
 
@@ -687,6 +697,208 @@ OakSpeech:
 	call RotateFourPalettesLeft
 	call ClearTilemap
 	ret
+
+SelectPlayerColors:
+; Lets the player choose a skin and then a color, previewing each choice on their pic.
+	ld a, [wPlayerColor]
+	and $f0
+	jr nz, .has_skin
+	ld a, SKIN_TONE_3 << 4
+.has_skin
+	ld b, a
+	ld a, [wPlayerColor]
+	and $0f
+	jr nz, .has_color
+	ld a, COLOR_RED
+.has_color
+	or b
+	ld [wPlayerColor], a
+	farcall LoadIntroPlayerPalette
+	farcall MovePlayerPicRight
+
+	ld hl, SkinPromptText
+	call PrintText
+	ld a, [wPlayerColor]
+	swap a
+	and $0f
+	dec a
+	ld hl, .SkinMenuHeader
+	call .RunMenu
+
+	ld hl, ColorPromptText
+	call PrintText
+	ld a, [wPlayerColor]
+	and $0f
+	dec a
+	ld hl, .ColorMenuHeader
+	call .RunMenu
+
+	farcall MovePlayerPicLeft
+	ret
+
+.RunMenu:
+; hl = menu header, a = position in the list of the choice the cursor starts on
+	push af
+	call LoadMenuHeader
+	call InitScrollingMenu
+	pop af
+	cp 4
+	jr nc, .scrolled
+	inc a
+	ld [wMenuCursorPosition], a
+	xor a
+	ld [wMenuScrollPosition], a
+	jr .run
+.scrolled
+	sub 3
+	ld [wMenuScrollPosition], a
+	ld a, 4
+	ld [wMenuCursorPosition], a
+.run
+	call ScrollingMenu
+	call CloseWindow
+; The menu's border lies outside the area that closing the window restores.
+	hlcoord 0, 0
+	lb bc, 11, 12
+	call ClearBox
+	jp ApplyTilemap
+
+.SkinMenuHeader:
+	db 0 ; flags
+	menu_coords 1, 1, 10, 9
+	dw .SkinMenuData
+	db 1 ; default option
+
+.SkinMenuData:
+	db SCROLLINGMENU_DISPLAY_ARROWS | SCROLLINGMENU_ENABLE_FUNCTION3
+	db 4, 0 ; rows, columns
+	db SCROLLINGMENU_ITEMS_NORMAL
+	dba .SkinItems
+	dba .PlaceSkinName
+	dba NULL
+	dba .PreviewSkin
+
+.SkinItems:
+	db NUM_SKINS
+	db SKIN_TONE_1
+	db SKIN_TONE_2
+	db SKIN_TONE_3
+	db SKIN_TONE_4
+	db SKIN_TONE_5
+	db SKIN_TONE_6
+	db SKIN_WHITE
+	db SKIN_BLACK
+	db -1
+
+.ColorMenuHeader:
+	db 0 ; flags
+	menu_coords 1, 1, 10, 9
+	dw .ColorMenuData
+	db 1 ; default option
+
+.ColorMenuData:
+	db SCROLLINGMENU_DISPLAY_ARROWS | SCROLLINGMENU_ENABLE_FUNCTION3
+	db 4, 0 ; rows, columns
+	db SCROLLINGMENU_ITEMS_NORMAL
+	dba .ColorItems
+	dba .PlaceColorName
+	dba NULL
+	dba .PreviewColor
+
+.ColorItems:
+	db NUM_COLORS
+	db COLOR_RED
+	db COLOR_BLUE
+	db COLOR_GREEN
+	db COLOR_YELLOW
+	db COLOR_BROWN
+	db COLOR_PURPLE
+	db COLOR_PINK
+	db COLOR_SILVER
+	db -1
+
+.PlaceSkinName:
+	ld hl, .SkinNames
+	jr .PlaceName
+
+.PlaceColorName:
+	ld hl, .ColorNames
+.PlaceName:
+; de = where the name goes, [wScrollingMenuCursorPosition] = which one it is
+	push de
+	ld a, [wScrollingMenuCursorPosition]
+	add a
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld d, h
+	ld e, l
+	pop hl
+	jp PlaceString
+
+.PreviewSkin:
+	ld a, [wMenuSelection]
+	cp -1
+	ret z
+	swap a
+	ld b, a
+	ld a, [wPlayerColor]
+	and $0f
+	or b
+	jr .Preview
+
+.PreviewColor:
+	ld a, [wMenuSelection]
+	cp -1
+	ret z
+	ld b, a
+	ld a, [wPlayerColor]
+	and $f0
+	or b
+.Preview:
+	ld [wPlayerColor], a
+	farcall LoadIntroPlayerPalette
+	ret
+
+.SkinNames:
+	dw .Light, .Fair, .Medium, .Tan, .SkinBrown, .Dark, .White, .Black
+.Light:     db "LIGHT@"
+.Fair:      db "FAIR@"
+.Medium:    db "MEDIUM@"
+.Tan:       db "TAN@"
+.SkinBrown: db "BROWN@"
+.Dark:      db "DARK@"
+.White:     db "WHITE@"
+.Black:     db "BLACK@"
+
+.ColorNames:
+	dw .Red, .Blue, .Green, .Yellow, .Brown, .Purple, .Pink, .Silver
+.Red:    db "RED@"
+.Blue:   db "BLUE@"
+.Green:  db "GREEN@"
+.Yellow: db "YELLOW@"
+.Brown:  db "BROWN@"
+.Purple: db "PURPLE@"
+.Pink:   db "PINK@"
+.Silver: db "SILVER@"
+
+SkinPromptText:
+	text "Pick your skin"
+	line "color."
+	done
+
+ColorPromptText:
+	text "Now pick the color"
+	line "you like to wear."
+	done
+
+ConfirmPlayerText:
+	text "Is this who you"
+	line "want to play as?"
+	done
 
 OakText1:
 	text_far _OakText1
@@ -729,7 +941,7 @@ NamePlayer:
 	dec a
 	jr z, .NewName
 	call StorePlayerName
-	farcall ApplyMonOrTrainerPals
+	farcall LoadIntroPlayerPalette
 	farcall MovePlayerPicLeft
 	ret
 
@@ -748,9 +960,10 @@ NamePlayer:
 	ld [wCurPartySpecies], a
 	farcall DrawIntroPlayerPic
 
-	ld b, SCGB_TRAINER_OR_MON_FRONTPIC_PALS
+	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	call RotateThreePalettesLeft
+	farcall LoadIntroPlayerPalette
 
 	ld hl, wPlayerName
 	ld de, .Chris
@@ -918,13 +1131,7 @@ Intro_PlacePlayerSprite:
 	inc de
 	ld [hli], a ; tile id
 
-	ld b, PAL_OW_BLUE
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .male
-	ld b, PAL_OW_RED
-.male
-	ld a, b
+	ld a, PAL_PLAYER_UI
 
 	ld [hli], a ; attributes
 	dec c

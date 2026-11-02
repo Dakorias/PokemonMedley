@@ -8,6 +8,7 @@ InitCrystalData:
 	ld [wd476], a
 	ld [wd477], a
 	ld [wd478], a
+	ld [wPlayerColor], a
 	ld [wd002], a
 	ld [wd003], a
 	ld a, [wd479]

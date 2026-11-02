@@ -697,6 +697,14 @@ GetEnemyFrontpicPalettePointer:
 GetPlayerOrMonPalettePointer:
 	and a
 	jp nz, GetMonNormalOrShinyPalettePointer
+	; fallthrough
+
+GetPlayerPalettePointer:
+; The player's pic palette: the chosen skin and color, or the original one before any choice.
+; Preserves bc and de.
+	ld a, [wPlayerColor]
+	and a
+	jp nz, GetColorPairPalettePointer
 	ld a, [wPlayerSpriteSetupFlags]
 	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
 	jr nz, .male
@@ -710,18 +718,400 @@ GetPlayerOrMonPalettePointer:
 	ld hl, PlayerPalette
 	ret
 
+GetColorPairPalettePointer::
+; in: a = skin << 4 | color, where 0 in either half means the default
+; out: hl = wColorPairPalette, a palette of the skin followed by the color
+; Preserves bc and de.
+	push bc
+	push de
+	ld b, a
+	swap a
+	and $f
+	jr z, .default_skin
+	cp NUM_SKINS + 1
+	jr c, .got_skin
+.default_skin
+	ld a, SKIN_TONE_3
+.got_skin
+	ld hl, SkinColors - PAL_COLOR_SIZE
+	call .GetColor
+	ld hl, wColorPairPalette
+	ld [hl], e
+	inc hl
+	ld [hl], d
+	ld a, b
+	and $f
+	jr z, .default_color
+	cp NUM_COLORS + 1
+	jr c, .got_color
+.default_color
+	ld a, COLOR_RED
+.got_color
+	ld hl, RegularColors - PAL_COLOR_SIZE
+	call .GetColor
+	ld hl, wColorPairPalette + PAL_COLOR_SIZE
+	ld [hl], e
+	inc hl
+	ld [hl], d
+	ld hl, wColorPairPalette
+	pop de
+	pop bc
+	ret
+
+.GetColor:
+; a = entry number counting from 1, hl = the table's start minus one entry
+; returns the color in de
+	ld e, a
+	ld d, 0
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ret
+
+LoadIntroPlayerPalette::
+; Shows the player's pic and menu icons in their chosen skin and color.
+	call CheckCGB
+	jr nz, .cgb
+	ld a, %11100100
+	ldh [rBGP], a
+	ret
+.cgb
+	call GetPlayerPalettePointer
+	ld de, wBGPals1
+	call LoadPalette_White_Col1_Col2_Black
+	; fallthrough
+
+LoadPlayerObjectPalette::
+	call CheckCGB
+	ret z
+	call WritePlayerObjectPalette
+	call ApplyPals
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+	ret
+
+WritePlayerObjectPalette::
+; Puts the player's skin and color in the object palette that menu icons are drawn with.
+	call CheckCGB
+	ret z
+	call GetPlayerPalettePointer
+	ld de, wOBPals1 palette PAL_PLAYER_UI
+	jp LoadPalette_White_Col1_Col2_Black
+
+GetObjectColorOverride:
+; in: bc = map object
+; out: a = the skin << 4 | color it was given, 0 for neither
+; Preserves bc and de.
+	ld a, b
+	cp HIGH(wMapObjects)
+	jr nz, .npc
+	ld a, c
+	cp LOW(wMapObjects)
+	jr nz, .npc
+	ld a, [wPlayerColor]
+	ret
+
+.npc
+	push hl
+	ld hl, MAPOBJECT_COLORS
+	add hl, bc
+	ld a, [hl]
+	pop hl
+	ret
+
+GetObjectColor:
+; in: bc = map object
+; out: a = its COLOR_*, or FIXED_COLOR_* for objects with a fixed palette
+; The object's own color wins, then the one in its object_event, then its sprite's.
+; Preserves bc and de.
+	push hl
+	call GetObjectColorOverride
+	and $0f
+	jr nz, .done
+	ld hl, MAPOBJECT_PALETTE
+	add hl, bc
+	ld a, [hl]
+	swap a
+	and $0f
+	jr nz, .done
+	ld hl, MAPOBJECT_SPRITE
+	add hl, bc
+	ld a, [hl]
+	call GetSpriteColor
+	and a
+	jr nz, .done
+	ld a, COLOR_RED ; Pokemon sprites
+.done
+	pop hl
+	ret
+
+GetObjectColorPair:
+; in: bc = map object
+; out: a = skin << 4 | color, or 0 if the object has a fixed palette
+; Preserves bc and de.
+	push de
+	push hl
+	call GetObjectColor
+	cp FIXED_COLOR_TREE
+	jr nc, .fixed
+	ld e, a
+	call GetObjectColorOverride
+	and $f0
+	jr nz, .got_skin
+	ld a, SKIN_TONE_3 << 4
+.got_skin
+	or e
+	jr .done
+
+.fixed
+	xor a
+.done
+	pop hl
+	pop de
+	ret
+
+BuildObjectColorSlots:
+; Gives every distinct skin and color pair on the map an object palette that no other object uses.
+; The player comes first, so they keep a palette on every map.
+	push bc
+	push de
+	push hl
+	ld hl, wColorSlotPairs
+	ld bc, NUM_COLOR_SLOTS
+	xor a
+	call ByteFill
+; the player always keeps PAL_PLAYER_UI, which the player object's palette index points to
+	ld bc, wMapObjects
+	call GetObjectColorPair
+	ld [wColorSlotPairs + PAL_PLAYER_UI], a
+	ld bc, wMapObjects
+	ld d, NUM_OBJECTS
+.assign_loop
+	ld hl, MAPOBJECT_SPRITE
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .next_assign
+	call GetObjectColorPair
+	and a
+	jr z, .next_assign
+	ld e, a
+	call .Assign
+.next_assign
+	ld hl, MAPOBJECT_LENGTH
+	add hl, bc
+	ld b, h
+	ld c, l
+	dec d
+	jr nz, .assign_loop
+	pop hl
+	pop de
+	pop bc
+	ret
+
+.Assign:
+; e = pair: reuse the palette that already has it, otherwise take the first free one.
+; An object left without a palette shows in the first one.
+	push bc
+	ld hl, wColorSlotPairs
+	ld b, NUM_COLOR_SLOTS
+.find_existing
+	ld a, [hli]
+	cp e
+	jr z, .assigned
+	dec b
+	jr nz, .find_existing
+	ld hl, ColorSlotOrder
+	ld b, NUM_COLOR_SLOTS
+.find_free
+	ld a, [hli]
+	add LOW(wColorSlotPairs)
+	ld c, a
+	ld a, HIGH(wColorSlotPairs)
+	adc 0
+	push hl
+	ld h, a
+	ld l, c
+	ld a, [hl]
+	and a
+	jr z, .claim
+	pop hl
+	dec b
+	jr nz, .find_free
+	jr .assigned
+
+.claim
+	ld [hl], e
+	pop hl
+.assigned
+	pop bc
+	ret
+
+GetObjectColorSlot::
+; in: bc = map object
+; out: a = the object palette it is drawn with
+; Preserves bc and de.
+	push bc
+	push de
+	push hl
+	call GetObjectColorPair
+	and a
+	jr z, .fixed
+	ld d, a
+	call BuildObjectColorSlots
+	ld hl, wColorSlotPairs
+	ld b, 0
+.find
+	ld a, [hli]
+	cp d
+	jr z, .found
+	inc b
+	ld a, b
+	cp NUM_COLOR_SLOTS
+	jr c, .find
+	xor a
+	jr .done
+
+.fixed
+	call GetObjectColor
+	sub FIXED_COLOR_TREE - PAL_OW_TREE
+	jr .done
+
+.found
+	ld a, b
+.done
+	pop hl
+	pop de
+	pop bc
+	ret
+
+AssignMapObjectColors::
+; Gives the objects of the map being loaded the skins and colors listed in ObjectColorOverrides.
+	ld hl, wMap1Object + MAPOBJECT_COLORS
+	ld bc, MAPOBJECT_LENGTH
+	ld d, NUM_OBJECTS - 1
+	xor a
+.clear
+	ld [hl], a
+	add hl, bc
+	dec d
+	jr nz, .clear
+	ld hl, ObjectColorOverrides
+.next
+	ld a, [hli]
+	cp -1
+	ret z
+	ld b, a ; map group
+	ld a, [hli]
+	ld c, a ; map number
+	ld a, [hli]
+	ld d, a ; object
+	ld e, [hl] ; skin and color
+	inc hl
+	ld a, [wMapGroup]
+	cp b
+	jr nz, .next
+	ld a, [wMapNumber]
+	cp c
+	jr nz, .next
+	ld a, d
+	and a
+	jr z, .next
+	cp NUM_OBJECTS
+	jr nc, .next
+	push hl
+	swap a ; times MAPOBJECT_LENGTH
+	ld c, a
+	ld b, 0
+	ld hl, wMapObjects + MAPOBJECT_COLORS
+	add hl, bc
+	ld [hl], e
+	pop hl
+	jr .next
+
+ComposeObjectPalettes:
+; Writes the skin and color of every assigned object palette into wOBPals1.
+	call BuildObjectColorSlots
+	ld c, 0
+.loop
+	ld hl, wColorSlotPairs
+	ld b, 0
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .next
+	cp $ff
+	jr z, .next
+	call GetColorPairPalettePointer
+	ld a, c
+	add a
+	add a
+	add a
+	ld e, a
+	ld d, 0
+	push hl
+	ld hl, wOBPals1
+	add hl, de
+	ld d, h
+	ld e, l
+	pop hl
+	push bc
+	call LoadPalette_White_Col1_Col2_Black
+	pop bc
+.next
+	inc c
+	ld a, c
+	cp NUM_COLOR_SLOTS
+	jr c, .loop
+	ret
+
 GetFrontpicPalettePointer:
 	and a
 	jp nz, GetMonNormalOrShinyPalettePointer
 	ld a, [wTrainerClass]
 
 GetTrainerPalettePointer:
+; Preserves de.
+	cp CHRIS
+	jr z, .player
+	cp KRIS
+	jr nz, .not_player
+.player
 	ld l, a
+	ld a, [wPlayerColor]
+	and a
+	jp nz, GetColorPairPalettePointer
+	ld a, l
+.not_player
+	push bc
+	ld b, a
+	ld hl, TrainerColorOverrides
+.search
+	ld a, [hli]
+	cp -1
+	jr z, .no_override
+	cp b
+	jr z, .override
+	inc hl
+	jr .search
+
+.override
+	ld a, [hl]
+	pop bc
+	jp GetColorPairPalettePointer
+
+.no_override
+	ld l, b
 	ld h, 0
 	add hl, hl
 	add hl, hl
-	ld bc, TrainerPalettes
-	add hl, bc
+	push de
+	ld de, TrainerPalettes
+	add hl, de
+	pop de
+	pop bc
 	ret
 
 GetMonPalettePointer:
@@ -1205,6 +1595,10 @@ INCLUDE "gfx/battle/exp_bar.pal"
 
 INCLUDE "data/pokemon/palettes.asm"
 
+INCLUDE "data/colors.asm"
+
+INCLUDE "data/maps/object_colors.asm"
+
 INCLUDE "data/trainers/palettes.asm"
 
 LoadMapPals:
@@ -1279,6 +1673,7 @@ LoadMapPals:
 	call FarCopyWRAM
 
 	farcall LoadSpecialNPCPalette
+	call ComposeObjectPalettes
 
 	ld a, [wEnvironment]
 	cp TOWN

@@ -142,4 +142,4 @@ MountainGym_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  4,  4, SPRITE_KENJI, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, KenjiTalkToScript, -1
+	object_event  4,  4, SPRITE_KENJI, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_BROWN, OBJECTTYPE_SCRIPT, 0, KenjiTalkToScript, -1

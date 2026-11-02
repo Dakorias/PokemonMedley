@@ -743,4 +743,4 @@ BattleTower1F_MapEvents:
 	bg_event  6,  6, BGEVENT_READ, BattleTower1FRulesSign
 
 	def_object_events
-	object_event  7,  6, SPRITE_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, BattleTower1FReceptionistScript, -1
+	object_event  7,  6, SPRITE_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, BattleTower1FReceptionistScript, -1

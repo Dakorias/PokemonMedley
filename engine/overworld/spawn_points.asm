@@ -28,6 +28,9 @@ EnterMapSpawnPoint:
 
 IsSpawnPoint:
 ; Checks if the map loaded in de is a spawn point.  Returns carry if it's a spawn point.
+	ld a, d
+	and a
+	jr z, .nope
 	ld hl, SpawnPoints
 	ld c, 0
 .loop

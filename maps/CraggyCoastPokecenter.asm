@@ -69,6 +69,6 @@ CraggyCoastPokecenter_MapEvents:
 	bg_event 1,  1, BGEVENT_READ, CraggyCoastPCBookshelfScript
 
 	def_object_events
-	object_event  6,  1, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CraggyCoastPCNurseScript, -1
-	object_event  3,  4, SPRITE_POKEFAN_M, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CraggyCoastPCHikerScript, -1
-	object_event  12, 5, SPRITE_LASS, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CraggyCoastPCLassScript, -1
+	object_event  6,  1, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, CraggyCoastPCNurseScript, -1
+	object_event  3,  4, SPRITE_POKEFAN_M, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_BROWN, OBJECTTYPE_SCRIPT, 0, CraggyCoastPCHikerScript, -1
+	object_event  12, 5, SPRITE_LASS, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, COLOR_RED, OBJECTTYPE_SCRIPT, 0, CraggyCoastPCLassScript, -1

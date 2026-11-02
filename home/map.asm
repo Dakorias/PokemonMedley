@@ -582,6 +582,12 @@ ReadObjectEvents::
 	ld a, [wCurMapObjectEventCount]
 	call CopyMapObjectEvents
 
+	push hl
+	push de
+	farcall AssignMapObjectColors
+	pop de
+	pop hl
+
 ; get NUM_OBJECTS - [wCurMapObjectEventCount]
 ; BUG: ReadObjectEvents overflows into wObjectMasks (see docs/bugs_and_glitches.md)
 	ld a, [wCurMapObjectEventCount]

@@ -283,12 +283,12 @@ _DoesSpriteHaveFacings::
 	and a
 	ret
 
-_GetSpritePalette::
+_GetSpriteColor::
 	ld a, c
 	call GetMonSprite
 	jr c, .is_pokemon
 
-	ld hl, OverworldSprites + SPRITEDATA_PALETTE
+	ld hl, OverworldSprites + SPRITEDATA_COLOR
 	dec a
 	ld c, a
 	ld b, 0

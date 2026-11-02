@@ -53,6 +53,7 @@ DoSpriteAnimFrame:
 	dw SpriteAnimFunc_PcQuick
 	dw SpriteAnimFunc_PcMode
 	dw SpriteAnimFunc_PcPack
+	dw SpriteAnimFunc_PlayerColor
 	assert_table_length NUM_SPRITE_ANIM_FUNCS
 
 SpriteAnimFunc_Null:
@@ -1035,4 +1036,7 @@ SpriteAnimFunc_PcPack:
 	ld hl, SPRITEANIMSTRUCT_YOFFSET
 	add hl, bc
 	ld [hl], a
+	ret
+
+SpriteAnimFunc_PlayerColor:
 	ret

@@ -25,4 +25,4 @@ HeraldHouse_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  3, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, HeraldHouseCoolTrainerFScript, EVENT_BEAT_ROCKET_THEIVES
+	object_event  3,  3, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, HeraldHouseCoolTrainerFScript, EVENT_BEAT_ROCKET_THEIVES

@@ -816,6 +816,13 @@ StandingTileFrame:
 
 AnimateWhirlpoolTile:
 ; Input de points to the destination in VRAM, then the source tile frames
+	ld a, [wMapGroup]
+	cp MAPGROUP_HERALD_COVE
+	jr nz, .animate
+	ld a, [wMapNumber]
+	cp MAP_HERALD_COVE
+	ret z
+.animate
 
 ; Save the stack pointer in bc for WriteTile to restore
 	ld hl, sp+0

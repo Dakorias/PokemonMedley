@@ -66,8 +66,8 @@ RegistrationCenterOfficerScript:
 	waitbutton
 	closetext
 	setevent EVENT_MET_ADAM_VOSS_AT_REGISTRATION
-	setscene SCENE_HERALD_ROUTE_REGISTRATION
-	setscene SCENE_HERALD_LAB_POKEDEX
+	setmapscene HERALD_ROUTE, SCENE_HERALD_ROUTE_REGISTRATION
+	setmapscene HERALD_LAB, SCENE_HERALD_LAB_POKEDEX
 	end
 
 .No
@@ -252,7 +252,7 @@ RegistrationCenter_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  4,  2, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterOfficerScript, -1
-	object_event  7,  6, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterCooltrainerFScript, -1
-	object_event  1,  5, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterSailorScript, -1
-	object_event  4, -3, SPRITE_ADAM_VOSS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MET_ADAM_VOSS_AT_REGISTRATION
+	object_event  4,  2, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterOfficerScript, -1
+	object_event  7,  6, SPRITE_COOLTRAINER_F, SPRITEMOVEDATA_WANDER, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterCooltrainerFScript, -1
+	object_event  1,  5, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, RegistrationCenterSailorScript, -1
+	object_event  4, -3, SPRITE_ADAM_VOSS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, COLOR_BROWN, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_MET_ADAM_VOSS_AT_REGISTRATION

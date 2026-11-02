@@ -31,6 +31,13 @@ NamingScreen:
 	ldh [hInMenu], a
 	call .SetUpNamingScreen
 	call DelayFrame
+	ldh a, [hCGB]
+	and a
+	jr z, .loop
+	ld a, [wNamingScreenType]
+	cp NAME_PLAYER
+	jr nz, .loop
+	farcall LoadPlayerObjectPalette
 .loop
 	call NamingScreenJoypadLoop
 	jr nc, .loop
@@ -224,6 +231,13 @@ NamingScreen:
 	ld [hli], a
 	ld [hl], a
 	pop de
+	ld a, [wNamingScreenType]
+	cp NAME_PLAYER
+	jr nz, .not_player
+	ld b, SPRITE_ANIM_OBJ_PLAYER_COLOR_RED
+	jr .init_sprite
+
+.not_player
 	ld b, SPRITE_ANIM_OBJ_RED_WALK
 	ld a, d
 	cp HIGH(KrisSpriteGFX)
@@ -233,6 +247,7 @@ NamingScreen:
 	jr nz, .not_kris
 	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
 .not_kris
+.init_sprite
 	ld a, b
 	depixel 4, 4, 4, 0
 	call InitSpriteAnimStruct

@@ -38,4 +38,4 @@ CraggyCoastHouse2_MapEvents:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  3, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CraggyCoastHouse2SailorScript, -1
+	object_event  3,  3, SPRITE_SAILOR, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, COLOR_BLUE, OBJECTTYPE_SCRIPT, 0, CraggyCoastHouse2SailorScript, -1

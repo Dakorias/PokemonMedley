@@ -95,7 +95,8 @@ DEF MAPOBJECT_TYPE             rb ; 8
 DEF MAPOBJECT_SIGHT_RANGE      rb ; 9
 DEF MAPOBJECT_SCRIPT_POINTER   rw ; a
 DEF MAPOBJECT_EVENT_FLAG       rw ; c
-                               rb_skip 2
+DEF MAPOBJECT_COLORS           rb ; e, skin << 4 | color, filled in from data/maps/object_colors.asm
+                               rb_skip 1
 DEF MAPOBJECT_LENGTH EQU _RS
 DEF NUM_OBJECTS EQU 16
 DEF PLAYER_OBJECT EQU 0
