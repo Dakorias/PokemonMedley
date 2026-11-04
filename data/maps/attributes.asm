@@ -98,16 +98,26 @@ ENDM
 
 	map_attributes NewBarkTown, NEW_BARK_TOWN, $05, 0
 
-	map_attributes HeraldCove, HERALD_COVE, $35, WEST
+	map_attributes HeraldCove, HERALD_COVE, $35, WEST | EAST
 	connection west, HeraldRoute, HERALD_ROUTE, -3
+	connection east, HeraldCoveOcean, HERALD_COVE_OCEAN, -3
 
 	map_attributes HeraldRoute, HERALD_ROUTE, $35, NORTH | SOUTH | EAST
 	connection north, CraggyBeach, CRAGGY_BEACH, 13
 	connection south, HeraldBay, HERALD_BAY, 0
 	connection east, HeraldCove, HERALD_COVE, 3
 
-	map_attributes HeraldBay, HERALD_BAY, $35, NORTH
+	map_attributes HeraldBay, HERALD_BAY, $35, NORTH | EAST
 	connection north, HeraldRoute, HERALD_ROUTE, 0
+	connection east, HeraldBayOcean, HERALD_BAY_OCEAN, 0
+
+	map_attributes HeraldBayOcean, HERALD_BAY_OCEAN, $35, WEST | SOUTH
+	connection west, HeraldBay, HERALD_BAY, 0
+	connection south, ScorchTrail, SCORCH_TRAIL, 0
+
+	map_attributes HeraldCoveOcean, HERALD_COVE_OCEAN, $35, WEST | EAST
+	connection west, HeraldCove, HERALD_COVE, 3
+	connection east, TreelinePort, TREELINE_PORT, 0
 
 	map_attributes CraggyBeach, CRAGGY_BEACH, $35, NORTH | SOUTH
 	connection north, CraggyCoast, CRAGGY_COAST, 2
@@ -123,7 +133,8 @@ ENDM
 	map_attributes ScenicBluff, SCENIC_BLUFF, $35, SOUTH
 	connection south, CraggyCoast, CRAGGY_COAST, -5
 
-	map_attributes TreelinePort, TREELINE_PORT, $35, EAST
+	map_attributes TreelinePort, TREELINE_PORT, $35, WEST | EAST
+	connection west, HeraldCoveOcean, HERALD_COVE_OCEAN, 0
 	connection east, ForestPark, FOREST_PARK, -6
 	map_attributes TreelinePortInside, TREELINE_PORT_INSIDE, $00, 0
 	map_attributes ForestPark, FOREST_PARK, $05, NORTH | WEST | EAST
@@ -183,7 +194,8 @@ ENDM
 	map_attributes DuneCrossing, DUNE_CROSSING, $05, SOUTH
 	connection south, OasisTown, OASIS_TOWN, -6
 
-	map_attributes ScorchTrail, SCORCH_TRAIL, $05, EAST
+	map_attributes ScorchTrail, SCORCH_TRAIL, $05, EAST | NORTH
+	connection north, HeraldBayOcean, HERALD_BAY_OCEAN, 0
 	connection east, Sandhaven, SANDHAVEN, 0
 
 	map_attributes ArenaHarbor, ARENA_HARBOR, $35, EAST

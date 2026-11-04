@@ -289,4 +289,12 @@ SECTION "Map Blocks NSGate", ROMX
 NSGate_Blocks:
 	INCBIN "maps/NSGate.ablk"
 
+SECTION "Ocean Map Blocks", ROMX
+
+HeraldBayOcean_Blocks:
+	INCBIN "maps/HeraldBayOcean.ablk"
+
+HeraldCoveOcean_Blocks:
+	INCBIN "maps/HeraldCoveOcean.ablk"
+
 ENDSECTION

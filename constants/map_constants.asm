@@ -80,6 +80,8 @@ ENDM
 	map_const CRAGGY_BEACH,									14, 40 ; 14
 	map_const RUGGED_CLIFF_GROTTO,							12, 11 ; 15
 	map_const FIRST_GYM_BEACH, 16, 16 ; 16
+	map_const HERALD_BAY_OCEAN, 16, 14
+	map_const HERALD_COVE_OCEAN, 20, 18
 	endgroup
 
 	newgroup CRAGGY_COAST																					; 6
