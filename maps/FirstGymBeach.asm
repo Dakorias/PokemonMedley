@@ -118,11 +118,12 @@ FirstGymBeach_MapScripts:
 		takeitem EDWARD_COIN
 		readvar VAR_BADGES
 	.FightDone:
+		applymovement FIRST_GYM_EDWARD, FirstGymEdwardWalksBackToPlayer
 		writetext FirstGymEdwardBeatenText
 		waitbutton
-		closetext
-		applymovement FIRST_GYM_EDWARD, FirstGymEdwardWalksBackToPlayer
 		verbosegiveitem TM_TAUNT
+		waitbutton
+		closetext
 		setevent EVENT_GOT_TM51_TAUNT
 	.SpeechAfterTM:
 		opentext
@@ -165,18 +166,19 @@ FirstGymBeach_MapScripts:
 		moveobject FIRST_GYM_BLAIRE, 23, 12
 		appear FIRST_GYM_BLAIRE
 		applymovement FIRST_GYM_BLAIRE, FirstGymBlaireWalksToPlayer
+		turnobject PLAYER, LEFT
 		pause 15
 		opentext
 		writetext FirstGymBlaireChallengesPlayer
 		waitbutton
 		closetext
 		checkevent EVENT_GOT_TRAPINCH_FROM_OAK
-		iftrue .Aron
+		iftrue .Togepi
 		checkevent EVENT_GOT_TOGEPI_FROM_OAK
-		iftrue .Trapinch
+		iftrue .Aron
 		winlosstext FirstGymBlaireWinText, 0
 		setlasttalked FIRST_GYM_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_TOGEPI
+		loadtrainer BLAIRE, BLAIRE_2_TRAPINCH
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
@@ -187,10 +189,10 @@ FirstGymBeach_MapScripts:
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
-	.Trapinch:
+	.Togepi:
 		winlosstext FirstGymBlaireWinText, 0
 		setlasttalked FIRST_GYM_BLAIRE
-		loadtrainer BLAIRE, BLAIRE_2_TRAPINCH
+		loadtrainer BLAIRE, BLAIRE_2_TOGEPI
 		startbattle
 		reloadmapafterbattle
 		sjump .AfterBlaireBattle
@@ -454,12 +456,12 @@ FirstGymBeach_MapScripts:
 
 		FirstGymPercyChallengesPlayer:
 			text "Hey <PLAYER>! I"
-			line "caught a new #MON,"
-			cont "and I want to look"
-			para "up there for the"
-			line "COIN, but first,"
-			cont "I need to battle"
-			cont "you!"
+			line "caught a new"
+			cont "#MON! I want "
+			para "to look up there"
+			line "for the COIN, but"
+			cont "first, I need to"
+			cont "battle you!"
 			done
 			
 		FirstGymPercyWinText:
@@ -559,14 +561,14 @@ FirstGymBeach_MapScripts:
 			line "long way in it, I"
 			cont "feel it."
 
-			para "Here, take this too."
+			para "Take this too!"
 			done
 
 		FirstGymEdwardFightOverText:
 			text "That TM is TAUNT."
 			line "It makes foes so"
 			cont "mad they won't use"
-			cont "non-damaging moves."
+			cont "status moves."
 			para "Let's head back to"
 			line "the island. Come"
 			cont "with me."

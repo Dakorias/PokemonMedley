@@ -655,108 +655,75 @@ _CGB_UnownPuzzle:
 	ret
 
 _CGB_TrainerCard:
+; BG palettes: 0 gray, 1 card color, 2 accent, 3 player portrait.
+; The card color and accent follow the star count, the lower half stays gray.
 	ld de, wBGPals1
-	xor a ; CHRIS
-	call GetTrainerPalettePointer
+	ld a, PREDEFPAL_TRAINER_CARD_GRAY
+	call GetPredefPal
+	call LoadHLPaletteIntoDE
+	call .GetStarCount
+	add PREDEFPAL_TRAINER_CARD_GREEN
+	call GetPredefPal
+	call LoadHLPaletteIntoDE
+	call .GetStarCount
+	add PREDEFPAL_TRAINER_CARD_GREEN_ACCENT
+	call GetPredefPal
+	call LoadHLPaletteIntoDE
+	call GetPlayerPalettePointer
 	call LoadPalette_White_Col1_Col2_Black
-	ld a, EDWARD ; KRIS
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, KENJI
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, BUGSY
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, MORTY
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, CHUCK
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, JASMINE
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
-	ld a, PRYCE
-	call GetTrainerPalettePointer
-	call LoadPalette_White_Col1_Col2_Black
+	ld de, wBGPals1 palette 4
+	ld a, PREDEFPAL_TRAINER_CARD_GOLD_ACCENT
+	call GetPredefPal
+	call LoadHLPaletteIntoDE
+	ld de, wOBPals1
 	ld a, PREDEFPAL_CGB_BADGE
 	call GetPredefPal
 	call LoadHLPaletteIntoDE
 
-	; fill screen with opposite-gender palette for the card border
+	call WipeAttrmap
 	hlcoord 0, 0, wAttrmap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
-	ld a, [wPlayerGender]
-	and a
-	ld a, $1 ; kris
-	jr z, .got_gender
-	ld a, $0 ; chris
-.got_gender
-	call ByteFill
-	; fill trainer sprite area with same-gender palette
-	hlcoord 14, 1, wAttrmap
-	lb bc, 7, 5
-	ld a, [wPlayerGender]
-	and a
-	ld a, $0 ; chris
-	jr z, .got_gender2
-	ld a, $1 ; kris
-.got_gender2
-	call FillBoxCGB
-	; top-right corner still uses the border's palette
-	hlcoord 18, 1, wAttrmap
-	ld [hl], $1
-	hlcoord 2, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $1 ; falkner
-	call FillBoxCGB
-	hlcoord 6, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $2 ; bugsy
-	call FillBoxCGB
-	hlcoord 10, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $3 ; whitney
-	call FillBoxCGB
-	hlcoord 14, 11, wAttrmap
-	lb bc, 2, 4
-	ld a, $4 ; morty
-	call FillBoxCGB
-	hlcoord 2, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $5 ; chuck
-	call FillBoxCGB
-	hlcoord 6, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $6 ; jasmine
-	call FillBoxCGB
-	hlcoord 10, 14, wAttrmap
-	lb bc, 2, 4
-	ld a, $7 ; pryce
-	call FillBoxCGB
-	; clair uses kris's palette
-	ld a, [wPlayerGender]
-	and a
-	push af
-	jr z, .got_gender3
-	hlcoord 14, 14, wAttrmap
-	lb bc, 2, 4
+	lb bc, 10, SCREEN_WIDTH
 	ld a, $1
 	call FillBoxCGB
-.got_gender3
-	pop af
-	ld c, $0
-	jr nz, .got_gender4
-	inc c
-.got_gender4
-	ld a, c
-	hlcoord 18, 1, wAttrmap
-	ld [hl], a
+	hlcoord 0, 0, wAttrmap
+	lb bc, 1, SCREEN_WIDTH
+	ld a, $2
+	call FillBoxCGB
+	hlcoord 0, 9, wAttrmap
+	lb bc, 1, SCREEN_WIDTH
+	ld a, $2
+	call FillBoxCGB
+	hlcoord 0, 1, wAttrmap
+	lb bc, 8, 1
+	ld a, $2
+	call FillBoxCGB
+	hlcoord 19, 1, wAttrmap
+	lb bc, 8, 1
+	ld a, $2
+	call FillBoxCGB
+	hlcoord 0, 1, wAttrmap
+	lb bc, 1, SCREEN_WIDTH
+	ld a, $1
+	call FillBoxCGB
+	hlcoord 14, 1, wAttrmap
+	lb bc, 1, 5
+	ld a, 4
+	call FillBoxCGB
+	hlcoord 14, 2, wAttrmap
+	lb bc, 4, 5
+	ld a, $3
+	call FillBoxCGB
 	call ApplyAttrmap
 	call ApplyPals
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
+	ret
+
+.GetStarCount:
+	ld a, [wTrainerCardBadgeTileID]
+	cp 6
+	ret c
+	ld a, 5
 	ret
 
 _CGB_MoveList:

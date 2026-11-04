@@ -1,6 +1,6 @@
 	db 0 ; 176
 
-	db  55,  40,  85,  40,  80, 105
+	db  75,  40,  85,  50,  80, 105
 	evs  0,   0,   0,   0,   0,   0
 	;   hp  atk  def  spd  sat  sdf
 
@@ -12,7 +12,7 @@
 	db 10 ; step cycles to hatch
 	INCBIN "gfx/pokemon/togetic/front.dimensions"
 	dw NULL, NULL ; unused (beta front/back pics)
-	db GROWTH_FAST ; growth rate
+	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_FLYING, EGG_FAIRY ; egg groups
 
 	; tm/hm learnset

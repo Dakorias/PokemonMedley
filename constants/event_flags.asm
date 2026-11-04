@@ -1116,6 +1116,12 @@
 	const EVENT_DARK_CAVE_VIOLET_ENTRANCE_DIRE_HIT
 	const EVENT_BATTLE_TOWER_OPEN_CIVILIANS
 	const EVENT_CAVENDISH_CALLED_AFTER_EDWARD
+; Trainer Card star awards. Set these when their achievement conditions are added.
+	const EVENT_TRAINER_CARD_STAR_1
+	const EVENT_TRAINER_CARD_STAR_2
+	const EVENT_TRAINER_CARD_STAR_3
+	const EVENT_TRAINER_CARD_STAR_4
+	const EVENT_TRAINER_CARD_STAR_5
 
 
 	const_next 2048

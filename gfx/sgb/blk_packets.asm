@@ -18,6 +18,13 @@ BlkPacket_AllPal0:
 	attr_blk_data %011, 0,0,0, 00,00, 19,17
 	ds 8, 0
 
+BlkPacket_TrainerCard:
+	attr_blk 3
+	attr_blk_data %111, 1,1,0, 00,00, 19,09
+	attr_blk_data %011, 2,2,1, 14,01, 18,01
+	attr_blk_data %011, 3,3,1, 14,02, 18,05
+	ds 12, 0
+
 BlkPacket_GSIntroJigglypuffPikachu:
 	attr_blk 1
 	attr_blk_data %111, 1,1,0, 00,10, 19,13

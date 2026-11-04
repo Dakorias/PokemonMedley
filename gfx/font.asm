@@ -39,4 +39,7 @@ INCBIN "gfx/font/space.2bpp"
 MobilePhoneTilesGFX:
 INCBIN "gfx/mobile/phone_tiles.2bpp"
 
+MapEntryFrameGFX:
+INCBIN "gfx/frames/map_entry_sign.2bpp"
+
 INCLUDE "gfx/footprints.asm"

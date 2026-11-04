@@ -1,3 +1,7 @@
+; Frames a new direction can be held before it moves instead of turning in place.
+DEF TURN_TAP_FRAMES EQU 2
+DEF TURN_TAP_MAGIC  EQU $a0
+
 DoPlayerMovement::
 	call .GetDPad
 	ld a, movement_step_sleep
@@ -94,6 +98,9 @@ DoPlayerMovement::
 	ld a, [wWalkingDirection]
 	cp STANDING
 	jr z, .Standing
+
+	call .FaceWalkingDirection
+	ret c
 
 ; Walking into an edge warp won't bump.
 	ld a, [wWalkingIntoEdgeWarp]
@@ -225,15 +232,15 @@ DoPlayerMovement::
 	ret
 
 .CheckTurning:
-; If the player is turning, change direction first. This also lets
-; the player change facing without moving by tapping a direction.
+; Tapping a direction you aren't facing turns in place; holding it moves.
+; wPlayerTurnTap: magic | held frames << 2 | direction
 
 	ld a, [wPlayerTurningDirection]
-	cp 0
-	jr nz, .not_turning
+	and a
+	jr nz, .clear_tap
 	ld a, [wWalkingDirection]
 	cp STANDING
-	jr z, .not_turning
+	jr z, .tap_released
 
 	ld e, a
 	ld a, [wPlayerDirection]
@@ -241,24 +248,88 @@ DoPlayerMovement::
 	rrca
 	maskbits NUM_DIRECTIONS
 	cp e
-	jr z, .not_turning
-	ld d, 0
-	ld hl, .forced_dpad
-	add hl, de
-	ld a, [hl]
-	ld b, a
-	ldh a, [hJoyPressed]
-	and b
-	jr z, .not_turning
+	jr z, .clear_tap
 
-	ld a, STEP_TURN
-	call .DoStep
-	ld a, PLAYERMOVEMENT_TURN
+	ld a, [wPlayerTurnTap]
+	ld b, a
+	and $f0
+	cp TURN_TAP_MAGIC
+	jr nz, .start_tap
+	ld a, b
+	and %11
+	cp e
+	jr nz, .start_tap
+	ld a, b
+	and %1100
+	cp (TURN_TAP_FRAMES + 1) << 2
+	jr nc, .not_turning
+	cp TURN_TAP_FRAMES << 2
+	jr c, .count_tap
+; Window over: mark it expired and let the step happen.
+	ld a, b
+	add 1 << 2
+	ld [wPlayerTurnTap], a
+	jr .not_turning
+
+.count_tap
+	ld a, b
+	add 1 << 2
+	jr .wait_tap
+
+.start_tap
+	ld a, e
+	or TURN_TAP_MAGIC
+.wait_tap
+	ld [wPlayerTurnTap], a
+	call .StandInPlace
+	ld a, PLAYERMOVEMENT_FINISH
 	scf
 	ret
 
+.tap_released
+	ld a, [wPlayerTurnTap]
+	ld b, a
+	and $f0
+	cp TURN_TAP_MAGIC
+	jr nz, .not_turning
+	xor a
+	ld [wPlayerTurnTap], a
+	ld a, b
+	and %1100
+	cp (TURN_TAP_FRAMES + 1) << 2
+	jr nc, .not_turning
+	ld a, b
+	and %11
+	or movement_turn_head
+	ld [wMovementAnimation], a
+	ld a, PLAYERMOVEMENT_FINISH
+	scf
+	ret
+
+.clear_tap
+	xor a
+	ld [wPlayerTurnTap], a
 .not_turning
 	xor a
+	ret
+
+.FaceWalkingDirection:
+; Turn instantly toward a blocked direction so A and warps use the right facing.
+	ld a, [wWalkingDirection]
+	ld e, a
+	ld a, [wPlayerDirection]
+	rrca
+	rrca
+	maskbits NUM_DIRECTIONS
+	cp e
+	ret z
+	ld a, e
+	or movement_turn_head
+	ld [wMovementAnimation], a
+	xor a
+	ld [wPlayerTurningDirection], a
+	ld a, PLAYERMOVEMENT_FINISH
+	scf
 	ret
 
 .TryStep:
@@ -345,11 +416,8 @@ DoPlayerMovement::
 	jr nz, .ensurewalk
 	ld a, [wPlayerState]
 	cp PLAYER_RUN
-	jr z, .run
-	call .StartRunning
-	ld a, PLAYERMOVEMENT_FINISH
-	scf
-	ret
+	call nz, .StartRunning
+	jr .run
 
 .ensurewalk
 	ld a, [wPlayerState]

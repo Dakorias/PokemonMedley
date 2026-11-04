@@ -11,27 +11,38 @@
 
 HeraldBay_MapScripts:
 	def_scene_scripts
+	scene_script CavendishAfterGymCallScene, SCENE_HERALD_BAY_AFTER_GYM_CALL
+	scene_script HeraldBayNoopScene, SCENE_HERALD_BAY_NOOP
 
 	def_callbacks
-	callback MAPCALLBACK_NEWMAP, CavendishAfterGymCallCallback
 	callback MAPCALLBACK_OBJECTS, EdwardBayCallback
 
-	CavendishAfterGymCallCallback:
+	CavendishAfterGymCallScene:
 	checkevent EVENT_BEAT_EDWARD
 	iffalse .Done
 	checkevent EVENT_CAVENDISH_CALLED_AFTER_EDWARD
 	iftrue .Done
+	checkflag ENGINE_PHONE_CARD
+	iffalse .Done
 	checkcellnum PHONE_CAVENDISH
 	iffalse .Done
-	setevent EVENT_CAVENDISH_CALLED_AFTER_EDWARD
+	setscene SCENE_HERALD_BAY_NOOP
+	sdefer CavendishAfterGymCallScript
+.Done:
+	end
+
+	HeraldBayNoopScene:
+	end
+
+	CavendishAfterGymCallScript:
 	phonecall CavendishPhoneCallerName
 	opentext
 	writetext CavendishAfterGymCallText
 	waitbutton
 	closetext
 	hangup
-	.Done:
-	endcallback
+	setevent EVENT_CAVENDISH_CALLED_AFTER_EDWARD
+	end
 
 	CavendishPhoneCallerName:
 		db "PROF. CAVENDISH@"

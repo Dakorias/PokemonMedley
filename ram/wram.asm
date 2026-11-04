@@ -1620,7 +1620,7 @@ wPackUsedItem:: db
 NEXTU
 ; trainer card badges
 wTrainerCardBadgeFrameCounter:: db
-wTrainerCardBadgeTileID:: db
+wTrainerCardBadgeTileID:: db ; Holds the earned card-star count until badges are drawn.
 wTrainerCardBadgeAttributes:: db
 
 NEXTU
@@ -2283,7 +2283,8 @@ wFacingDirection:: db
 wWalkingX:: db
 wWalkingY:: db
 wWalkingTileCollision:: db
-	ds 6
+	ds 5
+wPlayerTurnTap:: db
 wPlayerTurningDirection:: db
 
 NEXTU
@@ -3153,13 +3154,14 @@ wHeraldCoveSceneID::								db
 wHeraldLabSceneID::									db
 wHeraldPortSceneID::								db
 wHeraldRouteSceneID::								db
+wHeraldBaySceneID::									db
 wBeachRouteSceneID::								db
 wFirstGymBeachSceneID::									db
 wMountainGymSceneID::								db
 wMountainGymBreakSceneID::					db
 wMountainGymArenaSceneID::					db
 
-	ds 103
+	ds 102
 
 ; fight counts
 wJackFightCount::    db

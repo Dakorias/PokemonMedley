@@ -111,26 +111,108 @@ HeraldPort_MapScripts:
 		faceplayer
 		checkflag ENGINE_CRUSHBADGE
 		iffalse .NoBadge
-		opentext
-		writetext SailorTreelineTravelQuestionText
-		yesorno
-		iffalse .NoTrip
+		farscall PortTravelMenu
+		ifequal 1, .HeraldPort
+		ifequal 2, .TreelinePort
+		ifequal 3, .DryWash
+		ifequal 4, .TideWalk
+		ifequal 5, .GlacierPoint
+		farwritetext PortTravelDeclinedText
+		waitbutton
+		closetext
+		end
+
+	.HeraldPort
 		closetext
 		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
 		applymovement PLAYER, PlayerBoardsShipMovement
 		playsound SFX_ENTER_DOOR
+		special FadeOutToWhite
+		pause 15
+		warp HERALD_PORT, 9, 9
+		end
+
+	.TreelinePort
+		closetext
+		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
+		applymovement PLAYER, PlayerBoardsShipMovement
+		playsound SFX_ENTER_DOOR
+		special FadeOutToWhite
+		pause 15
 		warp TREELINE_PORT_INSIDE, 9, 9
+		end
+
+	.DryWash
+		closetext
+		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
+		applymovement PLAYER, PlayerBoardsShipMovement
+		playsound SFX_ENTER_DOOR
+		special FadeOutToWhite
+		pause 15
+		warp DRY_WASH, 20, 8
+		end
+
+	.TideWalk
+		closetext
+		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
+		applymovement PLAYER, PlayerBoardsShipMovement
+		playsound SFX_ENTER_DOOR
+		special FadeOutToWhite
+		pause 15
+		warp TIDE_WALK, 22, 8
+		end
+
+	.GlacierPoint
+		closetext
+		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
+		applymovement PLAYER, PlayerBoardsShipMovement
+		playsound SFX_ENTER_DOOR
+		special FadeOutToWhite
+		pause 15
+		warp GLACIER_POINT, 20, 18
+		end
+
 	.NoBadge
 		opentext
 		writetext SailorBlocksPortText
 		waitbutton
 		closetext
 		end
-	.NoTrip
-		writetext SailorTreelineTravelDeclinedText
-		waitbutton
-		closetext
+
+	PortTravelMenu:
+		opentext
+		writetext SailorPortTravelText
+		loadmenu .MenuHeader
+		verticalmenu
+		closewindow
 		end
+
+	.MenuHeader:
+		db MENU_BACKUP_TILES
+		menu_coords 1, 4, 18, TEXTBOX_Y - 1
+		dw .MenuData
+		db 1
+
+	.MenuData:
+		db STATICMENU_CURSOR
+		db 6
+		db "HERALD PORT@"
+		db "TREELINE PORT@"
+		db "DRY WASH@"
+		db "TIDE WALK@"
+		db "GLACIER POINT@"
+		db "CANCEL@"
+
+	SailorPortTravelText:
+		text "Which port should"
+		line "I take you to?"
+		done
+
+	PortTravelDeclinedText:
+		text "All right. Let me"
+		line "know when you're"
+		cont "ready to go."
+		done
 
 	Sailor2Script:
 		jumptextfaceplayer Sailor2Text

@@ -1,12 +1,11 @@
 	object_const_def
 
-WestForestPath_MapScripts:
+SnowdriftPass_MapScripts:
 	def_scene_scripts
 
 	def_callbacks
 
-
-WestForestPath_MapEvents:
+SnowdriftPass_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events

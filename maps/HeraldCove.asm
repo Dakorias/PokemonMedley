@@ -144,6 +144,7 @@ BerryMasterScript:
 	writetext BerryMasterAfterIntro
 	waitbutton
 	closetext
+	setevent EVENT_TRAINER_CARD_STAR_3
 	end
 
 BerryMasterSignScript:
@@ -157,6 +158,7 @@ BerryMasterSignScript:
 	writetext DoesntNoticeSignText
 	waitbutton
 	closetext
+	setevent EVENT_TRAINER_CARD_STAR_2
 	end
 
 RocketRobbedOakScript:
@@ -184,6 +186,9 @@ RocketRobbedOakScript:
 	writetext RocketShoutsAtPlayer
 	waitbutton
 	closetext
+	appear HERALD_COVE_ROCKET2
+	playsound SFX_ENTER_DOOR
+	pause 2
 	applymovement HERALD_COVE_ROCKET2, Rocket2RunsPastPlayer1
 	opentext
 	writetext RocketWeHaveToGo
@@ -222,12 +227,16 @@ RocketRobbedOakScript:
 	end
 
 HeraldCoveSailorScript:
+
 	jumptextfaceplayer HeraldCoveSailorText
+	setevent EVENT_TRAINER_CARD_STAR_1
 
 HeraldCoveSignScript:
+	setevent EVENT_TRAINER_CARD_STAR_4
 	jumptext HeraldCoveSignText
 
 HeraldLabSignScript:
+	setevent EVENT_TRAINER_CARD_STAR_5
 	jumptext HeraldLabSignText
 
 HeraldHouseSignScript:
@@ -597,7 +606,9 @@ HeraldHouseSignScript:
 		done
 
 		RocketShoutsText:
-		text "Alright, we got it! Let's get out of here!"
+		text "Alright, we got"
+		line "it! Let's get"
+		cont "out of here!"
 		done
 
 		RocketShoutsAtPlayer:

@@ -20,8 +20,22 @@ Landmarks:
 	landmark 52, 84, TreelinePortName
 	landmark 64, 80, ForestParkName
 	landmark 60, 64, NorthForestPathName
-	landmark 76, 68, WestForestPathName
+	landmark 76, 68, EastForestPathName
 	landmark 76, 52, MontaneTownName
+	landmark  67,  20, AshenPeakName
+	landmark  52,  20, CinderTrailName
+	landmark  36, 124, SandhavenName
+	landmark  68, 124, DryWashName
+	landmark  84, 124, OasisTownName
+	landmark 100, 108, DuneCrossingName
+	landmark  36, 116, ScorchTrailName
+	landmark 132, 124, ArenaHarborName
+	landmark 140, 124, TideWalkName
+	landmark 116,  36, FrostHollowName
+	landmark 100,  36, FrozenShoreName
+	landmark 148,  36, SnowdriftPassName
+	landmark 148,  76, IceRunName
+	landmark 124,  84, GlacierPointName
 
 	assert_table_length KANTO_LANDMARK
 	landmark  52, 108, PalletTownName
@@ -88,8 +102,22 @@ RuggedCliffName:     db "RUGGED¯CLIFF@"
 TreelinePortName:    db "TREELINE¯PORT@"
 ForestParkName:		 db "FOREST¯PARK@"
 NorthForestPathName: db "NORTH¯FOREST PATH@"
-WestForestPathName:	 db "WEST¯FOREST PATH@"
+EastForestPathName:	 db "EAST¯FOREST PATH@"
 MontaneTownName:	 db "MONTANE¯TOWN@"
+AshenPeakName:          db "ASHEN¯PEAK@"
+CinderTrailName:        db "CINDER¯TRAIL@"
+SandhavenName:          db "SANDHAVEN@"
+DryWashName:            db "DRY WASH@"
+OasisTownName:          db "OASIS¯TOWN@"
+DuneCrossingName:       db "DUNE¯CROSSING@"
+ScorchTrailName:        db "SCORCH¯TRAIL@"
+ArenaHarborName:        db "ARENA¯HARBOR@"
+TideWalkName:           db "TIDE WALK@"
+FrostHollowName:        db "FROST¯HOLLOW@"
+FrozenShoreName:        db "FROZEN¯SHORE@"
+SnowdriftPassName:      db "SNOWDRIFT¯PASS@"
+IceRunName:             db "ICE RUN@"
+GlacierPointName:       db "GLACIER¯POINT@"
 NewBarkTownName:     db "NEW BARK¯TOWN@"
 CherrygroveCityName: db "CHERRYGROVE¯CITY@"
 VioletCityName:      db "VIOLET CITY@"

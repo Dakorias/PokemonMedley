@@ -21,7 +21,6 @@ INCLUDE "maps/NewBarkTown.asm"
 INCLUDE "maps/HeraldCove.asm"
 INCLUDE "maps/HeraldLab.asm"
 INCLUDE "maps/HeraldPokecenter.asm"
-INCLUDE "maps/HeraldGym.asm"
 INCLUDE "maps/HeraldHouse.asm"
 INCLUDE "maps/CraggyBeach.asm"
 INCLUDE "maps/FirstGymBeach.asm"
@@ -69,7 +68,7 @@ INCLUDE "maps/TreelinePort.asm"
 INCLUDE "maps/TreelinePortInside.asm"
 INCLUDE "maps/ForestPark.asm"
 INCLUDE "maps/NorthForestPath.asm"
-INCLUDE "maps/WestForestPath.asm"
+INCLUDE "maps/EastForestPath.asm"
 INCLUDE "maps/MontaneTown.asm"
 
 SECTION "Map Scripts 7", ROMX
@@ -81,12 +80,47 @@ INCLUDE "maps/NSGate.asm"
 
 
 SECTION "Map Scripts 9", ROMX
+INCLUDE "maps/AshenPeak.asm"
+INCLUDE "maps/AshenPeakPokecenter.asm"
+INCLUDE "maps/AshenPeakHouse1.asm"
+INCLUDE "maps/AshenPeakHouse2.asm"
+INCLUDE "maps/CinderTrail.asm"
+INCLUDE "maps/MontaneNorthPath.asm"
+INCLUDE "maps/CinderSouthPath.asm"
+INCLUDE "maps/MontaneWestPath.asm"
 
 
 SECTION "Map Scripts 10", ROMX
+INCLUDE "maps/Sandhaven.asm"
+INCLUDE "maps/SandhavenPokecenter.asm"
+INCLUDE "maps/SandhavenHouse1.asm"
+INCLUDE "maps/SandhavenHouse2.asm"
+INCLUDE "maps/DryWash.asm"
+INCLUDE "maps/OasisTown.asm"
+INCLUDE "maps/OasisTownPokecenter.asm"
+INCLUDE "maps/OasisTownHouse1.asm"
+INCLUDE "maps/OasisTownHouse2.asm"
+INCLUDE "maps/DuneCrossing.asm"
+INCLUDE "maps/ScorchTrail.asm"
 
 
 SECTION "Map Scripts 11", ROMX
+INCLUDE "maps/ArenaHarbor.asm"
+INCLUDE "maps/ArenaHarborPokecenter.asm"
+INCLUDE "maps/ArenaHarborHouse1.asm"
+INCLUDE "maps/ArenaHarborHouse2.asm"
+INCLUDE "maps/TideWalk.asm"
+INCLUDE "maps/FrostHollow.asm"
+INCLUDE "maps/FrostHollowPokecenter.asm"
+INCLUDE "maps/FrostHollowHouse1.asm"
+INCLUDE "maps/FrostHollowHouse2.asm"
+INCLUDE "maps/FrozenShore.asm"
+INCLUDE "maps/SnowdriftPass.asm"
+INCLUDE "maps/IceRun.asm"
+INCLUDE "maps/GlacierPoint.asm"
+INCLUDE "maps/GlacierPointPokecenter.asm"
+INCLUDE "maps/GlacierPointHouse1.asm"
+INCLUDE "maps/GlacierPointHouse2.asm"
 
 
 SECTION "Map Scripts 12", ROMX

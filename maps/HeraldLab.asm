@@ -448,10 +448,10 @@ HeraldLab_MapScripts:
 		disappear HERALD_LAB_PERCY
 		moveobject HERALD_LAB_BLAIRE, 3, 9
 		moveobject HERALD_LAB_PERCY, 5, 9
-		turnobject HERALD_LAB_BLAIRE, UP
 		appear HERALD_LAB_BLAIRE
 		appear HERALD_LAB_PERCY
 		applymovement PLAYER, PlayerWalksToGetPokedex
+		turnobject HERALD_LAB_BLAIRE, UP
 		pause 6
 		turnobject HERALD_LAB_CAVENDISH, RIGHT
 		pause 6

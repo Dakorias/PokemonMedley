@@ -402,9 +402,35 @@ endr
 
 .SGB_Unused0D:
 .SGB_TrainerCard:
-	ld hl, PalPacket_Diploma
-	ld de, BlkPacket_AllPal0
+	ld a, [wTrainerCardBadgeTileID]
+	add a
+	ld b, a
+	ld a, [wPlayerGender]
+	add b
+	add a
+	ld c, a
+	ld b, 0
+	ld hl, .TrainerCardPaletteTable
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, BlkPacket_TrainerCard
 	ret
+
+.TrainerCardPaletteTable:
+	dw PalPacket_TrainerCardGreenChris
+	dw PalPacket_TrainerCardGreenKris
+	dw PalPacket_TrainerCardRedChris
+	dw PalPacket_TrainerCardRedKris
+	dw PalPacket_TrainerCardBlueChris
+	dw PalPacket_TrainerCardBlueKris
+	dw PalPacket_TrainerCardSilverChris
+	dw PalPacket_TrainerCardSilverKris
+	dw PalPacket_TrainerCardGoldChris
+	dw PalPacket_TrainerCardGoldKris
+	dw PalPacket_TrainerCardCrystalChris
+	dw PalPacket_TrainerCardCrystalKris
 
 .SGB_UnownPuzzle:
 	ld hl, PalPacket_UnownPuzzle

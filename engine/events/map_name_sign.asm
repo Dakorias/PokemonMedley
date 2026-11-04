@@ -114,7 +114,15 @@ PlaceMapNameSign::
 	ldh [hLCDCPointer], a
 	ret
 
+LoadMapNameSignGFX:
+	ld de, MapEntryFrameGFX
+	ld hl, vTiles2 tile MAP_NAME_SIGN_START
+	lb bc, BANK(MapEntryFrameGFX), 14
+	call Get2bpp
+	ret
+
 InitMapNameFrame:
+	call LoadMapNameSignGFX
 	hlcoord 0, 0
 	ld b, 2
 	ld c, 18

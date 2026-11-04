@@ -36,15 +36,15 @@ MountainGymArenaEscort:
 		iftrue .PercyGymFight
 		moveobject MOUNTAIN_GYM_ARENA_BLAIRE, 7, 5
 		appear MOUNTAIN_GYM_ARENA_BLAIRE
-		follow MOUNTAIN_GYM_KENJI, PLAYER
-		applymovement MOUNTAIN_GYM_KENJI, KenjiLeadsPlayerMovement
+		follow MOUNTAIN_GYM_ARENA_KENJI, PLAYER
+		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiLeadsPlayerMovement
 		stopfollow
 		turnobject MOUNTAIN_GYM_ARENA_KENJI, LEFT
 		opentext
 		writetext KenjiStayHereText
 		waitbutton
 		closetext
-		applymovement MOUNTAIN_GYM_KENJI, KenjiWalksToRefSpot
+		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiWalksToRefSpot
 		opentext
 		writetext Blaire2ndGymChallenge
 		waitbutton
@@ -101,10 +101,10 @@ MountainGymArenaEscort:
 	.PercyGymFight
 	moveobject MOUNTAIN_GYM_ARENA_PERCY, 7, 5
 	appear MOUNTAIN_GYM_ARENA_PERCY
-	follow MOUNTAIN_GYM_KENJI, PLAYER
+	follow MOUNTAIN_GYM_ARENA_KENJI, PLAYER
 	applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiLeadsPlayerMovement
 	stopfollow
-	turnobject MOUNTAIN_GYM_KENJI, LEFT
+	turnobject MOUNTAIN_GYM_ARENA_KENJI, LEFT
 	opentext
 	writetext KenjiStayHereText
 	waitbutton
@@ -166,7 +166,7 @@ MountainGymArenaEscort:
 	GymTournamentRound2Script:
 		moveobject MOUNTAIN_GYM_ARENA_BLACK_BELT1, 7, 5
 		appear MOUNTAIN_GYM_ARENA_BLACK_BELT1
-		follow MOUNTAIN_GYM_KENJI, PLAYER
+		follow MOUNTAIN_GYM_ARENA_KENJI, PLAYER
 		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiLeadsPlayerMovement
 		stopfollow
 		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiWalksToRefSpot
@@ -227,9 +227,9 @@ MountainGymArenaEscort:
 		moveobject MOUNTAIN_GYM_ARENA_HARRISON, 7, 5
 		appear MOUNTAIN_GYM_ARENA_HARRISON
 		follow MOUNTAIN_GYM_ARENA_KENJI, PLAYER
-		applymovement MOUNTAIN_GYM_KENJI, KenjiLeadsPlayerMovement
+		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiLeadsPlayerMovement
 		stopfollow
-		applymovement MOUNTAIN_GYM_KENJI, KenjiWalksToRefSpot
+		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiWalksToRefSpot
 		opentext
 		writetext Harrison2ndGymChallenge
 		waitbutton
@@ -261,7 +261,7 @@ MountainGymArenaEscort:
 		end
 
 	KenjiGymFightScript:
-		follow MOUNTAIN_GYM_KENJI, PLAYER
+		follow MOUNTAIN_GYM_ARENA_KENJI, PLAYER
 		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiLeadsPlayerMovement
 		stopfollow
 		applymovement MOUNTAIN_GYM_ARENA_KENJI, KenjiWalksToBattleSpot

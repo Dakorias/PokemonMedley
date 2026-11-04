@@ -69,7 +69,6 @@ ENDM
 	map_const HERALD_ROUTE,									30, 12 ; 2
 	map_const HERALD_LAB,							       	5,  7 ;  3
 	map_const HERALD_POKECENTER,				 			7,  4 ;  4
-	map_const HERALD_GYM,							       	5,  4 ;  5
 	map_const HERALD_HOUSE,									5,  4 ;  6
 	map_const HERALD_PORT,									8,  6 ;  7
 	map_const PLAYERS_HOUSE_1F,                             5,  4 ;  8
@@ -113,8 +112,52 @@ ENDM
 	map_const TREELINE_PORT_INSIDE,												  8,  6 ; 2
 	map_const FOREST_PARK,															   20, 20 ; 3
 	map_const NORTH_FOREST_PATH,													 10, 20 ; 1
-	map_const WEST_FOREST_PATH,														 10, 30 ; 1
+	map_const EAST_FOREST_PATH,														 10, 30 ; 1
 	map_const MONTANE_TOWN,													  		 15, 15 ; 1
+	map_const ASHEN_PEAK, 16, 14
+	map_const ASHEN_PEAK_POKECENTER, 7, 4
+	map_const ASHEN_PEAK_HOUSE1, 5, 4
+	map_const ASHEN_PEAK_HOUSE2, 5, 4
+	map_const CINDER_TRAIL, 20, 10
+	map_const MONTANE_NORTH_PATH, 20, 10
+	map_const CINDER_SOUTH_PATH, 10, 20
+	map_const MONTANE_WEST_PATH, 20, 10
 	endgroup
 
-DEF NUM_MAP_GROUPS EQU const_value ; 8
+	newgroup SOUTH_ISLAND
+	map_const SANDHAVEN, 18, 14
+	map_const SANDHAVEN_POKECENTER, 7, 4
+	map_const SANDHAVEN_HOUSE1, 5, 4
+	map_const SANDHAVEN_HOUSE2, 5, 4
+	map_const DRY_WASH, 22, 8
+	map_const OASIS_TOWN, 18, 14
+	map_const OASIS_TOWN_POKECENTER, 7, 4
+	map_const OASIS_TOWN_HOUSE1, 5, 4
+	map_const OASIS_TOWN_HOUSE2, 5, 4
+	map_const DUNE_CROSSING, 10, 18
+	map_const SCORCH_TRAIL, 10, 14
+	endgroup
+
+	newgroup TOURNAMENT_ISLAND
+	map_const ARENA_HARBOR, 20, 14
+	map_const ARENA_HARBOR_POKECENTER, 7, 4
+	map_const ARENA_HARBOR_HOUSE1, 5, 4
+	map_const ARENA_HARBOR_HOUSE2, 5, 4
+	map_const TIDE_WALK, 16, 8
+	endgroup
+
+	newgroup FRIGID_ISLAND
+	map_const FROST_HOLLOW, 18, 14
+	map_const FROST_HOLLOW_POKECENTER, 7, 4
+	map_const FROST_HOLLOW_HOUSE1, 5, 4
+	map_const FROST_HOLLOW_HOUSE2, 5, 4
+	map_const FROZEN_SHORE, 14, 8
+	map_const SNOWDRIFT_PASS, 14, 20
+	map_const ICE_RUN, 18, 8
+	map_const GLACIER_POINT, 18, 14
+	map_const GLACIER_POINT_POKECENTER, 7, 4
+	map_const GLACIER_POINT_HOUSE1, 5, 4
+	map_const GLACIER_POINT_HOUSE2, 5, 4
+	endgroup
+
+DEF NUM_MAP_GROUPS EQU const_value ; 11

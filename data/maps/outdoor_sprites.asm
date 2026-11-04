@@ -12,6 +12,9 @@ OutdoorSprites:
 	dw CraggyCoastGroupSprites
 	dw BerryForestGroupSprites
 	dw SecondIslandGroupSprites
+	dw SouthIslandGroupSprites
+	dw TournamentIslandGroupSprites
+	dw FrigidIslandGroupSprites
 	assert_table_length NUM_MAP_GROUPS
 
 CableClubGroupSprites:
@@ -138,4 +141,19 @@ SecondIslandGroupSprites:
 		db SPRITE_GRANNY
 		db SPRITE_BLUE
 		db SPRITE_FRUIT_TREE
+		db 0 ; end
+
+SouthIslandGroupSprites:
+	; island port sailor
+		db SPRITE_SAILOR
+		db 0 ; end
+
+TournamentIslandGroupSprites:
+	; island port sailor
+		db SPRITE_SAILOR
+		db 0 ; end
+
+FrigidIslandGroupSprites:
+	; island port sailor
+		db SPRITE_SAILOR
 		db 0 ; end

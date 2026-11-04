@@ -170,8 +170,8 @@ EvosAttacksPointers2::
 	dw ArticunoEvosAttacks
 	dw ZapdosEvosAttacks
 	dw MoltresEvosAttacks
-	dw RegirockEvosAttacks
 	dw RegiceEvosAttacks
+	dw RegirockEvosAttacks
 	dw RegisteelEvosAttacks
 	dw HeatranEvosAttacks
 	dw ManaphyEvosAttacks
@@ -1413,7 +1413,7 @@ GliscorEvosAttacks:
 	db 0 ; no more level-up moves
 
 TrapinchEvosAttacks:
-	dbbw EVOLVE_LEVEL, 30, VIBRAVA
+	dbbw EVOLVE_LEVEL, 18, VIBRAVA
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 4, LEER
@@ -1436,7 +1436,7 @@ TrapinchEvosAttacks:
 	db 0 ; no more level-up moves
 
 VibravaEvosAttacks:
-	dbbw EVOLVE_LEVEL, 45, FLYGON
+	dbbw EVOLVE_LEVEL, 40, FLYGON
 	db 0 ; no more evolutions
 	dbw 1, SONICBOOM
 	dbw 1, SAND_ATTACK
@@ -2715,7 +2715,7 @@ DragalgeEvosAttacks:
 	db 0 ; no more level-up moves
 
 AronEvosAttacks:
-	dbbw EVOLVE_LEVEL, 28, LAIRON
+	dbbw EVOLVE_LEVEL, 18, LAIRON
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, HARDEN
@@ -2735,7 +2735,7 @@ AronEvosAttacks:
 	db 0 ; no more level-up moves
 
 LaironEvosAttacks:
-	dbbw EVOLVE_LEVEL, 42, AGGRON
+	dbbw EVOLVE_LEVEL, 40, AGGRON
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, HARDEN
@@ -2908,10 +2908,11 @@ TogepiEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, POUND
 	dbw 1, GROWL
-	dbw 6, SWEET_KISS
-	dbw 8, FAIRY_WIND
-	dbw 11, CHARM
-	dbw 14, ENCORE
+	dbw 4, FAIRY_WIND
+	dbw 7, SWEET_KISS
+	dbw 9, CHARM
+	dbw 12, ENCORE
+	dbw 14, DRAIN_KISS
 	dbw 18, METRONOME
 	dbw 21, SAFEGUARD
 	dbw 25, SWIFT
@@ -2928,10 +2929,11 @@ TogeticEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, POUND
 	dbw 1, GROWL
-	dbw 6, SWEET_KISS
-	dbw 8, FAIRY_WIND
-	dbw 11, CHARM
-	dbw 14, ENCORE
+	dbw 4, FAIRY_WIND
+	dbw 7, SWEET_KISS
+	dbw 9, CHARM
+	dbw 12, ENCORE
+	dbw 14, DRAIN_KISS
 	dbw 18, METRONOME
 	dbw 21, SAFEGUARD
 	dbw 25, AIR_CUTTER
@@ -2939,7 +2941,7 @@ TogeticEvosAttacks:
 	dbw 32, LOVELY_KISS
 	dbw 35, DAZZLE_GLEAM
 	dbw 39, BATON_PASS
-	dbw 42, AIR_SLASH
+	dbw 42, TRI_ATTACK
 	dbw 46, SOFTBOILED
 	db 0 ; no more level-up moves
 
@@ -2948,10 +2950,11 @@ TogekissEvosAttacks:
 	dbw 1, EXTREMESPEED ; Relearner
 	dbw 1, POUND
 	dbw 1, GROWL
-	dbw 6, SWEET_KISS
-	dbw 8, FAIRY_WIND
-	dbw 11, CHARM
-	dbw 14, ENCORE
+	dbw 4, FAIRY_WIND
+	dbw 7, SWEET_KISS
+	dbw 9, CHARM
+	dbw 12, ENCORE
+	dbw 14, DRAIN_KISS
 	dbw 18, METRONOME
 	dbw 21, SAFEGUARD
 	dbw 25, AIR_CUTTER

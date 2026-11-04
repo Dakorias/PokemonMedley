@@ -49,9 +49,6 @@ EdwardsHouse_Blocks:
 HeraldLab_Blocks:
 	INCBIN "maps/HeraldLab.ablk"
 
-HeraldGym_Blocks:
-	INCBIN "maps/HeraldGym.ablk"
-
 RegistrationCenter_Blocks:
 	INCBIN "maps/RegistrationCenter.ablk"
 
@@ -174,11 +171,116 @@ ForestPark_Blocks:
 NorthForestPath_Blocks:
 	INCBIN "maps/NorthForestPath.ablk"
 
-WestForestPath_Blocks:
-	INCBIN "maps/WestForestPath.ablk"
+EastForestPath_Blocks:
+	INCBIN "maps/EastForestPath.ablk"
 
 MontaneTown_Blocks:
 	INCBIN "maps/MontaneTown.ablk"
+
+AshenPeak_Blocks:
+	INCBIN "maps/AshenPeak.ablk"
+
+AshenPeakPokecenter_Blocks:
+	INCBIN "maps/Pokecenter1F.ablk"
+
+AshenPeakHouse1_Blocks:
+	INCBIN "maps/House.ablk"
+
+AshenPeakHouse2_Blocks:
+	INCBIN "maps/House.ablk"
+
+CinderTrail_Blocks:
+	INCBIN "maps/CinderTrail.ablk"
+
+MontaneNorthPath_Blocks:
+	INCBIN "maps/MontaneNorthPath.ablk"
+
+CinderSouthPath_Blocks:
+	INCBIN "maps/CinderSouthPath.ablk"
+
+MontaneWestPath_Blocks:
+	INCBIN "maps/MontaneWestPath.ablk"
+
+Sandhaven_Blocks:
+	INCBIN "maps/Sandhaven.ablk"
+
+SandhavenPokecenter_Blocks:
+	INCBIN "maps/Pokecenter1F.ablk"
+
+SandhavenHouse1_Blocks:
+	INCBIN "maps/House.ablk"
+
+SandhavenHouse2_Blocks:
+	INCBIN "maps/House.ablk"
+
+DryWash_Blocks:
+	INCBIN "maps/DryWash.ablk"
+
+OasisTown_Blocks:
+	INCBIN "maps/OasisTown.ablk"
+
+OasisTownPokecenter_Blocks:
+	INCBIN "maps/Pokecenter1F.ablk"
+
+OasisTownHouse1_Blocks:
+	INCBIN "maps/House.ablk"
+
+OasisTownHouse2_Blocks:
+	INCBIN "maps/House.ablk"
+
+DuneCrossing_Blocks:
+	INCBIN "maps/DuneCrossing.ablk"
+
+ScorchTrail_Blocks:
+	INCBIN "maps/ScorchTrail.ablk"
+
+ArenaHarbor_Blocks:
+	INCBIN "maps/ArenaHarbor.ablk"
+
+ArenaHarborPokecenter_Blocks:
+	INCBIN "maps/Pokecenter1F.ablk"
+
+ArenaHarborHouse1_Blocks:
+	INCBIN "maps/House.ablk"
+
+ArenaHarborHouse2_Blocks:
+	INCBIN "maps/House.ablk"
+
+TideWalk_Blocks:
+	INCBIN "maps/TideWalk.ablk"
+
+FrostHollow_Blocks:
+	INCBIN "maps/FrostHollow.ablk"
+
+FrostHollowPokecenter_Blocks:
+	INCBIN "maps/Pokecenter1F.ablk"
+
+FrostHollowHouse1_Blocks:
+	INCBIN "maps/House.ablk"
+
+FrostHollowHouse2_Blocks:
+	INCBIN "maps/House.ablk"
+
+FrozenShore_Blocks:
+	INCBIN "maps/FrozenShore.ablk"
+
+SnowdriftPass_Blocks:
+	INCBIN "maps/SnowdriftPass.ablk"
+
+IceRun_Blocks:
+	INCBIN "maps/IceRun.ablk"
+
+GlacierPoint_Blocks:
+	INCBIN "maps/GlacierPoint.ablk"
+
+GlacierPointPokecenter_Blocks:
+	INCBIN "maps/Pokecenter1F.ablk"
+
+GlacierPointHouse1_Blocks:
+	INCBIN "maps/House.ablk"
+
+GlacierPointHouse2_Blocks:
+	INCBIN "maps/House.ablk"
 
 ENDSECTION
 

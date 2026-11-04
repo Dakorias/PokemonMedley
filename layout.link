@@ -256,24 +256,34 @@ ROMX $60
 	"Pokedex Entries 001-064"
 ROMX $61
 	"Map Scripts 14"
+	"Pics 22"
 ROMX $62
 	"Map Scripts 15"
+	"Pics 23"
 ROMX $63
 	"Map Scripts 16"
+	"Pics 24"
 ROMX $64
 	"Map Scripts 17"
+	"Pics 25"
 ROMX $65
 	"Map Scripts 18"
+	"Pics 26"
 ROMX $66
 	"Map Scripts 19"
+	"Pics 27"
 ROMX $67
 	"Map Scripts 20"
+	"Pics 28"
 ROMX $68
 	"Map Scripts 21"
+	"Pics 29"
 ROMX $69
 	"Map Scripts 22"
+	"Pics 30"
 ROMX $6a
 	"Map Scripts 23"
+	"Evolutions and Attacks 2"
 ROMX $6b
 	"Map Scripts 24"
 ROMX $6c
@@ -324,27 +334,6 @@ ROMX $7e
 ROMX $7f
 	org $7de0
 	"Stadium 2 Checksums"
-	
-ROMX $80
-	"Pics 22"
-ROMX $81
-	"Pics 23"
-ROMX $82
-	"Pics 24"
-ROMX $83
-	"Pics 25"
-ROMX $84
-	"Pics 26"
-ROMX $85
-	"Pics 27"
-ROMX $86
-	"Pics 28"
-ROMX $87
-	"Pics 29"
-ROMX $88
-	"Pics 30"
-ROMX $89
-	"Evolutions and Attacks 2"
 	
 WRAM0
 	"Stack"

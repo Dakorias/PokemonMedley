@@ -172,8 +172,8 @@ CraggyCoast_MapEvents:
 	db 0, 0 ; filler
 
 	def_warp_events
-	warp_event  5, 31, CRAGGY_BEACH, 1
-	warp_event  6, 31, CRAGGY_BEACH, 1
+	warp_event  5, 29, NS_GATE, 3
+	warp_event  6, 29, NS_GATE, 4
 	warp_event  7, 15, CRAGGY_COAST_POKECENTER, 1
 	warp_event  15, 17, CRAGGY_COAST_HOUSE1, 1
 	warp_event  11, 27, CRAGGY_COAST_HOUSE2, 1

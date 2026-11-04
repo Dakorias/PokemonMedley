@@ -23,7 +23,7 @@ MountainGymBreak_MapScripts:
 
 	WalkPastKenjiBreakScript:
 		turnobject PLAYER, LEFT
-		turnobject MOUNTAIN_GYM_KENJI, RIGHT
+		turnobject MOUNTAIN_GYM_BREAK_KENJI, RIGHT
 		sjump MountainGymBreakScript
 
 	KenjiTalkToBreakScript:

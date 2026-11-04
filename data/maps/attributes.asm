@@ -109,32 +109,120 @@ ENDM
 	map_attributes HeraldBay, HERALD_BAY, $35, NORTH
 	connection north, HeraldRoute, HERALD_ROUTE, 0
 
-	map_attributes CraggyBeach, CRAGGY_BEACH, $35, SOUTH
+	map_attributes CraggyBeach, CRAGGY_BEACH, $35, NORTH | SOUTH
+	connection north, CraggyCoast, CRAGGY_COAST, 2
 	connection south, HeraldRoute, HERALD_ROUTE, -13
 	map_attributes FirstGymBeach, FIRST_GYM_BEACH, $35, 0
 
 	map_attributes CraggyCoast, CRAGGY_COAST, $35, NORTH | SOUTH
 	connection north, ScenicBluff, SCENIC_BLUFF, 5
-	connection south, NSGate, NS_GATE, 0
+	connection south, CraggyBeach, CRAGGY_BEACH, -2
 
-map_attributes NSGate, NS_GATE, $00, NORTH
-	connection north, CraggyCoast, CRAGGY_COAST, 0
+	map_attributes NSGate, NS_GATE, $00, 0
 
 	map_attributes ScenicBluff, SCENIC_BLUFF, $35, SOUTH
 	connection south, CraggyCoast, CRAGGY_COAST, -5
 
-	map_attributes TreelinePort, TREELINE_PORT, $35, 0
+	map_attributes TreelinePort, TREELINE_PORT, $35, EAST
+	connection east, ForestPark, FOREST_PARK, -6
 	map_attributes TreelinePortInside, TREELINE_PORT_INSIDE, $00, 0
-	map_attributes ForestPark, FOREST_PARK, $05, 0
-	map_attributes NorthForestPath, NORTH_FOREST_PATH, $05, 0
-	map_attributes WestForestPath, WEST_FOREST_PATH, $35, 0
-	map_attributes MontaneTown, MONTANE_TOWN, $05, 0
+	map_attributes ForestPark, FOREST_PARK, $05, NORTH | WEST | EAST
+	connection north, NorthForestPath, NORTH_FOREST_PATH, -2
+	connection west, TreelinePort, TREELINE_PORT, 6
+	connection east, EastForestPath, EAST_FOREST_PATH, 0
+	map_attributes NorthForestPath, NORTH_FOREST_PATH, $05, SOUTH | EAST
+	connection south, ForestPark, FOREST_PARK, 2
+	connection east, MontaneNorthPath, MONTANE_NORTH_PATH, 5
+	map_attributes EastForestPath, EAST_FOREST_PATH, $35, NORTH | WEST
+	connection north, MontaneTown, MONTANE_TOWN, 0
+	connection west, ForestPark, FOREST_PARK, 0
+	map_attributes MontaneTown, MONTANE_TOWN, $05, NORTH | SOUTH | WEST
+	connection north, MontaneNorthPath, MONTANE_NORTH_PATH, 0
+	connection south, EastForestPath, EAST_FOREST_PATH, 0
+	connection west, MontaneWestPath, MONTANE_WEST_PATH, 1
+
+	map_attributes AshenPeak, ASHEN_PEAK, $05, SOUTH | WEST
+	connection south, MontaneNorthPath, MONTANE_NORTH_PATH, 0
+	connection west, CinderTrail, CINDER_TRAIL, 4
+	map_attributes AshenPeakPokecenter, ASHEN_PEAK_POKECENTER, $00, 0
+	map_attributes AshenPeakHouse1, ASHEN_PEAK_HOUSE1, $00, 0
+	map_attributes AshenPeakHouse2, ASHEN_PEAK_HOUSE2, $00, 0
+
+	map_attributes CinderTrail, CINDER_TRAIL, $05, EAST | SOUTH
+	connection east, AshenPeak, ASHEN_PEAK, -4
+	connection south, CinderSouthPath, CINDER_SOUTH_PATH, 0
+	map_attributes MontaneNorthPath, MONTANE_NORTH_PATH, $05, NORTH | SOUTH | WEST
+	connection north, AshenPeak, ASHEN_PEAK, 0
+	connection south, MontaneTown, MONTANE_TOWN, 0
+	connection west, NorthForestPath, NORTH_FOREST_PATH, -5
+	map_attributes CinderSouthPath, CINDER_SOUTH_PATH, $05, NORTH | SOUTH
+	connection north, CinderTrail, CINDER_TRAIL, 0
+	connection south, MontaneWestPath, MONTANE_WEST_PATH, 0
+	map_attributes MontaneWestPath, MONTANE_WEST_PATH, $05, NORTH | EAST
+	connection north, CinderSouthPath, CINDER_SOUTH_PATH, 0
+	connection east, MontaneTown, MONTANE_TOWN, -1
+
+	map_attributes Sandhaven, SANDHAVEN, $05, WEST | EAST
+	connection west, ScorchTrail, SCORCH_TRAIL, 0
+	connection east, DryWash, DRY_WASH, 5
+	map_attributes SandhavenPokecenter, SANDHAVEN_POKECENTER, $00, 0
+	map_attributes SandhavenHouse1, SANDHAVEN_HOUSE1, $00, 0
+	map_attributes SandhavenHouse2, SANDHAVEN_HOUSE2, $00, 0
+
+	map_attributes DryWash, DRY_WASH, $05, WEST | EAST
+	connection west, Sandhaven, SANDHAVEN, -5
+	connection east, OasisTown, OASIS_TOWN, -5
+
+	map_attributes OasisTown, OASIS_TOWN, $05, NORTH | WEST
+	connection north, DuneCrossing, DUNE_CROSSING, 6
+	connection west, DryWash, DRY_WASH, 5
+	map_attributes OasisTownPokecenter, OASIS_TOWN_POKECENTER, $00, 0
+	map_attributes OasisTownHouse1, OASIS_TOWN_HOUSE1, $00, 0
+	map_attributes OasisTownHouse2, OASIS_TOWN_HOUSE2, $00, 0
+
+	map_attributes DuneCrossing, DUNE_CROSSING, $05, SOUTH
+	connection south, OasisTown, OASIS_TOWN, -6
+
+	map_attributes ScorchTrail, SCORCH_TRAIL, $05, EAST
+	connection east, Sandhaven, SANDHAVEN, 0
+
+	map_attributes ArenaHarbor, ARENA_HARBOR, $35, EAST
+	connection east, TideWalk, TIDE_WALK, 5
+	map_attributes ArenaHarborPokecenter, ARENA_HARBOR_POKECENTER, $00, 0
+	map_attributes ArenaHarborHouse1, ARENA_HARBOR_HOUSE1, $00, 0
+	map_attributes ArenaHarborHouse2, ARENA_HARBOR_HOUSE2, $00, 0
+
+	map_attributes TideWalk, TIDE_WALK, $35, WEST
+	connection west, ArenaHarbor, ARENA_HARBOR, -5
+
+	map_attributes FrostHollow, FROST_HOLLOW, $05, WEST | EAST
+	connection west, FrozenShore, FROZEN_SHORE, 5
+	connection east, SnowdriftPass, SNOWDRIFT_PASS, 5
+	map_attributes FrostHollowPokecenter, FROST_HOLLOW_POKECENTER, $00, 0
+	map_attributes FrostHollowHouse1, FROST_HOLLOW_HOUSE1, $00, 0
+	map_attributes FrostHollowHouse2, FROST_HOLLOW_HOUSE2, $00, 0
+
+	map_attributes FrozenShore, FROZEN_SHORE, $35, EAST
+	connection east, FrostHollow, FROST_HOLLOW, -5
+
+	map_attributes SnowdriftPass, SNOWDRIFT_PASS, $05, SOUTH | WEST
+	connection south, IceRun, ICE_RUN, -2
+	connection west, FrostHollow, FROST_HOLLOW, -5
+
+	map_attributes IceRun, ICE_RUN, $05, NORTH | WEST
+	connection north, SnowdriftPass, SNOWDRIFT_PASS, 2
+	connection west, GlacierPoint, GLACIER_POINT, -5
+
+	map_attributes GlacierPoint, GLACIER_POINT, $05, EAST
+	connection east, IceRun, ICE_RUN, 5
+	map_attributes GlacierPointPokecenter, GLACIER_POINT_POKECENTER, $00, 0
+	map_attributes GlacierPointHouse1, GLACIER_POINT_HOUSE1, $00, 0
+	map_attributes GlacierPointHouse2, GLACIER_POINT_HOUSE2, $00, 0
 
 
 
 	map_attributes HeraldLab, HERALD_LAB, $00, 0
 	map_attributes HeraldPokecenter, HERALD_POKECENTER, $00, 0
-	map_attributes HeraldGym, HERALD_GYM, $00, 0
 	map_attributes HeraldHouse, HERALD_HOUSE, $00, 0
 	map_attributes EdwardsHouse, EDWARDS_HOUSE, $00, 0
 	map_attributes HeraldPort, HERALD_PORT, $00, 0

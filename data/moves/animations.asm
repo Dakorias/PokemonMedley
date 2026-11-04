@@ -32,16 +32,16 @@ BattleAnimations::
 	dw BattleAnim_Pound
 	dw BattleAnim_KarateChop
 	dw BattleAnim_Swift
-	dw BattleAnim_CometPunch
+	dw BattleAnim_Tailwind
 	dw BattleAnim_Flatter
-	dw BattleAnim_PayDay
+	dw BattleAnim_BugBuzz
 	dw BattleAnim_FirePunch
 	dw BattleAnim_IcePunch
 	dw BattleAnim_Thunderpunch
 	dw BattleAnim_Scratch
 	dw BattleAnim_Vicegrip
 	dw BattleAnim_QuiverDance
-	dw BattleAnim_RazorWind
+	dw BattleAnim_SignalBeam
 	dw BattleAnim_SwordsDance
 	dw BattleAnim_Cut
 	dw BattleAnim_Gust
@@ -242,9 +242,9 @@ BattleAnimations::
 	dw BattleAnim_Attract
 	dw BattleAnim_SleepTalk
 	dw BattleAnim_HealBell
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
+	dw BattleAnim_Slash
+	dw BattleAnim_RazorWind
+	dw BattleAnim_DrillPeck
 	dw BattleAnim_Return
 	dw BattleAnim_IceFang
 	dw BattleAnim_CrossPoison
@@ -283,85 +283,85 @@ BattleAnimations::
 	dw BattleAnim_RockBlast
 	dw BattleAnim_RockPolish
 	dw BattleAnim_RockTomb
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
-	dw BattleAnim_Tackle
+	dw BattleAnim_SpiderWeb
+	dw BattleAnim_Growl
+	dw BattleAnim_SweetKiss
+	dw BattleAnim_SwordsDance
+	dw BattleAnim_Thunderbolt
+	dw BattleAnim_Thundershock
+	dw BattleAnim_Submission
+	dw BattleAnim_Submission
+	dw BattleAnim_Fly
+	dw BattleAnim_ShadowBall
+	dw BattleAnim_RockThrow
+	dw BattleAnim_Headbutt
+	dw BattleAnim_Swift
+	dw BattleAnim_MachPunch
+	dw BattleAnim_Moonlight
+	dw BattleAnim_DizzyPunch
+	dw BattleAnim_Swift
+	dw BattleAnim_Absorb
+	dw BattleAnim_Sing
+	dw BattleAnim_Gust
+	dw BattleAnim_BoneClub
+	dw BattleAnim_BoneClub
+	dw BattleAnim_BoneClub
+	dw BattleAnim_IceBeam
+	dw BattleAnim_Rollout
+	dw BattleAnim_FireBlast
+	dw BattleAnim_CottonSpore
+	dw BattleAnim_Protect
+	dw BattleAnim_Bubblebeam
+	dw BattleAnim_Bubblebeam
+	dw BattleAnim_WaterGun
+	dw BattleAnim_Withdraw
+	dw BattleAnim_HornDrill
+	dw BattleAnim_HornDrill
+	dw BattleAnim_DrillPeck
+	dw BattleAnim_MegaKick
+	dw BattleAnim_Outrage
+	dw BattleAnim_KarateChop
+	dw BattleAnim_HyperFang
+	dw BattleAnim_Snore
+	dw BattleAnim_Stomp
+	dw BattleAnim_PayDay
+	dw BattleAnim_Constrict
+	dw BattleAnim_Wrap
+	dw BattleAnim_CometPunch
+	dw BattleAnim_Return
+	dw BattleAnim_SuperFang
+	dw BattleAnim_Sketch
+	dw BattleAnim_MilkDrink
+	dw BattleAnim_Splash
+	dw BattleAnim_Sonicboom
+	dw BattleAnim_MindReader
+	dw BattleAnim_LockOn
+	dw BattleAnim_SweetScent
+	dw BattleAnim_PetalDance
+	dw BattleAnim_Minimize
+	dw BattleAnim_Fissure
+	dw BattleAnim_Smog
+	dw BattleAnim_SpiderWeb
+	dw BattleAnim_Hypnosis
+	dw BattleAnim_Recover
+	dw BattleAnim_Absorb
+	dw BattleAnim_Supersonic
+	dw BattleAnim_Growth
+	dw BattleAnim_HydroPump
+	dw BattleAnim_Earthquake
+	dw BattleAnim_FutureSight
+	dw BattleAnim_CottonSpore
+	dw BattleAnim_EggBomb
+	dw BattleAnim_Acid
+	dw BattleAnim_HornDrill
+	dw BattleAnim_CometPunch
+	dw BattleAnim_Barrier
+	dw BattleAnim_Teleport
+	dw BattleAnim_Blizzard
+	dw BattleAnim_FireBlast
+	dw BattleAnim_Outrage
+	dw BattleAnim_Protect
+	dw BattleAnim_ShadowSneak
 	dw BattleAnim_Struggle
 	assert_table_length NUM_ATTACKS + 1
 	dw BattleAnim_SweetScent2
@@ -789,19 +789,53 @@ BattleAnim_CometPunch:
 	anim_wait 8
 	anim_ret
 
+BattleAnim_Tailwind:
+	anim_2gfx BATTLE_ANIM_GFX_HIT, BATTLE_ANIM_GFX_HAZE
+	anim_call BattleAnim_TargetObj_2Row
+	anim_bgeffect BATTLE_BG_EFFECT_TACKLE, $0, BG_EFFECT_USER, $0
+	anim_wait 4
+	anim_wait 8
+	anim_call BattleAnim_ShowMon_0
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 24, $10
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 48, $2
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 88, $8
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 32, $6
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 56, $c
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 80, $4
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 104, $e
+.wind_loop
+	anim_sound 0, 1, SFX_WING_ATTACK
+	anim_wait 16
+	anim_loop 6, .wind_loop
+	anim_clearobjs
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 24, $10
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 48, $2
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 88, $8
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 32, $6
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 56, $c
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 80, $4
+	anim_obj BATTLE_ANIM_OBJ_DEFOG, 8, 104, $e
+.wind_loop2
+	anim_sound 0, 1, SFX_WING_ATTACK
+	anim_wait 16
+	anim_loop 5, .wind_loop2
+	anim_ret
+
 BattleAnim_Flatter:
-	anim_1gfx BATTLE_ANIM_GFX_HIT
-	anim_bgeffect BATTLE_BG_EFFECT_SHAKE_SCREEN_X, $40, $2, $0
-	anim_wait 48
-	anim_bgeffect BATTLE_BG_EFFECT_FLASH_INVERTED, $0, $8, $3
-.loop
-	anim_sound 0, 1, SFX_MEGA_PUNCH
-	anim_obj BATTLE_ANIM_OBJ_PUNCH, 136, 56, $0
-	anim_obj BATTLE_ANIM_OBJ_HIT_BIG_YFIX, 136, 56, $0
-	anim_wait 6
-	anim_obj BATTLE_ANIM_OBJ_PUNCH, 136, 56, $0
-	anim_wait 6
-	anim_loop 3, .loop
+	anim_2gfx BATTLE_ANIM_GFX_OBJECTS, BATTLE_ANIM_GFX_STATUS
+.clap_loop
+	anim_sound 0, 0, SFX_ENCORE
+	anim_obj BATTLE_ANIM_OBJ_ENCORE_HAND, 64, 80, $90
+	anim_obj BATTLE_ANIM_OBJ_ENCORE_HAND, 64, 80, $10
+	anim_wait 16
+	anim_loop 3, .clap_loop
+	anim_sound 0, 0, SFX_LICK
+	anim_obj BATTLE_ANIM_OBJ_AMNESIA, 132, 48, $2
+	anim_wait 16
+	anim_obj BATTLE_ANIM_OBJ_AMNESIA, 136, 48, $1
+	anim_wait 16
+	anim_obj BATTLE_ANIM_OBJ_AMNESIA, 140, 48, $0
+	anim_wait 32
 	anim_ret
 
 BattleAnim_Stomp:
@@ -1867,10 +1901,13 @@ BattleAnim_Uturn:
 	anim_obj BATTLE_ANIM_OBJ_SPEED_LINE, 64, 88, $82
 	anim_wait 12
 	anim_sound 0, 1, SFX_COMET_PUNCH
-	anim_obj BATTLE_ANIM_OBJ_HIT_YFIX, 136, 56, $0
+	anim_obj BATTLE_ANIM_OBJ_HIT_BIG_YFIX, 136, 48, $0
 	anim_wait 8
 	anim_bgeffect BATTLE_BG_EFFECT_SHOW_MON, $0, BG_EFFECT_USER, $0
 	anim_wait 16
+	anim_sound 0, 0, SFX_BALL_POOF
+	anim_bgeffect BATTLE_BG_EFFECT_RETURN_MON, $0, BG_EFFECT_USER, $0
+	anim_wait 32
 	anim_ret
 
 BattleAnim_Wrap:
@@ -2507,6 +2544,21 @@ BattleAnim_PayDay:
 	anim_wait 64
 	anim_ret
 
+BattleAnim_BugBuzz:
+	anim_1gfx BATTLE_ANIM_GFX_MISC
+	anim_sound 0, 1, SFX_MIND_READER
+	anim_bgeffect BATTLE_BG_EFFECT_SHAKE_SCREEN_X, $78, $2, $0
+.loop
+	anim_obj BATTLE_ANIM_OBJ_MIND_READER_GREEN, 48, 88, $3
+	anim_obj BATTLE_ANIM_OBJ_MIND_READER_GREEN, 48, 88, $12
+	anim_obj BATTLE_ANIM_OBJ_MIND_READER_GREEN, 48, 88, $20
+	anim_obj BATTLE_ANIM_OBJ_MIND_READER_GREEN, 48, 88, $31
+	anim_wait 16
+	anim_loop 6, .loop
+	anim_wait 24
+	anim_incbgeffect BATTLE_BG_EFFECT_SHAKE_SCREEN_X
+	anim_ret
+
 BattleAnim_FireFang:
 	anim_2gfx BATTLE_ANIM_GFX_CUT, BATTLE_ANIM_GFX_FIRE, BATTLE_ANIM_GFX_HIT
 	anim_obj BATTLE_ANIM_OBJ_BITE, 136, 56, $98
@@ -2652,21 +2704,18 @@ BattleAnim_DrillPeck:
 	anim_ret
 
 BattleAnim_QuiverDance:
-	anim_bgeffect BATTLE_BG_EFFECT_WHITE_HUES, $0, $8, $0
-	anim_2gfx BATTLE_ANIM_GFX_HIT, BATTLE_ANIM_GFX_CHARGE
+	anim_1gfx BATTLE_ANIM_GFX_SPEED
 	anim_call BattleAnim_TargetObj_2Row
 	anim_bgeffect BATTLE_BG_EFFECT_WOBBLE_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 12
 	anim_sound 0, 0, SFX_SWORDS_DANCE
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $0
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $8
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $10
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $18
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $20
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $28
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $30
-	anim_obj BATTLE_ANIM_OBJ_GROWTH, 48, 108, $38
-	anim_wait 64
+.loop
+	anim_obj BATTLE_ANIM_OBJ_SHINY, 48, 88, $0
+	anim_obj BATTLE_ANIM_OBJ_SHINY, 48, 88, $10
+	anim_obj BATTLE_ANIM_OBJ_SHINY, 48, 88, $20
+	anim_obj BATTLE_ANIM_OBJ_SHINY, 48, 88, $30
+	anim_wait 16
+	anim_loop 9, .loop
+	anim_wait 4
 	anim_incbgeffect BATTLE_BG_EFFECT_WOBBLE_MON
 	anim_call BattleAnim_ShowMon_0
 	anim_ret
@@ -2864,6 +2913,32 @@ BattleAnim_Psywave:
 	anim_wait 32
 	anim_incbgeffect BATTLE_BG_EFFECT_PSYCHIC
 	anim_wait 4
+	anim_ret
+
+BattleAnim_SignalBeam:
+	anim_2gfx BATTLE_ANIM_GFX_PSYCHIC, BATTLE_ANIM_GFX_BEAM
+	anim_bgeffect BATTLE_BG_EFFECT_CYCLE_OBPALS_GRAY_AND_YELLOW, $0, $2, $0
+	anim_bgeffect BATTLE_BG_EFFECT_ALTERNATE_HUES, $0, $2, $0
+	anim_sound 0, 1, SFX_PSYBEAM
+	anim_obj BATTLE_ANIM_OBJ_WAVE, 64, 112, $2
+	anim_wait 4
+	anim_obj BATTLE_ANIM_OBJ_WAVE, 80, 104, $3
+	anim_wait 4
+	anim_obj BATTLE_ANIM_OBJ_WAVE, 96, 96, $4
+	anim_sound 0, 1, SFX_PSYBEAM
+	anim_obj BATTLE_ANIM_OBJ_BEAM, 64, 60, $0
+	anim_wait 4
+	anim_obj BATTLE_ANIM_OBJ_BEAM, 80, 68, $0
+	anim_wait 4
+	anim_obj BATTLE_ANIM_OBJ_BEAM, 96, 76, $0
+	anim_wait 4
+	anim_obj BATTLE_ANIM_OBJ_BEAM, 112, 84, $0
+	anim_obj BATTLE_ANIM_OBJ_BEAM_TIP, 126, 92, $0
+	anim_wait 120
+	anim_wait 10
+	anim_clearobjs
+	anim_incbgeffect BATTLE_BG_EFFECT_CYCLE_OBPALS_GRAY_AND_YELLOW
+	anim_incbgeffect BATTLE_BG_EFFECT_ALTERNATE_HUES
 	anim_ret
 
 BattleAnim_Glare:

@@ -82,6 +82,14 @@ GetPlayerIcon:
 .got_gfx
 	ret
 
+MACRO trainer_card_copy_portrait_column
+	ld bc, 4 tiles
+	ld a, BANK(ChrisCardPic) ; aka BANK(KrisCardPic)
+	call FarCopyBytes
+	ld bc, 3 tiles
+	add hl, bc
+ENDM
+
 GetCardPic:
 	ld hl, ChrisCardPic
 	ld a, [wPlayerGender]
@@ -89,12 +97,16 @@ GetCardPic:
 	jr z, .got_pic
 	ld hl, KrisCardPic
 .got_pic
+	ld de, 1 tiles
+	add hl, de
 	ld de, vTiles2 tile $00
-	ld bc, $23 tiles
-	ld a, BANK(ChrisCardPic) ; aka BANK(KrisCardPic)
-	call FarCopyBytes
+	trainer_card_copy_portrait_column
+	trainer_card_copy_portrait_column
+	trainer_card_copy_portrait_column
+	trainer_card_copy_portrait_column
+	trainer_card_copy_portrait_column
 	ld hl, TrainerCardGFX
-	ld de, vTiles2 tile $23
+	ld de, vTiles2 tile $14
 	ld bc, 6 tiles
 	ld a, BANK(TrainerCardGFX)
 	call FarCopyBytes

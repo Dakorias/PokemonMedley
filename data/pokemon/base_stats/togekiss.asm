@@ -12,7 +12,7 @@
 	db 10 ; step cycles to hatch
 	INCBIN "gfx/pokemon/togekiss/front.dimensions"
 	dw NULL, NULL ; unused (beta front/back pics)
-	db GROWTH_FAST ; growth rate
+	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_FLYING, EGG_FAIRY ; egg groups
 
 	; tm/hm learnset

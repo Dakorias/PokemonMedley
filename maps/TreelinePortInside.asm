@@ -9,32 +9,70 @@ TreelinePortInside_MapScripts:
 
 		TreelineSailor1Script:
 			faceplayer
-			opentext
-			writetext TreelineSailorTravelQuestionText
-			yesorno
-			iffalse .Declined
-			closetext
-			applymovement TREELINE_PORT_INSIDE_SAILOR1, TreelineSailorStepsAway
-			applymovement PLAYER, TreelinePlayerBoardsShip
-			playsound SFX_ENTER_DOOR
-			warp HERALD_PORT, 9, 9
-		.Declined
-			writetext TreelineSailorTravelDeclinedText
+			farscall PortTravelMenu
+			ifequal 1, .HeraldPort
+			ifequal 2, .TreelinePort
+			ifequal 3, .DryWash
+			ifequal 4, .TideWalk
+			ifequal 5, .GlacierPoint
+			farwritetext PortTravelDeclinedText
 			waitbutton
 			closetext
 			end
 
-		TreelineSailor2Script:
-			jumptextfaceplayer TreelineSailor2Text
+		.HeraldPort
+			closetext
+			applymovement TREELINE_PORT_INSIDE_SAILOR1, TreelineSailorStepsAway
+			applymovement PLAYER, TreelinePlayerBoardsShip
+			playsound SFX_ENTER_DOOR
+			special FadeOutToWhite
+			pause 15
+			warp HERALD_PORT, 9, 9
+			end
+
+		.TreelinePort
+			closetext
+			applymovement TREELINE_PORT_INSIDE_SAILOR1, TreelineSailorStepsAway
+			applymovement PLAYER, TreelinePlayerBoardsShip
+			playsound SFX_ENTER_DOOR
+			special FadeOutToWhite
+			pause 15
+			warp TREELINE_PORT_INSIDE, 9, 9
+			end
+
+		.DryWash
+			closetext
+			applymovement TREELINE_PORT_INSIDE_SAILOR1, TreelineSailorStepsAway
+			applymovement PLAYER, TreelinePlayerBoardsShip
+			playsound SFX_ENTER_DOOR
+			special FadeOutToWhite
+			pause 15
+			warp DRY_WASH, 20, 8
+			end
+
+		.TideWalk
+			closetext
+			applymovement TREELINE_PORT_INSIDE_SAILOR1, TreelineSailorStepsAway
+			applymovement PLAYER, TreelinePlayerBoardsShip
+			playsound SFX_ENTER_DOOR
+			special FadeOutToWhite
+			pause 15
+			warp TIDE_WALK, 22, 8
+			end
+
+		.GlacierPoint
+			closetext
+			applymovement TREELINE_PORT_INSIDE_SAILOR1, TreelineSailorStepsAway
+			applymovement PLAYER, TreelinePlayerBoardsShip
+			playsound SFX_ENTER_DOOR
+			special FadeOutToWhite
+			pause 15
+			warp GLACIER_POINT, 20, 18
+			end
 
 		TreelineSailorStepsAway:
 			step LEFT
 			turn_head RIGHT
-			step_end
-
-		TreelineSailorStepsBack:
-			step RIGHT
-			turn_head DOWN
 			step_end
 
 		TreelinePlayerBoardsShip:
@@ -42,20 +80,8 @@ TreelinePortInside_MapScripts:
 			turn_head UP
 			step_end
 
-		TreelineSailorTravelQuestionText:
-			text "The boat is ready"
-			line "to leave for"
-			cont "HERALD PORT."
-
-			para "Would you like to"
-			line "board?"
-			done
-
-		TreelineSailorTravelDeclinedText:
-			text "All right. Let me"
-			line "know when you're"
-			cont "ready to go."
-			done
+		TreelineSailor2Script:
+			jumptextfaceplayer TreelineSailor2Text
 
 		TreelineSailor2Text:
 			text "This port used to"
