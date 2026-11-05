@@ -25,8 +25,16 @@
 	DEF TRAINER_CARD_TILE_BOTTOM_CONNECTOR EQU TRAINER_CARD_TILE_BASE + 21
 	DEF TRAINER_CARD_TILE_LEFT_CONNECTOR EQU TRAINER_CARD_TILE_BASE + 23
 	DEF TRAINER_CARD_TILE_RIGHT_CONNECTOR EQU TRAINER_CARD_TILE_BASE + 22
-	DEF TRAINER_CARD_TILE_STAR EQU TRAINER_CARD_TILE_BASE + 32
-	DEF TRAINER_CARD_TILE_BOTTOM_LINE EQU TRAINER_CARD_TILE_BASE + 33
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_1 EQU TRAINER_CARD_TILE_BASE + 32
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_2 EQU TRAINER_CARD_TILE_BASE + 33
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_3 EQU TRAINER_CARD_TILE_BASE + 34
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_4 EQU TRAINER_CARD_TILE_BASE + 35
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_5 EQU TRAINER_CARD_TILE_BASE + 36
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_6 EQU TRAINER_CARD_TILE_BASE + 37
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_7 EQU TRAINER_CARD_TILE_BASE + 38
+	DEF TRAINER_CARD_TILE_BADGE_TEXT_8 EQU TRAINER_CARD_TILE_BASE + 39
+	DEF TRAINER_CARD_TILE_STAR EQU TRAINER_CARD_TILE_BASE + 40
+	DEF TRAINER_CARD_TILE_BOTTOM_LINE EQU TRAINER_CARD_TILE_BASE + 41
 	DEF TRAINER_CARD_TILE_POKEBALL EQU TRAINER_CARD_TILE_BASE + 8
 	DEF TRAINER_CARD_TILE_TRIM EQU TRAINER_CARD_TILE_BASE + 9
 	DEF TRAINER_CARD_TILE_DIVIDER EQU TRAINER_CARD_TILE_BASE + 11
@@ -79,7 +87,7 @@
 
 	ld hl, TrainerCardFrameGFX
 	ld de, vTiles2 tile TRAINER_CARD_TILE_BASE
-	ld bc, 32 tiles
+	ld bc, 40 tiles
 	ld a, BANK(TrainerCardFrameGFX)
 	call FarCopyBytes
 	ld hl, TrainerCardStarGFX
@@ -168,7 +176,6 @@ TrainerCard_PrintTopHalfOfCard:
 	jr nz, .copy_tilemap
 
 	call TrainerCard_PrintStars
-	call TrainerCard_PrintLeagueTitle
 	call TrainerCard_PrintPokeball
 
 	hlcoord 1, 2
@@ -222,15 +229,6 @@ TrainerCard_PrintTopHalfOfCard:
 
 .Time:
 	db "TIME@"
-
-TrainerCard_PrintLeagueTitle:
-	hlcoord 3, 10
-	ld de, .LeagueTitle
-	call PlaceString
-	ret
-
-.LeagueTitle:
-	db "MONEGO LEAGUE@"
 
 TrainerCard_PrintPokeball:
 	hlcoord 1, 13
@@ -348,7 +346,14 @@ TrainerCardFrameTilemap:
 		db TRAINER_CARD_TILE_BOTTOM_CONNECTOR
 	endr
 	db TRAINER_CARD_TILE_BOTTOM_RIGHT
-	rept SCREEN_WIDTH
+	rept 6
+		db TRAINER_CARD_TILE_BOTTOM_LINE
+	endr
+	db TRAINER_CARD_TILE_BADGE_TEXT_1, TRAINER_CARD_TILE_BADGE_TEXT_2
+	db TRAINER_CARD_TILE_BADGE_TEXT_3, TRAINER_CARD_TILE_BADGE_TEXT_4
+	db TRAINER_CARD_TILE_BADGE_TEXT_5, TRAINER_CARD_TILE_BADGE_TEXT_6
+	db TRAINER_CARD_TILE_BADGE_TEXT_7, TRAINER_CARD_TILE_BADGE_TEXT_8
+	rept 6
 		db TRAINER_CARD_TILE_BOTTOM_LINE
 	endr
 	rept SCREEN_WIDTH
@@ -537,43 +542,43 @@ TrainerCard_JohtoBadgesOAM:
 	dw wJohtoBadges
 
 	; Zephyrbadge
-	db $6c, $2c, 0
+	db $70, $30, 0
 	db $00, $20, $24, $20 | (1 << 7)
 	db $00, $20, $24, $20 | (1 << 7)
 
 	; Hivebadge
-	db $6c, $4c, 0
+	db $70, $50, 0
 	db $04, $20, $24, $20 | (1 << 7)
 	db $04, $20, $24, $20 | (1 << 7)
 
 	; Plainbadge
-	db $6c, $6c, 0
+	db $70, $70, 0
 	db $08, $20, $24, $20 | (1 << 7)
 	db $08, $20, $24, $20 | (1 << 7)
 
 	; Fogbadge
-	db $6c, $8c, 0
+	db $70, $90, 0
 	db $0c, $20, $24, $20 | (1 << 7)
 	db $0c, $20, $24, $20 | (1 << 7)
 
 	; Mineralbadge
-	db $8c, $2c, 0
+	db $88, $30, 0
 	db $10, $20, $24, $20 | (1 << 7)
 	db $10, $20, $24, $20 | (1 << 7)
 
 	; Stormbadge
-	db $8c, $4c, 0
+	db $88, $50, 0
 	db $14, $20, $24, $20 | (1 << 7)
 	db $14, $20, $24, $20 | (1 << 7)
 
 	; Glacierbadge
-	db $8c, $6c, 0
+	db $88, $70, 0
 	db $18, $20, $24, $20 | (1 << 7)
 	db $18, $20, $24, $20 | (1 << 7)
 
 	; Risingbadge
 	; X-flips on alternate cycles.
-	db $8c, $8c, 0
+	db $88, $90, 0
 	db $1c,            $20, $24, $20 | (1 << 7)
 	db $1c | (1 << 7), $20, $24, $20 | (1 << 7)
 
