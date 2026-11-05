@@ -579,13 +579,13 @@ TrainerCard_JohtoBadgesOAM:
 
 TrainerCardFrameGFX: INCBIN "gfx/trainer_card/card_frame.2bpp"
 TrainerCardStarGFX:
-	db %00011000, %00000000
-	db %00111100, %00000000
-	db %01111110, %00000000
-	db %11111111, %00000000
-	db %00111100, %00000000
-	db %01100110, %00000000
-	db %11000011, %00000000
-	db %10000001, %00000000
+	db %00010000, %00000000
+	db %00111000, %00000000
+	db %11111110, %00000000
+	db %01111100, %00000000
+	db %00111000, %00000000
+	db %01111100, %00000000
+	db %01101100, %00000000
+	db %11000110, %00000000
 TrainerCardDividerGFX: INCBIN "gfx/trainer_card/card_right_corner.2bpp"
 BadgeGFX: INCBIN "gfx/trainer_card/badges.2bpp"
