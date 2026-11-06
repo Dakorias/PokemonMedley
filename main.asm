@@ -642,6 +642,15 @@ INCLUDE "engine/pokedex/pokedex_3.asm"
 INCLUDE "engine/events/catch_tutorial_input.asm"
 INCLUDE "engine/pokegear/townmap_convertlinebreakcharacters.asm"
 
+SECTION "Battle Weather Images", ROMX
+
+INCLUDE "gfx/weather_images.asm"
+
+SECTION "Pack Item Icons", ROMX
+
+INCLUDE "gfx/pack/item_icons.asm"
+INCLUDE "data/items/pack_item_icons.asm"
+
 SECTION "Wildmon Data", ROMX
 
 INCLUDE "engine/overworld/wildmons.asm"

@@ -342,6 +342,20 @@ LtSurgeGroup:
 	end_list_items
 
 ScientistGroup:
+	next_list_item ; SCIENTIST_NEWTON (1)
+	db "NEWTON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SCIENTIST_TESLA (2)
+	db "TESLA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SCIENTIST_EDISON (3)
+	db "EDISON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -421,15 +435,60 @@ YoungsterGroup:
 	dw DUNSPARCE
 	db -1 ; end
 
+	next_list_item ; YOUNGSTER_MILO (8)
+	db "MILO@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; YOUNGSTER_TOBY (9)
+	db "TOBY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; YOUNGSTER_FINN (10)
+	db "FINN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 SECTION "Enemy Trainer Parties 2", ROMX
 
 SchoolboyGroup:
 
+	next_list_item ; DETECTIVE_HOLMES (1)
+	db "HOLMES@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; DETECTIVE_MARLOWE (2)
+	db "MARLOWE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; DETECTIVE_DUPIN (3)
+	db "DUPIN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 BirdKeeperGroup:
+
+	next_list_item ; BIRD_KEEPER_ROBIN (1)
+	db "ROBIN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BIRD_KEEPER_WREN (2)
+	db "WREN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BIRD_KEEPER_HAWK (3)
+	db "HAWK@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -474,6 +533,21 @@ LassGroup:
 	dw SHINX
 	db -1 ; end
 
+	next_list_item ; LASS_LILY (5)
+	db "LILY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; LASS_MOLLY (6)
+	db "MOLLY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; LASS_ELLIE (7)
+	db "ELLIE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 JanineGroup:
@@ -500,6 +574,21 @@ JanineGroup:
 
 CooltrainerMGroup:
 
+	next_list_item ; COOLTRAINERM_AIDEN (1)
+	db "AIDEN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; COOLTRAINERM_DANTE (2)
+	db "DANTE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; COOLTRAINERM_BLAKE (3)
+	db "BLAKE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 CooltrainerFGroup:
@@ -511,13 +600,58 @@ CooltrainerFGroup:
 	dw COTTONEE
 	db -1 ; end
 
+	next_list_item ; COOLTRAINERF_ARIA (2)
+	db "ARIA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; COOLTRAINERF_CLARA (3)
+	db "CLARA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; COOLTRAINERF_ZOE (4)
+	db "ZOE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 BeautyGroup:
 
+	next_list_item ; BEAUTY_BELLE (1)
+	db "BELLE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BEAUTY_CELINE (2)
+	db "CELINE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BEAUTY_VIOLA (3)
+	db "VIOLA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 PokemaniacGroup:
+
+	next_list_item ; POKEMANIAC_FELIX (1)
+	db "FELIX@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; POKEMANIAC_OSCAR (2)
+	db "OSCAR@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; POKEMANIAC_HUGO (3)
+	db "HUGO@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -530,17 +664,77 @@ GruntMGroup:
 	dw KOFFING
 	db -1 ; end
 
+	next_list_item ; GRUNTM_REX (2)
+	db "REX@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GRUNTM_AXEL (3)
+	db "AXEL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GRUNTM_BRUTUS (4)
+	db "BRUTUS@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 GentlemanGroup:
+
+	next_list_item ; GENTLEMAN_ARTHUR (1)
+	db "ARTHUR@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GENTLEMAN_WALTER (2)
+	db "WALTER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GENTLEMAN_CECIL (3)
+	db "CECIL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
 SkierGroup:
 
+	next_list_item ; SKIER_ALPINE (1)
+	db "ALPINE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SKIER_ASPEN (2)
+	db "ASPEN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SKIER_SIERRA (3)
+	db "SIERRA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 TeacherGroup:
+
+	next_list_item ; TEACHER_AGNES (1)
+	db "AGNES@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; TEACHER_HELEN (2)
+	db "HELEN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; TEACHER_IRENE (3)
+	db "IRENE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -569,6 +763,21 @@ BugCatcherGroup:
 	dw SURSKIT
 	db -1 ; end
 
+	next_list_item ; BUG_CATCHER_CHIP (2)
+	db "CHIP@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BUG_CATCHER_REED (3)
+	db "REED@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BUG_CATCHER_FLINT (4)
+	db "FLINT@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 FisherGroup:
@@ -582,13 +791,58 @@ FisherGroup:
 	dw HORSEA
 	db -1 ; end
 
+	next_list_item ; FISHER_WADE (2)
+	db "WADE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; FISHER_RIVER (3)
+	db "RIVER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; FISHER_BROOK (4)
+	db "BROOK@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 SwimmerMGroup:
 
+	next_list_item ; SWIMMERM_CODY (1)
+	db "CODY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SWIMMERM_TYLER (2)
+	db "TYLER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SWIMMERM_LUKE (3)
+	db "LUKE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 SwimmerFGroup:
+
+	next_list_item ; SWIMMERF_CORAL (1)
+	db "CORAL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SWIMMERF_MARINA (2)
+	db "MARINA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SWIMMERF_PEARL (3)
+	db "PEARL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -607,9 +861,39 @@ SailorGroup:
 	dw KRABBY
 	db -1 ; end
 
+	next_list_item ; SAILOR_DRAKE (3)
+	db "DRAKE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SAILOR_ANCHOR (4)
+	db "ANCHOR@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SAILOR_PORTER (5)
+	db "PORTER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 SuperNerdGroup:
+
+	next_list_item ; SUPER_NERD_BYRON (1)
+	db "BYRON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SUPER_NERD_NIGEL (2)
+	db "NIGEL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SUPER_NERD_MARTIN (3)
+	db "MARTIN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -618,6 +902,21 @@ Rival2Group:
 	end_list_items
 
 GuitaristGroup:
+
+	next_list_item ; GUITARIST_RIFF (1)
+	db "RIFF@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GUITARIST_HENDRIX (2)
+	db "HENDRIX@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GUITARIST_LENNON (3)
+	db "LENNON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -650,9 +949,39 @@ HikerGroup:
 	dw ARON
 	db -1 ; end
 
+	next_list_item ; HIKER_CLIFF (4)
+	db "CLIFF@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; HIKER_BOULDER (5)
+	db "BOULDER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; HIKER_GRANT (6)
+	db "GRANT@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 BikerGroup:
+
+	next_list_item ; BIKER_SPIKE (1)
+	db "SPIKE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BIKER_SLASH (2)
+	db "SLASH@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BIKER_RIDER (3)
+	db "RIDER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -674,13 +1003,58 @@ BlaineGroup:
 
 BurglarGroup:
 
+	next_list_item ; BURGLAR_LOCKE (1)
+	db "LOCKE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BURGLAR_SHADOW (2)
+	db "SHADOW@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BURGLAR_SLICK (3)
+	db "SLICK@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 FirebreatherGroup:
 
+	next_list_item ; FIREBREATHER_BLAZE (1)
+	db "BLAZE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; FIREBREATHER_EMBER (2)
+	db "EMBER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; FIREBREATHER_TORCH (3)
+	db "TORCH@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 JugglerGroup:
+
+	next_list_item ; JUGGLER_JESTER (1)
+	db "JESTER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; JUGGLER_DEXTER (2)
+	db "DEXTER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; JUGGLER_ORSON (3)
+	db "ORSON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -717,6 +1091,21 @@ BlackbeltGroup:
 	dw MACHOP
 	db -1 ; end
 
+	next_list_item ; BLACKBELT_T_RYU (5)
+	db "RYU@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BLACKBELT_T_DAICHI (6)
+	db "DAICHI@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BLACKBELT_T_AKIRA (7)
+	db "AKIRA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 ExecutiveMGroup:
@@ -725,13 +1114,58 @@ ExecutiveMGroup:
 
 PsychicGroup:
 
+	next_list_item ; PSYCHIC_T_ORION (1)
+	db "ORION@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; PSYCHIC_T_COSMO (2)
+	db "COSMO@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; PSYCHIC_T_SALEM (3)
+	db "SALEM@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 PicnickerGroup:
 
+	next_list_item ; PICNICKER_DAISY (1)
+	db "DAISY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; PICNICKER_POPPY (2)
+	db "POPPY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; PICNICKER_ROSIE (3)
+	db "ROSIE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 CamperGroup:
+
+	next_list_item ; CAMPER_SCOUT (1)
+	db "SCOUT@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; CAMPER_ARCHIE (2)
+	db "ARCHIE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; CAMPER_BEAU (3)
+	db "BEAU@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -741,29 +1175,114 @@ ExecutiveFGroup:
 
 SageGroup:
 
+	next_list_item ; SAGE_HAKU (1)
+	db "HAKU@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SAGE_KOZEN (2)
+	db "KOZEN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SAGE_DAIZEN (3)
+	db "DAIZEN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 MediumGroup:
+
+	next_list_item ; MEDIUM_MYSTRA (1)
+	db "MYSTRA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; MEDIUM_SELENE (2)
+	db "SELENE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; MEDIUM_OPAL (3)
+	db "OPAL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
 BoarderGroup:
 
+	next_list_item ; BOARDER_FROST (1)
+	db "FROST@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BOARDER_SHRED (2)
+	db "SHRED@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BOARDER_SLOPE (3)
+	db "SLOPE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 PokefanMGroup:
+
+	next_list_item ; POKEFANM_HAROLD (1)
+	db "HAROLD@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; POKEFANM_ALFRED (2)
+	db "ALFRED@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
 KimonoGirlGroup:
 
+	next_list_item ; KIMONO_GIRL_SAKURA (1)
+	db "SAKURA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; KIMONO_GIRL_AYAME (2)
+	db "AYAME@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 TwinsGroup:
 
+	next_list_item ; TWINS_MIA_AND_MAY (1)
+	db "MIA & MAY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; TWINS_AVA_AND_EVE (2)
+	db "AVA & EVE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 PokefanFGroup:
+
+	next_list_item ; POKEFANF_MABEL (1)
+	db "MABEL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; POKEFANF_EDITH (2)
+	db "EDITH@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -819,9 +1338,29 @@ BlueGroup:
 
 OfficerGroup:
 
+	next_list_item ; OFFICER_GRADY (1)
+	db "GRADY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; OFFICER_BRENT (2)
+	db "BRENT@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 GruntFGroup:
+
+	next_list_item ; GRUNTF_RAVEN (1)
+	db "RAVEN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GRUNTF_ROXY (2)
+	db "ROXY@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
 
 	end_list_items
 
@@ -986,6 +1525,16 @@ BreederGroup:
 	dw RIOLU
 	db -1 ; end
 
+	next_list_item ; BREEDER_HAZEL (2)
+	db "HAZEL@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BREEDER_WILLOW (3)
+	db "WILLOW@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 BugManiacGroup:
@@ -995,21 +1544,115 @@ BugManiacGroup:
 	dw YANMA
 	db -1 ; end
 
+	next_list_item ; BUG_MANIAC_MANTIS (2)
+	db "MANTIS@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; BUG_MANIAC_STAG (3)
+	db "STAG@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 ClownGroup:
 
+	next_list_item ; CLOWN_BOBO (1)
+	db "BOBO@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; CLOWN_PATCHES (2)
+	db "PATCHES@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 CyclistGroup:
+
+	next_list_item ; CYCLIST_PEDRO (1)
+	db "PEDRO@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; CYCLIST_CHASE (2)
+	db "CHASE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 NurseGroup:
 
+	next_list_item ; NURSE_ELSA (1)
+	db "ELSA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; NURSE_NINA (2)
+	db "NINA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 EngineerGroup:
+
+	next_list_item ; ENGINEER_RIVET (1)
+	db "RIVET@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; ENGINEER_GORDON (2)
+	db "GORDON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 HexManiacGroup:
 
+	next_list_item ; HEX_MANIAC_LUNA (1)
+	db "LUNA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; HEX_MANIAC_NYX (2)
+	db "NYX@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 MysteryManGroup:
 
+	next_list_item ; MYSTERY_MAN_ENIGMA (1)
+	db "ENIGMA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; MYSTERY_MAN_CIPHER (2)
+	db "CIPHER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 PainterGroup:
+
+	next_list_item ; PAINTER_CLAUDE (1)
+	db "CLAUDE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; PAINTER_MONET (2)
+	db "MONET@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 RangerGroup:
 	next_list_item ; GERALD (1)
@@ -1020,21 +1663,115 @@ RangerGroup:
 	dw LOMBRE
 	db -1 ; end
 
+	next_list_item ; RANGER_ROWAN (2)
+	db "ROWAN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; RANGER_FERN (3)
+	db "FERN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 RuinManiacGroup:
 
+	next_list_item ; RUIN_MANIAC_CEDRIC (1)
+	db "CEDRIC@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; RUIN_MANIAC_RELIC (2)
+	db "RELIC@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 ScubaDiverGroup:
+
+	next_list_item ; SCUBA_DIVER_NEPTUNE (1)
+	db "NEPTUNE@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SCUBA_DIVER_TRITON (2)
+	db "TRITON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 SuperTrainerGroup:
 
+	next_list_item ; SUPERTRAINER_VICTOR (1)
+	db "VICTOR@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SUPERTRAINER_REGINA (2)
+	db "REGINA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 SurferGroup:
+
+	next_list_item ; SURFER_KAI (1)
+	db "KAI@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SURFER_REEF (2)
+	db "REEF@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 RocketCaptGroup:
 
+	next_list_item ; ROCKET_CAPT_TALON (1)
+	db "TALON@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; ROCKET_CAPT_VIPER (2)
+	db "VIPER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 RocketSciGroup:
 
+	next_list_item ; ROCKET_SCI_VOLT (1)
+	db "VOLT@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; ROCKET_SCI_KELVIN (2)
+	db "KELVIN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+
 TouristGroup:
+
+	next_list_item ; TOURIST_MILES (1)
+	db "MILES@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; TOURIST_PIPER (2)
+	db "PIPER@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 SurvivalistGroup:
 	next_list_item ; PERRY (1)
@@ -1055,9 +1792,31 @@ SurvivalistGroup:
 	dw ARON
 	db -1 ; end
 
+	next_list_item ; SURVIVALIST_FLYNN (3)
+	db "FLYNN@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; SURVIVALIST_FORREST (4)
+	db "FORREST@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 FarmerGroup:
+
+	next_list_item ; FARMER_HANK (1)
+	db "HANK@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; FARMER_AMOS (2)
+	db "AMOS@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
 
 GardenerGroup:
 	next_list_item ; GARDENER (1)
@@ -1070,6 +1829,28 @@ GardenerGroup:
 	dw APPLIN
 	db -1 ; end
 
+	next_list_item ; GARDENER_IRIS (2)
+	db "IRIS@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; GARDENER_FLORA (3)
+	db "FLORA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
 	end_list_items
 
 DancerGroup:
+	next_list_item ; DANCER_RUMBA (1)
+	db "RUMBA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	next_list_item ; DANCER_SAMBA (2)
+	db "SAMBA@", TRAINERTYPE_NORMAL
+	dbw 15, RATTATA
+	db -1 ; end
+
+	end_list_items
+

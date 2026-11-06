@@ -203,6 +203,7 @@ HandleMapObjects:
 
 HandleMapBackground:
 	farcall _UpdateSprites
+	farcall UpdateOverworldRain
 	farcall ScrollScreen
 	farcall PlaceMapNameSign
 	ret

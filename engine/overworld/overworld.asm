@@ -131,9 +131,326 @@ AddOutdoorSprites:
 .loop
 	ld a, [hli]
 	and a
-	ret z
+	jr z, .done
 	call AddSpriteGFX
 	jr .loop
+
+.done
+	call GetOverworldWeatherSprite
+	and a
+	ret z
+	jp AddSpriteGFX
+
+UpdateOverworldRain::
+	ld a, [wStateFlags]
+	bit SPRITE_UPDATES_DISABLED_F, a
+	ret z
+	call GetOverworldWeatherSprite
+	and a
+	ret z
+	ld c, a
+	ld hl, wUsedSprites
+	ld b, SPRITE_GFX_LIST_CAPACITY
+.find_rain_sprite
+	ld a, [hli]
+	and a
+	ret z
+	cp c
+	jr z, .found_rain_sprite
+	inc hl
+	dec b
+	jr nz, .find_rain_sprite
+	ret
+
+.found_rain_sprite
+	ld a, [hl]
+	push af
+	ldh a, [hUsedSpriteIndex]
+	ld e, a
+	ld d, 0
+	ld hl, wShadowOAM
+	add hl, de
+	pop af
+	ld d, a
+	call .get_weather_palette_slot
+	cp $ff
+	ret z
+	ld e, a
+	push de
+	push hl
+	call GetAutomaticBattleWeather
+	cp WEATHER_SANDSTORM
+	pop hl
+	pop de
+	ld c, 0
+	ld b, 8
+	jr nz, .draw_rain_drop
+	ld b, 16
+.draw_rain_drop
+	ldh a, [hUsedSpriteIndex]
+	cp NUM_SPRITE_OAM_STRUCTS * SPRITEOAMSTRUCT_LENGTH
+	ret nc
+	ld a, [wStateFlags]
+	bit LAST_12_SPRITE_OAM_STRUCTS_RESERVED_F, a
+	jr z, .particle_slot_available
+	ldh a, [hUsedSpriteIndex]
+	cp (NUM_SPRITE_OAM_STRUCTS - 12) * SPRITEOAMSTRUCT_LENGTH
+	ret nc
+.particle_slot_available
+	push bc
+	push de
+	push hl
+	call GetAutomaticBattleWeather
+	cp WEATHER_SANDSTORM
+	pop hl
+	pop de
+	pop bc
+	jr z, .sandstorm_position
+	call .fall_phase
+	and $7f
+	add 16
+	ld [hli], a
+	push hl
+	push bc
+	push de
+	ld a, c
+	swap a
+	and $f
+	ld e, a
+	ld d, 0
+	ld hl, .rain_drop_x_coords
+	add hl, de
+	ld a, [hl]
+	pop de
+	pop bc
+	pop hl
+	push bc
+	ld b, a
+	call .fall_phase
+	and $7f
+	srl a
+	srl a
+	cpl
+	inc a
+	add 16
+	ld c, a
+	ld a, b
+	add c
+	pop bc
+	ld [hli], a
+	jr .write_particle
+
+.sandstorm_position
+	push hl
+	push bc
+	push de
+	ld a, c
+	swap a
+	and $f
+	ld e, a
+	ld d, 0
+	ld hl, .sandstorm_y_coords
+	add hl, de
+	ld a, [hl]
+	pop de
+	pop bc
+	pop hl
+	push bc
+	ld b, a
+	ldh a, [hVBlankCounter]
+	add a
+	add c
+	ld c, a
+	srl a
+	srl a
+	srl a
+	add b
+	and $7f
+	add 16
+	ld [hli], a
+	ld a, c
+	pop bc
+	ld [hli], a
+
+.write_particle
+	ld a, d
+	and $7f
+	ld [hli], a
+	ld a, d
+	bit 7, a
+	jr nz, .rain_vram0
+	ld a, VRAM_BANK_1
+	jr .rain_palette
+.rain_vram0
+	xor a
+.rain_palette
+	or e
+	ld [hli], a
+	ldh a, [hUsedSpriteIndex]
+	add SPRITEOAMSTRUCT_LENGTH
+	ldh [hUsedSpriteIndex], a
+	ld a, c
+	add 16
+	ld c, a
+	dec b
+	jp nz, .draw_rain_drop
+	ret
+
+.fall_phase
+	push bc
+	push de
+	push hl
+	call GetAutomaticBattleWeather
+	cp WEATHER_RAIN
+	pop hl
+	pop de
+	pop bc
+	ldh a, [hVBlankCounter]
+	jr nz, .double_speed
+	push bc
+	ld b, a
+	add a
+	add b
+	pop bc
+	add c
+	ret
+.double_speed
+	add a
+	add c
+	ret
+
+.rain_drop_x_coords
+	db 128, 28, 68, 8, 88, 148, 108, 48
+
+.sandstorm_y_coords
+	db 8, 72, 24, 104, 48, 88, 0, 112
+	db 56, 16, 96, 40, 120, 64, 32, 80
+
+.get_weather_palette_slot
+	push bc
+	push de
+	push hl
+	call GetOverworldWeatherColorPair
+	ld d, a
+	ld hl, wColorSlotPairs
+	ld b, NUM_COLOR_SLOTS
+	ld c, 0
+.find_weather_palette
+	ld a, [hli]
+	cp d
+	jr z, .found_weather_palette
+	inc c
+	dec b
+	jr nz, .find_weather_palette
+	ld c, $ff
+.found_weather_palette
+	ld a, c
+	pop hl
+	pop de
+	pop bc
+	ret
+
+GetOverworldWeatherSprite:
+	call GetAutomaticBattleWeather
+	cp WEATHER_RAIN
+	ld a, SPRITE_RAIN_DROP
+	ret z
+	call GetAutomaticBattleWeather
+	cp WEATHER_HAIL
+	ld a, SPRITE_HAIL_PARTICLE
+	ret z
+	call GetAutomaticBattleWeather
+	cp WEATHER_SANDSTORM
+	ld a, SPRITE_SANDSTORM_PARTICLE
+	ret z
+	xor a
+	ret
+
+GetOverworldWeatherColorPair::
+	call GetAutomaticBattleWeather
+	cp WEATHER_RAIN
+	ld a, (SKIN_TONE_3 << 4) | COLOR_BLUE
+	ret z
+	call GetAutomaticBattleWeather
+	cp WEATHER_HAIL
+	ld a, (SKIN_WHITE << 4) | COLOR_SILVER
+	ret z
+	call GetAutomaticBattleWeather
+	cp WEATHER_SANDSTORM
+	ld a, (SKIN_TONE_3 << 4) | COLOR_BROWN
+	ret z
+	xor a
+	ret
+
+StartAutomaticBattleWeather::
+	call GetAutomaticBattleWeather
+	and a
+	ret z
+	ld [wBattleWeather], a
+	dec a
+	ld hl, AutomaticBattleWeatherEffects
+	ld bc, 4
+	call AddNTimes
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	push hl
+	ld a, 255
+	ld [wWeatherCount], a
+	farcall Call_PlayBattleAnim
+	pop hl
+	call StdBattleTextbox
+	farcall EmptyBattleTextbox
+	ret
+
+AutomaticBattleWeatherEffects:
+	dw RAIN_DANCE, DownpourText
+	dw SUNNY_DAY, SunGotBrightText
+	dw ANIM_IN_SANDSTORM, SandstormBrewedText
+	dw HAIL, ItStartedToHailText
+
+GetAutomaticBattleWeather::
+	ld hl, AutomaticBattleWeatherMaps
+	ld a, [wMapGroup]
+	ld b, a
+	ld a, [wMapNumber]
+	ld c, a
+.loop
+	ld a, [hli]
+	and a
+	ret z
+	cp b
+	jr nz, .skip_map
+	ld a, [hli]
+	cp c
+	jr nz, .skip_weather
+	ld a, [hl]
+	ret
+
+.skip_map
+	inc hl
+.skip_weather
+	inc hl
+	jr .loop
+
+AutomaticBattleWeatherMaps:
+	; To use: 
+	; map_id <MAP_ID>
+	; db <WEATHER_ID>
+
+	map_id HERALD_ROUTE
+	db WEATHER_HAIL
+
+	map_id HERALD_COVE
+	db WEATHER_SANDSTORM
+
+	map_id HERALD_BAY
+	db WEATHER_RAIN
+	db 0 ; end
 
 LoadUsedSpritesGFX:
 	ld a, MAPCALLBACK_SPRITES

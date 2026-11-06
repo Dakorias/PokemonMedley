@@ -2816,6 +2816,7 @@ PlayerAttackDamage:
 	call LightBallBoost
 
 .done
+	newfarcall WeatherDefenseBoost
 	call TruncateHL_BC
 
 	ld a, [wBattleMonLevel]
@@ -3067,6 +3068,7 @@ EnemyAttackDamage:
 	call ThickClubBoost
 
 .done
+	newfarcall WeatherDefenseBoost
 	call TruncateHL_BC
 
 	ld a, [wEnemyMonLevel]

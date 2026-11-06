@@ -240,6 +240,20 @@ TMHM_JoypadLoop:
 TMHM_ShowTMMoveDescription:
 	call TMHM_CheckHoveringOverCancel
 	jp nc, TMHM_ExitPocket
+	ld a, [wCurItem]
+	cp NUM_TMS + NUM_HMS + 1
+	jr nc, .clear_icon
+	push af
+	ld c, a
+	newfarcall GetNumberedTMHM
+	ld a, c
+	newfarcall DrawPackItemImage
+	pop af
+	jr .continue_description
+.clear_icon
+	newfarcall ClearPackItemImage
+	jp TMHM_JoypadLoop
+.continue_description
 	hlcoord 0, 12
 	ld b, 4
 	ld c, SCREEN_WIDTH - 2

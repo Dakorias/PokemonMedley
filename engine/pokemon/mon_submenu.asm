@@ -120,29 +120,40 @@ GetMonSubmenuItems:
 	ld a, [wLinkMode]
 	and a
 	jr nz, .skip_moves
-	ld a, MON_MOVES
-	call GetPartyParamLocation
-	ld d, h
-	ld e, l
-	ld c, NUM_MOVES
+	ld hl, MonMenuOptions
 .loop
-	push bc
-	push de
-	ld a, [de]
-	and a
-	jr z, .next
+	ld a, [hli]
+	cp MONMENU_FIELD_MOVE
+	jr nz, .skip_moves
+	ld b, [hl]
+	inc hl
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	inc hl
 	push hl
-	call IsFieldMove
-	pop hl
-	jr nc, .next
-	call AddMonMenuItem
-
-.next
-	pop de
-	inc de
+	push bc
+	ld h, d
+	ld l, e
+	call GetMoveIDFromIndex
+	newfarcall CanMonUseFieldMove
 	pop bc
-	dec c
-	jr nz, .loop
+	pop hl
+	jr c, .next
+	push hl
+	push bc
+	ld a, b
+	newfarcall CanUseFieldMoveHere
+	pop bc
+	pop hl
+	jr c, .next
+	ld a, [wMonSubmenuCount]
+	cp NUM_MONMENU_ITEMS - 4
+	jr nc, .skip_moves
+	ld a, b
+	call AddMonMenuItem
+.next
+	jr .loop
 
 .skip_moves
 	ld a, MONMENUITEM_STATS

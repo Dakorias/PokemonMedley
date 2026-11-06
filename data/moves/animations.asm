@@ -234,7 +234,7 @@ BattleAnimations::
 	dw BattleAnim_Rollout
 	dw BattleAnim_FalseSwipe
 	dw BattleAnim_Swagger
-	dw BattleAnim_MilkDrink
+	dw BattleAnim_Hail
 	dw BattleAnim_Spark
 	dw BattleAnim_FuryCutter
 	dw BattleAnim_SteelWing
@@ -4653,6 +4653,17 @@ BattleAnim_RainDance:
 	anim_obj BATTLE_ANIM_OBJ_RAIN, 88, 0, $1
 	anim_wait 8
 	anim_obj BATTLE_ANIM_OBJ_RAIN, 88, 0, $2
+	anim_wait 128
+	anim_ret
+
+BattleAnim_Hail:
+	anim_1gfx BATTLE_ANIM_GFX_ICE
+	anim_sound 0, 1, SFX_RAIN_DANCE
+	anim_obj BATTLE_ANIM_OBJ_HAIL, 88, 0, $0
+	anim_wait 8
+	anim_obj BATTLE_ANIM_OBJ_HAIL, 88, 0, $1
+	anim_wait 8
+	anim_obj BATTLE_ANIM_OBJ_HAIL, 88, 0, $2
 	anim_wait 128
 	anim_ret
 

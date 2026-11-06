@@ -62,9 +62,10 @@ CheckBadge:
 	text_end
 
 CheckPartyMoveIndex:
-; Check if a monster in your party has move hl.
+; Check if a monster in your party can use field move hl.
 	call GetMoveIDFromIndex
 	ld d, a
+	jp CheckPartyCanUseFieldMove
 CheckPartyMove:
 ; Check if a monster in your party has move d.
 
@@ -108,6 +109,281 @@ CheckPartyMove:
 .no
 	scf
 	ret
+
+CanMonLearnFieldMove::
+	ld [wPutativeTMHMMove], a
+	push bc
+	push de
+	push hl
+	ld a, [wCurPartySpecies]
+	and a
+	jr z, .no
+	cp EGG
+	jr z, .no
+	predef CanLearnTMHMMove
+	ld a, c
+	and a
+	jr nz, .yes
+	ld a, [wPutativeTMHMMove]
+	call GetMoveIndexFromID
+	ld d, h
+	ld e, l
+	ld a, [wCurPartySpecies]
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
+	ld hl, EvosAttacksPointers
+	ld a, BANK(EvosAttacksPointers)
+	call LoadDoubleIndirectPointer
+	call FarSkipEvolutions
+.learnset_loop
+	ld a, b
+	call GetFarByte
+	inc hl
+	and a
+	jr z, .no
+	push hl
+	ld a, b
+	call GetFarWord
+	ld a, l
+	cp e
+	ld a, h
+	pop hl
+	inc hl
+	inc hl
+	jr nz, .learnset_loop
+	cp d
+	jr nz, .learnset_loop
+.yes
+	pop hl
+	pop de
+	pop bc
+	and a
+	ret
+.no
+	pop hl
+	pop de
+	pop bc
+	scf
+	ret
+
+CanMonUseFieldMove::
+	push bc
+	push de
+	push hl
+	ld d, a
+	ld a, [wCurPartyMon]
+	ld e, a
+	ld a, [wPartyCount]
+	cp e
+	jr z, .no
+	jr c, .no
+	ld c, e
+	ld b, 0
+	ld hl, wPartySpecies
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .no
+	cp -1
+	jr z, .no
+	cp EGG
+	jr z, .no
+	ld [wCurPartySpecies], a
+	ld a, MON_MOVES
+	call GetPartyParamLocation
+	ld b, NUM_MOVES
+.known_move
+	ld a, [hli]
+	cp d
+	jr z, .yes
+	dec b
+	jr nz, .known_move
+	ld a, d
+	call HasFieldMoveMachine
+	jr c, .no
+	ld a, d
+	call CanMonLearnFieldMove
+	jr c, .no
+.yes
+	pop hl
+	pop de
+	pop bc
+	and a
+	ret
+.no
+	pop hl
+	pop de
+	pop bc
+	scf
+	ret
+
+HasFieldMoveMachine:
+	push bc
+	push de
+	push hl
+	call GetMoveIndexFromID
+	ld d, h
+	ld e, l
+	ld hl, TMHMMoves
+	ld c, 0
+.loop
+	push hl
+	ld a, BANK(TMHMMoves)
+	call GetFarWord
+	ld a, l
+	cp e
+	ld a, h
+	pop hl
+	jr nz, .next
+	cp d
+	jr z, .found
+.next
+	inc hl
+	inc hl
+	inc c
+	ld a, c
+	cp NUM_TMS + NUM_HMS
+	jr c, .loop
+	jr .yes
+.found
+	ld b, 0
+	ld hl, wTMsHMs
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .no
+.yes
+	pop hl
+	pop de
+	pop bc
+	and a
+	ret
+.no
+	pop hl
+	pop de
+	pop bc
+	scf
+	ret
+
+CheckPartyCanUseFieldMove:
+	ld e, 0
+.loop
+	ld a, [wPartyCount]
+	cp e
+	jr z, .no
+	ld a, e
+	ld [wCurPartyMon], a
+	ld a, d
+	call CanMonUseFieldMove
+	ret nc
+	inc e
+	jr .loop
+.no
+	scf
+	ret
+
+CanUseFieldMoveHere::
+	cp MONMENUITEM_CUT
+	jp z, .cut
+	cp MONMENUITEM_FLY
+	jp z, .fly
+	cp MONMENUITEM_SURF
+	jp z, .surf
+	cp MONMENUITEM_STRENGTH
+	jp z, .strength
+	cp MONMENUITEM_WATERFALL
+	jp z, .waterfall
+	cp MONMENUITEM_DIG
+	jp z, .dig
+	cp MONMENUITEM_HEADBUTT
+	jp z, .headbutt
+	cp MONMENUITEM_ROCKSMASH
+	jp z, .rock_smash
+.no
+	scf
+	ret
+.yes
+	and a
+	ret
+.cut
+	ld de, ENGINE_HIVEBADGE
+	call CheckEngineFlag
+	ret c
+	jp CheckMapForSomethingToCut
+.fly
+	ld de, ENGINE_STORMBADGE
+	call CheckEngineFlag
+	ret c
+	call GetMapEnvironment
+	call CheckOutdoorMap
+	jr nz, .no
+	jr .yes
+.surf
+	ld de, ENGINE_FOGBADGE
+	call CheckEngineFlag
+	ret c
+	ld hl, wBikeFlags
+	bit BIKEFLAGS_ALWAYS_ON_BIKE_F, [hl]
+	jr nz, .no
+	ld a, [wPlayerState]
+	cp PLAYER_SURF
+	jr z, .no
+	cp PLAYER_SURF_PIKA
+	jr z, .no
+	call GetFacingTileCoord
+	call GetTilePermission
+	cp WATER_TILE
+	jr nz, .no
+	call CheckDirection
+	ret c
+	farcall CheckFacingObject
+	ret
+.strength
+	ld de, ENGINE_CRUSHBADGE
+	call CheckEngineFlag
+	ret c
+	call GetFacingObject
+	ret c
+	ld a, d
+	cp SPRITEMOVEDATA_STRENGTH_BOULDER
+	jr nz, .no
+	jr .yes
+.waterfall
+	ld de, ENGINE_RISINGBADGE
+	call CheckEngineFlag
+	ret c
+	jp CheckMapCanWaterfall
+.dig
+	call GetMapEnvironment
+	cp CAVE
+	jr z, .dig_warp
+	cp DUNGEON
+	jp nz, .no
+.dig_warp
+	ld hl, wDigWarpNumber
+	ld a, [hli]
+	and a
+	jp z, .no
+	ld a, [hli]
+	and a
+	jp z, .no
+	ld a, [hl]
+	and a
+	jp z, .no
+	jp .yes
+.headbutt
+	call GetFacingTileCoord
+	call CheckHeadbuttTreeTile
+	jp nz, .no
+	jp .yes
+.rock_smash
+	call GetFacingObject
+	ret c
+	ld a, d
+	cp SPRITEMOVEDATA_SMASHABLE_ROCK
+	jp nz, .no
+	jp .yes
 
 FieldMoveFailed:
 	ld hl, .CantUseItemText

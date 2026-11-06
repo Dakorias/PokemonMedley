@@ -130,6 +130,8 @@ FindNest:
 	jr z, .found
 .next_mon
 	inc hl
+	inc hl
+	inc hl
 	pop af
 	dec a
 	jr nz, .ScanMapLoop
@@ -285,72 +287,37 @@ ChooseWildEncounter:
 	inc hl
 	inc hl
 	call CheckOnWater
-	ld de, WaterMonProbTable
 	jr z, .watermon
 	inc hl
 	inc hl
 	call GetTimeOfDayNotEve
-	ld bc, NUM_GRASSMON * 3
+	ld bc, NUM_GRASSMON * WILDMON_ENTRY_LENGTH
 	call AddNTimes
-	ld de, GrassMonProbTable
 
 .watermon
-; hl contains the pointer to the wild mon data, let's save that to the stack
-	push hl
-.randomloop
-	call Random
-	cp 100
-	jr nc, .randomloop
-	inc a ; 1 <= a <= 100
-	ld b, a
-	ld h, d
-	ld l, e
-	call CheckOnWater
-	ld de, MaxLevelWater
-	jr z, .prob_bracket_loop
-	ld de, MaxLevelGrass
-; This next loop chooses which mon to load up.
+	ld a, 100
+	call RandomRange
+	ld de, WILDMON_ENTRY_LENGTH
 .prob_bracket_loop
-	ld a, [hli]
-	cp b
-	jr nc, .got_it
-	inc hl
-	inc de
+	sub [hl]
+	jr c, .got_it
+	add hl, de
 	jr .prob_bracket_loop
 
 .got_it
-	ld c, [hl]
-	ld b, 0
-	pop hl
-	add hl, bc ; this selects our mon
-; Min Level
+	inc hl
+	push hl
+	inc hl
+	inc hl
 	ld a, [hli]
-	ld b, a
-; Max Level
-	ld a, [de]
-; Min Level
-	ld d, b
-	ld b, a
-	and a
-	jr nz, .RandomLevel
-; If min and max are the same.
-	ld b, d
-	jr .ok
-
-.RandomLevel:
-; Get a random level between the min and max.
-	ld c, a
-	inc c
-	call Random
-	ldh a, [hRandomAdd]
-	call SimpleDivide
+	ld d, a
+	ld a, [hl]
+	sub d
+	inc a
+	call RandomRange
 	add d
-	ld b, a
-
-; Store the level
-.ok
-	ld a, b
 	ld [wCurPartyLevel], a
+	pop hl
 
 	ld a, [hli]
 	ld h, [hl]
@@ -388,8 +355,6 @@ ChooseWildEncounter:
 	ld a, 1
 	and a
 	ret
-
-INCLUDE "data/wild/probabilities.asm"
 
 CheckRepelEffect::
 ; If there is no active Repel, there's no need to be here.
@@ -835,8 +800,8 @@ GetCallerRouteWildGrassMons:
 .found
 	ld bc, 5 ; skip the map ID and encounter rates
 	add hl, bc
-	ld a, [wTimeOfDay]
-	ld bc, NUM_GRASSMON * 3
+	call GetTimeOfDayNotEve
+	ld bc, NUM_GRASSMON * WILDMON_ENTRY_LENGTH
 	call AddNTimes
 	scf
 	ret
@@ -851,12 +816,10 @@ RandomUnseenWildMon:
 	call Random
 	and %11
 	jr z, .randloop1
-	ld bc, 10 ; skip three mons plus the level of the fourth
-	add hl, bc
-	ld c, a
-	add hl, bc
-	add hl, bc
-	add hl, bc
+	add 3
+	ld bc, WILDMON_ENTRY_LENGTH
+	call AddNTimes
+	inc hl
 	; We now have the pointer to one of the last (rarest) three wild Pokemon found in that area.
 	; Load the species index of this rare Pokemon
 	ld a, [hli]
@@ -873,6 +836,8 @@ RandomUnseenWildMon:
 	cp d
 	jr z, .done
 .next
+	inc hl
+	inc hl
 	inc hl
 	dec b
 	jr nz, .loop2
@@ -908,11 +873,8 @@ RandomPhoneWildMon:
 	call GetCallerRouteWildGrassMons
 	call Random
 	and %11
-	ld c, a
-	ld b, 0
-	add hl, bc
-	add hl, bc
-	add hl, bc
+	ld bc, WILDMON_ENTRY_LENGTH
+	call AddNTimes
 	inc hl
 	ld a, [hli]
 	ld h, [hl]

@@ -49,6 +49,107 @@ GetPlayerBackpicCoords:
 	lb bc, 6, 6
 	ret
 
+GetWeatherImage::
+	ld a, [wBattleWeather]
+	and a
+	ret z
+	ld de, RainWeatherImage
+	lb bc, PAL_BATTLE_OB_BLUE, 4
+	cp WEATHER_RAIN
+	jr z, .load_image
+	ld de, SunWeatherImage
+	ld b, PAL_BATTLE_OB_YELLOW
+	cp WEATHER_SUN
+	jr z, .load_image
+	ld de, SandstormWeatherImage
+	ld b, PAL_BATTLE_OB_BROWN
+	cp WEATHER_SANDSTORM
+	jr z, .load_image
+	ld de, HailWeatherImage
+	ld b, PAL_BATTLE_OB_BLUE
+	cp WEATHER_HAIL
+	ret nz
+
+.load_image
+	push bc
+	ld b, BANK(WeatherImages)
+	ld hl, vTiles0
+	call Request2bpp
+	pop bc
+	ld hl, wShadowOAMSprite24
+	ld de, .WeatherImageOAMData
+.loop
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	jr nz, .loop
+	ret
+
+.WeatherImageOAMData:
+	db $88, $1c ; bottom right
+	db $88, $14 ; bottom left
+	db $80, $1c ; top right
+	db $80, $14 ; top left
+
+WeatherDefenseBoost::
+	push hl
+	push de
+	ld hl, wEnemyMoveStructType
+	ldh a, [hBattleTurn]
+	and a
+	jr nz, .move_type
+	ld hl, wPlayerMoveStructType
+.move_type
+	ld a, [hl]
+	cp SPECIAL
+	jr nc, .special
+	ld a, [wBattleWeather]
+	cp WEATHER_HAIL
+	jr nz, .done
+	ld e, ICE
+	jr .defender_types
+.special
+	ld a, [wBattleWeather]
+	cp WEATHER_SANDSTORM
+	jr nz, .done
+	ld e, ROCK
+.defender_types
+	ld hl, wEnemyMonType1
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .check_types
+	ld hl, wBattleMonType1
+.check_types
+	ld a, [hli]
+	cp e
+	jr z, .boost
+	ld a, [hl]
+	cp e
+	jr nz, .done
+.boost
+	ld h, b
+	ld l, c
+	srl h
+	rr l
+	add hl, bc
+	jr nc, .store
+	ld hl, $ffff
+.store
+	ld b, h
+	ld c, l
+.done
+	pop de
+	pop hl
+	ret
+
 DoWeatherModifiers:
 	ld de, WeatherTypeModifiers
 	ld a, [wBattleWeather]

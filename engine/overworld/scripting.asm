@@ -449,12 +449,38 @@ Script_battletowertext:
 	farcall BattleTowerText
 	ret
 
+AppendTMHMMoveName::
+	assert STRLEN("TM00") + 1 + MOVE_NAME_LENGTH <= STRING_BUFFER_LENGTH
+	ld a, [wNamedObjectIndex]
+	cp TM01
+	ret c
+	push af
+	push de
+	ld c, a
+	farcall GetTMHMNumber
+	ld a, c
+	ld [wTempTMHM], a
+	predef GetTMHMMove
+	ld a, [wTempTMHM]
+	ld [wNamedObjectIndex], a
+	call GetMoveName
+	pop hl
+	ld [hl], " "
+	inc hl
+	ld de, wStringBuffer1
+	call CopyName2
+	pop af
+	ld [wNamedObjectIndex], a
+	ret
+
 Script_verbosegiveitem:
 	call Script_giveitem
 	call CurItemName
 	ld de, wStringBuffer1
 	ld a, STRING_BUFFER_4
 	call CopyConvertedText
+	ld de, wStringBuffer4 + STRLEN("TM00")
+	call AppendTMHMMoveName
 	ld b, BANK(GiveItemScript)
 	ld de, GiveItemScript
 	jp ScriptCall
@@ -503,6 +529,8 @@ Script_verbosegiveitemvar:
 	ld de, wStringBuffer1
 	ld a, STRING_BUFFER_4
 	call CopyConvertedText
+	ld de, wStringBuffer4 + STRLEN("TM00")
+	call AppendTMHMMoveName
 	ld b, BANK(GiveItemScript)
 	ld de, GiveItemScript
 	jp ScriptCall

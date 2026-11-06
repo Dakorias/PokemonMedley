@@ -125,4 +125,7 @@ OverworldSprites:
 	overworld_sprite BaltoySpriteGFX, 4, STILL_SPRITE, COLOR_RED
 	overworld_sprite KenjiSpriteGFX, 12, WALKING_SPRITE, COLOR_BROWN
 	overworld_sprite ButterfreeSpriteGFX, 4, STILL_SPRITE, COLOR_BLUE
+	overworld_sprite RainDropSpriteGFX, 1, STILL_SPRITE, COLOR_BLUE
+	overworld_sprite HailParticleSpriteGFX, 1, STILL_SPRITE, COLOR_SILVER
+	overworld_sprite SandstormParticleSpriteGFX, 1, STILL_SPRITE, COLOR_BROWN
 	assert_table_length NUM_OVERWORLD_SPRITES

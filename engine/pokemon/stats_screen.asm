@@ -1,8 +1,9 @@
-	const_def 1
-	const PINK_PAGE  ; 1
-	const GREEN_PAGE ; 2
-	const BLUE_PAGE  ; 3
-DEF NUM_STAT_PAGES EQU const_value - 1
+	const_def
+	const PINK_PAGE   ; 0
+	const GREEN_PAGE  ; 1
+	const BLUE_PAGE   ; 2
+	const ORANGE_PAGE ; 3
+DEF NUM_STAT_PAGES EQU const_value
 
 DEF STAT_PAGE_MASK EQU %00000011
 	const_def 4
@@ -68,10 +69,7 @@ StatsScreenMain:
 	ld [wJumptableIndex], a
 	ld [wStatsScreenFlags], a
 
-	ld a, [wStatsScreenFlags]
-	and ~STAT_PAGE_MASK
-	or PINK_PAGE ; first_page
-	ld [wStatsScreenFlags], a
+	ld [wStatsScreenFlags], a ; PINK_PAGE
 
 .loop
 	ld a, [wJumptableIndex]
@@ -89,10 +87,7 @@ StatsScreenMobile:
 	ld [wJumptableIndex], a
 	ld [wStatsScreenFlags], a
 
-	ld a, [wStatsScreenFlags]
-	and ~STAT_PAGE_MASK
-	or PINK_PAGE ; first_page
-	ld [wStatsScreenFlags], a
+	ld [wStatsScreenFlags], a ; PINK_PAGE
 
 .loop
 	farcall Mobile_SetOverworldDelay
@@ -356,20 +351,22 @@ StatsScreen_JoypadAction:
 
 .a_button
 	ld a, c
-	cp BLUE_PAGE ; last page
+	cp ORANGE_PAGE ; last page
 	jr z, .b_button
 .d_right
 	inc c
-	ld a, BLUE_PAGE ; last page
+	ld a, ORANGE_PAGE ; last page
 	cp c
 	jr nc, .set_page
 	ld c, PINK_PAGE ; first page
 	jr .set_page
 
 .d_left
+	ld a, c
 	dec c
+	and a ; PINK_PAGE is the first page
 	jr nz, .set_page
-	ld c, BLUE_PAGE ; last page
+	ld c, ORANGE_PAGE ; last page
 	jr .set_page
 
 .prev_storage
@@ -508,7 +505,7 @@ StatsScreen_PlaceHorizontalDivider:
 	ret
 
 StatsScreen_PlacePageSwitchArrows:
-	hlcoord 12, 6
+	hlcoord 10, 6
 	ld [hl], "◀"
 	hlcoord 19, 6
 	ld [hl], "▶"
@@ -564,7 +561,6 @@ StatsScreen_LoadGFX:
 .PageTilemap:
 	ld a, [wStatsScreenFlags]
 	maskbits NUM_STAT_PAGES
-	dec a
 	ld hl, .Jumptable
 	rst JumpTable
 	ret
@@ -575,6 +571,7 @@ StatsScreen_LoadGFX:
 	dw LoadPinkPage
 	dw LoadGreenPage
 	dw LoadBluePage
+	dw LoadOrangePage
 	assert_table_length NUM_STAT_PAGES
 
 LoadPinkPage:
@@ -819,6 +816,142 @@ LoadBluePage:
 	dw wBufferMonOT ; unused
 	dw wBufferMonOT ; unused
 	dw wBufferMonOT
+
+LoadOrangePage:
+	hlcoord 0, 8
+	ld de, .StatHeading
+	call PlaceString
+	hlcoord 9, 8
+	ld de, .DVHeading
+	call PlaceString
+	hlcoord 14, 8
+	ld de, .EVHeading
+	call PlaceString
+
+	hlcoord 0, 9
+	ld de, .HPLabel
+	call .PlaceLabel
+	call .GetHPDV
+	hlcoord 9, 9
+	call StatsScreen_PrintDV
+	hlcoord 14, 9
+	ld de, wTempMonHPEV
+	call StatsScreen_PrintEV
+
+	hlcoord 0, 10
+	ld de, .AttackLabel
+	call .PlaceLabel
+	ld a, [wTempMonDVs]
+	swap a
+	and $f
+	hlcoord 9, 10
+	call StatsScreen_PrintDV
+	hlcoord 14, 10
+	ld de, wTempMonAtkEV
+	call StatsScreen_PrintEV
+
+	hlcoord 0, 11
+	ld de, .DefenseLabel
+	call .PlaceLabel
+	ld a, [wTempMonDVs]
+	and $f
+	hlcoord 9, 11
+	call StatsScreen_PrintDV
+	hlcoord 14, 11
+	ld de, wTempMonDefEV
+	call StatsScreen_PrintEV
+
+	hlcoord 0, 12
+	ld de, .SpeedLabel
+	call .PlaceLabel
+	ld a, [wTempMonDVs + 1]
+	swap a
+	and $f
+	hlcoord 9, 12
+	call StatsScreen_PrintDV
+	hlcoord 14, 12
+	ld de, wTempMonSpdEV
+	call StatsScreen_PrintEV
+
+	hlcoord 0, 13
+	ld de, .SpAttackLabel
+	call .PlaceLabel
+	ld a, [wTempMonDVs + 1]
+	and $f
+	hlcoord 9, 13
+	call StatsScreen_PrintDV
+	hlcoord 14, 13
+	ld de, wTempMonSpclAtkEV
+	call StatsScreen_PrintEV
+
+	hlcoord 0, 14
+	ld de, .SpDefenseLabel
+	call .PlaceLabel
+	ld a, [wTempMonDVs + 1]
+	and $f
+	hlcoord 9, 14
+	call StatsScreen_PrintDV
+	hlcoord 14, 14
+	ld de, wTempMonSpclDefEV
+	call StatsScreen_PrintEV
+	ret
+
+.PlaceLabel:
+	jp PlaceString
+
+.StatHeading:
+	db "STAT@"
+.DVHeading:
+	db "DV@"
+.EVHeading:
+	db "EV@"
+.HPLabel:
+	db "HP@"
+.AttackLabel:
+	db "ATTACK@"
+.DefenseLabel:
+	db "DEFENSE@"
+.SpeedLabel:
+	db "SPEED@"
+.SpAttackLabel:
+	db "SP.ATK@"
+.SpDefenseLabel:
+	db "SP.DEF@"
+
+.GetHPDV:
+	ld a, [wTempMonDVs]
+	and $10
+	swap a
+	sla a
+	sla a
+	sla a
+	ld b, a
+	ld a, [wTempMonDVs]
+	and $01
+	sla a
+	sla a
+	or b
+	ld b, a
+	ld a, [wTempMonDVs + 1]
+	and $10
+	swap a
+	sla a
+	or b
+	ld b, a
+	ld a, [wTempMonDVs + 1]
+	and $01
+	or b
+	ret
+
+StatsScreen_PrintDV:
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
+	jp PrintNum
+
+StatsScreen_PrintEV:
+	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
+	jp PrintNum
 
 IDNoString:
 	db "<ID>№.@"
@@ -1113,8 +1246,11 @@ StatsScreen_AnimateEgg:
 	ret
 
 StatsScreen_LoadPageIndicators:
-	hlcoord 13, 5
+	hlcoord 11, 5
 	ld a, $36 ; first of 4 small square tiles
+	call .load_square
+	hlcoord 13, 5
+	ld a, $36 ; " " " "
 	call .load_square
 	hlcoord 15, 5
 	ld a, $36 ; " " " "
@@ -1123,13 +1259,22 @@ StatsScreen_LoadPageIndicators:
 	ld a, $36 ; " " " "
 	call .load_square
 	ld a, c
-	cp GREEN_PAGE
+	cp PINK_PAGE
 	ld a, $3a ; first of 4 large square tiles
-	hlcoord 13, 5 ; PINK_PAGE (< GREEN_PAGE)
-	jr c, .load_square
-	hlcoord 15, 5 ; GREEN_PAGE (= GREEN_PAGE)
+	hlcoord 11, 5
 	jr z, .load_square
-	hlcoord 17, 5 ; BLUE_PAGE (> GREEN_PAGE)
+	ld a, c
+	cp GREEN_PAGE
+	ld a, $3a
+	hlcoord 13, 5
+	jr z, .load_square
+	ld a, c
+	cp BLUE_PAGE
+	ld a, $3a
+	hlcoord 15, 5
+	jr z, .load_square
+	ld a, $3a
+	hlcoord 17, 5
 .load_square
 	push bc
 	ld [hli], a

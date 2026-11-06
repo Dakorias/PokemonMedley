@@ -375,7 +375,6 @@ LoadStatsScreenPals:
 	ret z
 	ld hl, StatsScreenPals
 	ld b, 0
-	dec c
 	add hl, bc
 	add hl, bc
 	ldh a, [rSVBK]
@@ -886,6 +885,12 @@ BuildObjectColorSlots:
 	ld bc, wMapObjects
 	call GetObjectColorPair
 	ld [wColorSlotPairs + PAL_PLAYER_UI], a
+	newfarcall GetOverworldWeatherColorPair
+	and a
+	jr z, .no_weather_palette
+	ld e, a
+	call .Assign
+.no_weather_palette
 	ld bc, wMapObjects
 	ld d, NUM_OBJECTS
 .assign_loop

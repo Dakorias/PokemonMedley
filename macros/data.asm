@@ -52,6 +52,19 @@ MACRO dbwbb
 	db \3, \4
 ENDM
 
+MACRO wildmon
+	assert \1 >= 0 && \1 <= 100, "Wild encounter chance must be between 0 and 100"
+	assert \2 >= 1 && \2 <= NUM_POKEMON, "Invalid wild encounter species"
+	assert \3 >= 1 && \3 <= \4 && \4 <= MAX_LEVEL, "Invalid wild encounter level range"
+	dbwbb \1, \2, \3, \4
+	REDEF CURRENT_WILDMON_CHANCE = CURRENT_WILDMON_CHANCE + \1
+	REDEF CURRENT_WILDMON_COUNT = CURRENT_WILDMON_COUNT + 1
+	if CURRENT_WILDMON_COUNT % CURRENT_WILDMON_SLOTS == 0
+		assert CURRENT_WILDMON_CHANCE == 100, "Wild encounter chances must total 100"
+		REDEF CURRENT_WILDMON_CHANCE = 0
+	endc
+ENDM
+
 MACRO dbwbw
 	db \1
 	dw \2

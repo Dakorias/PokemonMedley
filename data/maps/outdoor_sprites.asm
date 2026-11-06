@@ -71,6 +71,9 @@ HeraldCoveGroupSprites:
 		db SPRITE_GRANNY
 		db SPRITE_BUTTERFREE
 		db SPRITE_FRUIT_TREE
+		db SPRITE_RAIN_DROP
+		db SPRITE_HAIL_PARTICLE
+		db SPRITE_SANDSTORM_PARTICLE
 		db 0 ; end
 
 CraggyCoastGroupSprites:

@@ -6,7 +6,7 @@ TeachyTv:
 	.choose_pokemon
 	; Loads the party menu to select a Pokémon. Relative jump
 	; to the shutdown text if the player leaves the party menu.
-	farcall SelectMonFromPartyNoMapReturn
+	farcall SelectMonFromParty
 	push af
 	farcall FadeOutToWhite
 	pop af

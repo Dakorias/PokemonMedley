@@ -6,6 +6,8 @@ DoBattle:
 	ld [wBattleParticipantsIncludingFainted], a
 	ld [wBattlePlayerAction], a
 	ld [wBattleEnded], a
+	ld [wBattleWeather], a
+	ld [wWeatherCount], a
 	inc a
 	ld [wBattleHasJustStarted], a
 	ld hl, wOTPartyMon1HP
@@ -110,6 +112,7 @@ DoBattle:
 	call SpikesDamage
 
 .not_linked_2
+	farcall StartAutomaticBattleWeather
 	jp BattleTurn
 
 .tutorial_debug
@@ -196,6 +199,9 @@ BattleTurn:
 	jr nz, .quit
 .skip_iteration
 	call ParsePlayerAction
+	push af
+	call ClearSprites
+	pop af
 	jr nz, .loop1
 
 	call EnemyTriesToFlee
@@ -1996,7 +2002,18 @@ HandleWeather:
 	ld [wBattleWeather], a
 	ret
 
+.rain_anim
+	call SwitchTurnCore
+	ld de, RAIN_DANCE
+	call Call_PlayBattleAnim
+	call SwitchTurnCore
+	ld hl, .WeatherMessages
+	jp .PrintWeatherMessage
+
 .continues
+	ld a, [wBattleWeather]
+	cp WEATHER_RAIN
+	jp z, .rain_anim
 	ld hl, .WeatherMessages
 	call .PrintWeatherMessage
 
@@ -5852,6 +5869,7 @@ MoveSelectionScreen:
 
 .battle_player_moves
 	call MoveInfoBox
+	newfarcall GetWeatherImage
 	ld a, [wSwappingMove]
 	and a
 	jr z, .interpret_joypad
@@ -5938,6 +5956,9 @@ MoveSelectionScreen:
 	ld hl, BattleText_TheresNoPPLeftForThisMove
 
 .place_textbox_start_over
+	push hl
+	call ClearSprites
+	pop hl
 	call StdBattleTextbox
 	call SafeLoadTempTilemapToTilemap
 	jp MoveSelectionScreen

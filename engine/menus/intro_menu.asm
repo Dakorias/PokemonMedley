@@ -411,9 +411,9 @@ ConfirmContinue:
 	call DelayFrame
 	call GetJoypad
 	ld hl, hJoyPressed
-	bit A_BUTTON, [hl]
+	bit A_BUTTON_F, [hl]
 	jr nz, .PressA
-	bit B_BUTTON, [hl]
+	bit B_BUTTON_F, [hl]
 	jr z, .loop
 	scf
 	ret

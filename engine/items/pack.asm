@@ -1372,6 +1372,77 @@ TutorialPack:
 	call ScrollingMenu
 	ret
 
+Pack_UpdateItemDescription:
+	newfarcall UpdateItemDescription
+	ld a, [wMenuSelection]
+	cp -1
+	jp z, ClearPackItemImage
+	jp DrawPackItemImage
+
+DrawPackItemImage::
+	ld hl, PackItemIconData
+	ld bc, PACK_ITEM_ICON_DATA_LENGTH
+	call AddNTimes
+	ld a, BANK(PackItemIconData)
+	call GetFarByte
+	ld b, a
+	inc hl
+	push bc
+	push hl
+	ld a, BANK(PackItemIconData)
+	call GetFarWord
+	ld d, h
+	ld e, l
+	pop hl
+	inc hl
+	inc hl
+	pop bc
+	push hl
+	ld c, 4
+	ld hl, vTiles2 tile $60
+	call Request2bpp
+	pop hl
+	ld de, wColorPairPalette
+	ld c, 2 * PAL_COLOR_SIZE
+.copy_colors
+	ld a, BANK(PackItemIconData)
+	call GetFarByte
+	ld [de], a
+	inc de
+	inc hl
+	dec c
+	jr nz, .copy_colors
+	ld hl, wColorPairPalette
+	ld de, wBGPals1 palette 6
+	newfarcall LoadPalette_White_Col1_Col2_Black
+	newfarcall ApplyPals
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+	ld a, $60
+	jr .place_icon_tilemap
+
+.place_icon_tilemap
+	hlcoord 1, 9
+	ld [hli], a
+	inc a
+	ld [hl], a
+	inc a
+	hlcoord 1, 10
+	ld [hli], a
+	inc a
+	ld [hl], a
+	ret
+
+ClearPackItemImage::
+	ld a, " "
+	hlcoord 1, 9
+	ld [hli], a
+	ld [hl], a
+	hlcoord 1, 10
+	ld [hli], a
+	ld [hl], a
+	ret
+
 Pack_JumptableNext:
 	ld hl, wJumptableIndex
 	inc [hl]
@@ -1562,6 +1633,9 @@ Pack_InitGFX:
 	jr nz, .loop
 	call DrawPocketName
 	call PlacePackGFX
+	hlcoord 0, 8
+	lb bc, 2, 2
+	call Textbox
 ; Place the textbox for displaying the item description
 	hlcoord 0, SCREEN_HEIGHT - 4 - 2
 	lb bc, 4, SCREEN_WIDTH - 2
@@ -1571,7 +1645,7 @@ Pack_InitGFX:
 	ret
 
 PlacePackGFX:
-	hlcoord 0, 3
+	hlcoord 0, 2
 	ld a, $50
 	ld de, SCREEN_WIDTH - 5
 	ld b, 3
@@ -1599,7 +1673,7 @@ DrawPocketName:
 	add hl, de
 	ld d, h
 	ld e, l
-	hlcoord 0, 7
+	hlcoord 0, 5
 	ld c, 3
 .row
 	ld b, 5
@@ -1662,7 +1736,7 @@ ItemsPocketMenuHeader:
 	dbw 0, wNumItems
 	dba PlaceMenuItemName
 	dba PlaceMenuItemQuantity
-	dba UpdateItemDescription
+	dba Pack_UpdateItemDescription
 
 PC_Mart_ItemsPocketMenuHeader:
 	db MENU_BACKUP_TILES ; flags
@@ -1692,7 +1766,7 @@ KeyItemsPocketMenuHeader:
 	dbw 0, wNumKeyItems
 	dba PlaceMenuItemName
 	dba PlaceMenuItemQuantity
-	dba UpdateItemDescription
+	dba Pack_UpdateItemDescription
 
 PC_Mart_KeyItemsPocketMenuHeader:
 	db MENU_BACKUP_TILES ; flags
@@ -1722,7 +1796,7 @@ BallsPocketMenuHeader:
 	dbw 0, wNumBalls
 	dba PlaceMenuItemName
 	dba PlaceMenuItemQuantity
-	dba UpdateItemDescription
+	dba Pack_UpdateItemDescription
 
 PC_Mart_BallsPocketMenuHeader:
 	db MENU_BACKUP_TILES ; flags
@@ -1752,7 +1826,7 @@ MedicinePocketMenuHeader:
 	dbw 0, wNumMedicine
 	dba PlaceMenuItemName
 	dba PlaceMenuItemQuantity
-	dba UpdateItemDescription
+	dba Pack_UpdateItemDescription
 
 PC_Mart_MedicinePocketMenuHeader:
 	db MENU_BACKUP_TILES ; flags
@@ -1782,7 +1856,7 @@ BerryPocketMenuHeader:
 	dbw 0, wNumBerries
 	dba PlaceMenuItemName
 	dba PlaceMenuItemQuantity
-	dba UpdateItemDescription
+	dba Pack_UpdateItemDescription
 
 PC_Mart_BerriesPocketMenuHeader:
 	db MENU_BACKUP_TILES ; flags
